@@ -8,6 +8,45 @@ Cool stuff:
   * Has buildin support for CSS live reloading
 
 
+## Directories
+
+Server-side code:
+
+    lib/
+
+Client-side code:
+
+    client/
+
+Client styles:
+
+    client/styles/
+
+Vendor bundles for the client (JS and CSS!):
+
+    client/vendor/
+
+Handlebars templates:
+
+    views/
+
+Client-side Handlebars templates:
+
+    views/client
+
+Random helper scripts
+
+    bin/
+
+## Conventions (proposal)
+
+  * Use two spaces for indentation everywhere.
+  * camelCase for CSS classes and IDs
+  * camelCase for CoffeeScript variables and properties
+  * UpperCamelCase for CoffeeScript classes
+  * ...
+
+
 ## Installing Node.js
 
 Build dependencies
@@ -61,6 +100,8 @@ Production
     * http://docs.jquery.com/Main\_Page
   * Node.js
     * http://nodejs.org/docs/latest/api/
+  * Cool Vim tricks ;)
+    * http://esa-matti.suuronen.org/blog/2011/11/28/how-to-write-coffeescript-efficiently/
 
 
 
