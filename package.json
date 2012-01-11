@@ -1,0 +1,34 @@
+{
+    "name" : "example-webapp"
+    , "version": "0.1.0"
+    , "author": "Esa-Matti Suuronen"
+    , "homepage": "https://github.com/opinsys/example-webapp"
+    , "description": "Example webapp using Coffeescript, Node.js and Backbone.js"
+    , "bugs": {
+        "url": "https://github.com/opinsys/example-webapp/issues/"
+    }
+    , "repository":
+        { "type": "git"
+        , "url": "git://github.com/opinsys/example-webapp.git"
+    }
+    , "scripts": {
+        "test": "node_modules/.bin/mocha"
+        , "start": "node_modules/.bin/coffee server.coffee"
+    }
+    , "main": "./lib/index"
+    , "dependencies": {
+        "coffee-script": ""
+        , "underscore": ""
+        , "async": ""
+        , "stylus": ""
+        , "express": ""
+        , "piler": ""
+        , "handlebars": ""
+        , "hbs": ""
+    }
+    , "devDependencies": {
+          "mocha": ""
+        , "expect.js": ""
+        , "supervisor": ""
+    }
+}
