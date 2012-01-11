@@ -1,6 +1,6 @@
 # Example Webapp
 
-Base for building web applications with Node.js, Backbone.js and Handlebars.js.
+Base for building web applications with Node.js, CoffeeScript, Backbone.js and Handlebars.js.
 
 Uses Handlebars.js for both the server and client templating.
 
