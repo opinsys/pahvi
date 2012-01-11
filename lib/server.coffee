@@ -29,14 +29,14 @@ app.configure ->
 
   # We want use same templating engine for the client and the server. We have
   # to workarount bit so that we can get uncompiled Handlebars templates
-  # throught Handlerbars
+  # through Handlebars
   templateCache = {}
   hbs.registerHelper "clientTemplate", (name) ->
     source = templateCache[name]
     if not source
       # Synchronous file reading is bad, but it doesn't really matter here since
       # we can cache it in production
-      source = fs.readFileSync rootDir + "/client/templates/#{ name }.hbs"
+      source = fs.readFileSync rootDir + "/views/client/#{ name }.hbs"
       templateCache[name] = source if process.env["NODE_ENV"] is "production"
 
     "<script type='text/x-template-handlebars' id='#{ name }Template' >#{ source }</script>\n"
