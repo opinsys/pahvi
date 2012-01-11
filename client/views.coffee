@@ -15,11 +15,6 @@ class views.Editor extends Backbone.View
     @template = Handlebars.compile source
 
 
-  update: ->
-    console.log "editor: updating model"
-    @model.set text: @input.val()
-
-
   render: ->
 
     $(@el).html @template
@@ -28,6 +23,10 @@ class views.Editor extends Backbone.View
 
     @input = @$("textarea")
 
+
+  update: ->
+    console.log "editor: updating model"
+    @model.set text: @input.val()
 
 
 
