@@ -1,0 +1,4 @@
+#!/bin/bash
+
+./node_modules/.bin/supervisor -w lib --extensions 'node|js|coffee' server.js
+
