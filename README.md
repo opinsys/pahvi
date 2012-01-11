@@ -6,6 +6,7 @@ Cool stuff:
 
   * Uses Handlebars.js for both the server and client templating
   * Has buildin support for CSS live reloading
+  * Asset management. Do not ever use preminified assets. Piler will do that for us
 
 
 ## Directories
@@ -40,7 +41,7 @@ Random helper scripts
 
 ## Conventions (proposal)
 
-  * Use two spaces for indentation everywhere.
+  * Use two spaces for indentation everywhere
   * camelCase for CSS classes and IDs
   * camelCase for CoffeeScript variables and properties
   * UpperCamelCase for CoffeeScript classes
@@ -97,7 +98,7 @@ Production
     * http://handlebarsjs.com/
   * jQuery
     * http://jqapi.com/
-    * http://docs.jquery.com/Main\_Page
+    * http://docs.jquery.com/Main_Page
   * Node.js
     * http://nodejs.org/docs/latest/api/
   * Cool Vim tricks ;)
