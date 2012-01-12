@@ -5,6 +5,7 @@ hbs = require "hbs"
 piler = require "piler"
 
 rootDir = __dirname + "/../"
+clientTmplDir = rootDir + "/views/client/"
 
 app = express.createServer()
 
@@ -18,6 +19,16 @@ css.bind app
 js.bind app
 
 
+app.configure "development", ->
+  js.liveUpdate css
+
+
+templateCache = {}
+app.configure "production", ->
+  console.log "Production mode detected!"
+  for filename in fs.readdirSync clientTmplDir
+    templateCache[filename] = fs.readFileSync(clientTmplDir + filename).toString()
+
 
 app.configure ->
 
@@ -30,14 +41,12 @@ app.configure ->
   # We want use same templating engine for the client and the server. We have
   # to workarount bit so that we can get uncompiled Handlebars templates
   # through Handlebars
-  templateCache = {}
   hbs.registerHelper "clientTemplate", (name) ->
-    source = templateCache[name]
+    source = templateCache[name + ".hbs"]
     if not source
       # Synchronous file reading is bad, but it doesn't really matter here since
       # we can cache it in production
       source = fs.readFileSync rootDir + "/views/client/#{ name }.hbs"
-      templateCache[name] = source if process.env["NODE_ENV"] is "production"
 
     "<script type='text/x-template-handlebars' id='#{ name }Template' >#{ source }</script>\n"
 
@@ -62,11 +71,6 @@ app.configure ->
   css.addFile rootDir + "/client/styles/main.styl"
 
 
-app.configure "development", ->
-  js.liveUpdate css
-
-app.configure "production", ->
-  console.log "Production mode detected!"
 
 
 app.get "/", (req, res) ->
