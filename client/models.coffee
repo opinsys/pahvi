@@ -15,5 +15,7 @@ class models.Store extends Backbone.Model
 
     @bind "change", =>
       console.log "store: saving model"
-      localStorage[@name] = JSON.stringify @toJSON()
+      @save()
 
+  save: ->
+    localStorage[@name] = JSON.stringify @attributes
