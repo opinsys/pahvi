@@ -89,6 +89,10 @@ Production
 
 ## Resources
 
+  * CoffeeScript
+    * http://coffeescript.org/
+    * http://arcturo.github.com/library/coffeescript/
+    * http://autotelicum.github.com/Smooth-CoffeeScript/
   * Backbone.js
     * http://documentcloud.github.com/backbone/
     * https://github.com/addyosmani/backbone-fundamentals
