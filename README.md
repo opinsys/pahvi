@@ -98,12 +98,12 @@ Production
   * Backbone.js
     * http://documentcloud.github.com/backbone/
     * https://github.com/addyosmani/backbone-fundamentals
+  * Handlebars.js
+    * http://handlebarsjs.com/
   * Underscore.js
     * http://documentcloud.github.com/underscore/
   * Async.js
     * https://github.com/caolan/async
-  * Handlebars.js
-    * http://handlebarsjs.com/
   * jQuery
     * http://jqapi.com/
     * http://docs.jquery.com/Main_Page
