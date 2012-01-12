@@ -51,6 +51,7 @@ app.configure ->
   js.addFile rootDir + "/client/vendor/handlebars.js"
   js.addFile rootDir + "/client/vendor/underscore.js"
   js.addFile rootDir + "/client/vendor/backbone.js"
+  js.addFile rootDir + "/client/vendor/async.js"
 
   js.addFile rootDir + "/client/helpers.coffee"
   js.addFile rootDir + "/client/models.coffee"

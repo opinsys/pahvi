@@ -94,6 +94,8 @@ Production
     * https://github.com/addyosmani/backbone-fundamentals
   * Underscore.js
     * http://documentcloud.github.com/underscore/
+  * Async.js
+    * https://github.com/caolan/async
   * Handlebars.js
     * http://handlebarsjs.com/
   * jQuery
