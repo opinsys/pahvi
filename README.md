@@ -45,7 +45,9 @@ Random helper scripts
   * camelCase for CSS classes and IDs
   * camelCase for CoffeeScript variables and properties
   * UpperCamelCase for CoffeeScript classes
-  * Max 79 characters per line. Keeps pyramid of doom away :)
+  * Max 79 characters per line. Keeps [pyramid of doom][pyramid] away :)
+
+[pyramid]: https://github.com/christkv/node-mongodb-native/blob/c5963250c2eda97ec958502da51a46e378e17f5b/examples/blog.js "Bad code!"
 
 
 ## Installing Node.js
