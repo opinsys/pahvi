@@ -45,7 +45,7 @@ Random helper scripts
   * camelCase for CSS classes and IDs
   * camelCase for CoffeeScript variables and properties
   * UpperCamelCase for CoffeeScript classes
-  * ...
+  * Max 79 characters per line. Keeps pyramid of doom away :)
 
 
 ## Installing Node.js
