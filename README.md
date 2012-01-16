@@ -109,6 +109,8 @@ Production
     * http://docs.jquery.com/Main_Page
   * Node.js
     * http://nodejs.org/docs/latest/api/
+  * Express
+    * http://expressjs.com/
   * Cool Vim tricks ;)
     * http://esa-matti.suuronen.org/blog/2011/11/28/how-to-write-coffeescript-efficiently/
 
