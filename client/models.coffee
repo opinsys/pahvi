@@ -20,3 +20,15 @@ class models.LocalStore extends Backbone.Model
   save: ->
     localStorage[@name] = JSON.stringify @attributes
 
+
+
+class models.TextBoxModel extends models.LocalStore
+
+  defaults:
+    top: "100px"
+    left: "100px"
+    zIndex: 1000
+    text: "TextBox sample content"
+
+
+

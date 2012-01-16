@@ -1,23 +1,29 @@
 
+models = NS "Example.models"
 views = NS "Example.views"
+
 
 requireMode = (mode) -> (method) -> ->
   if @settings.get("mode") is mode
     return method.apply @, arguments
   else
-    console.log "not allowed call in #{ mode } mode"
     undefined
+
 
 class views.TextBox extends Backbone.View
 
+
   className: "box textBox"
 
-  constructor: ({@name, @settings, position}) ->
+  constructor: ({@settings, position}) ->
     super
+    @zIndex = 1000
 
+    $(@el).css "z-index",  @model.get "zIndex"
     $(@el).css
-      left: position.left + "px"
-      top: position.top + "px"
+      left: @model.get "left"
+      top: @model.get "top"
+
 
     source  = $("#textboxTemplate").html()
     @template = Handlebars.compile source
@@ -38,6 +44,23 @@ class views.TextBox extends Backbone.View
     "click .edit": "startEdit"
     "click .delete": "remove"
     "click": "zoom"
+    "click button.up": "up"
+    "click button.down": "down"
+    "dragstop": "saveEdit"
+
+
+
+  up: ->
+    $(@el).css "z-index", @getZIndex() + 1
+    @saveEdit()
+
+  down: ->
+    $(@el).css "z-index", @getZIndex() - 1
+    @saveEdit()
+
+  getZIndex: ->
+    $(@el).css "z-index"
+
 
   zoom: requireMode("presentation") ->
     $(@el).zoomTo()
@@ -48,6 +71,7 @@ class views.TextBox extends Backbone.View
 
     if @settings.get("mode") is "edit"
       @startDrag()
+      @saveEdit()
 
     if @settings.get("mode") is "presentation"
       $("body").zoomTo
@@ -64,8 +88,22 @@ class views.TextBox extends Backbone.View
     @_endEdit()
     $(@el).draggable
       cursor: "pointer"
+
     console.log "Dragging"
 
+
+  saveEdit: ->
+
+    @model.set
+      left: $(@el).css "left"
+      top: $(@el).css "top"
+      zIndex: @getZIndex()
+      text: @$(".content span").html()
+    ,
+      silent: true
+
+    @model.save()
+    console.log "saved", @model.attributes
 
   _endEdit: ->
     @edit.removeAttr "contenteditable"
@@ -77,7 +115,8 @@ class views.TextBox extends Backbone.View
 
   render: ->
 
-    $(@el).html @template()
+    $(@el).html @template
+      text: @model.get "text"
 
     @edit = @$(".content span")
 

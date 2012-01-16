@@ -16,21 +16,18 @@ $ ->
   menu.render()
 
 
-  addTextBox = (pos) ->
+  addTextBox = (name) ->
+    m = new models.TextBoxModel
+      name: name
+
     t = new views.TextBox
-      name: "Testi"
       settings: settings
-      position: pos
+      model: m
 
     $("body").append t.el
     t.render()
     t.startDrag()
 
 
-  addTextBox
-    top: 100
-    left: 100
-
-  addTextBox
-    top: 300
-    left: 200
+  addTextBox "first"
+  addTextBox "second"
