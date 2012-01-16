@@ -52,6 +52,7 @@ app.configure ->
 
 
 
+  app.use express.static rootDir + '/public'
   app.set "views", rootDir + "/views"
   app.set 'view engine', 'hbs'
 
