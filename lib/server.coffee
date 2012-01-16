@@ -3,6 +3,7 @@ fs = require "fs"
 express = require "express"
 hbs = require "hbs"
 piler = require "piler"
+sharejs = require("share").server
 
 rootDir = __dirname + "/../"
 clientTmplDir = rootDir + "/views/client/"
@@ -17,6 +18,9 @@ js = piler.createJSManager()
 
 css.bind app
 js.bind app
+sharejs.bind app,
+  db:
+    type: 'memory'
 
 
 app.configure "development", ->
