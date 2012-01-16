@@ -17,7 +17,6 @@ class views.TextBox extends Backbone.View
 
   constructor: ({@settings, position}) ->
     super
-    @zIndex = 1000
 
     $(@el).css "z-index",  @model.get "zIndex"
     $(@el).css
@@ -51,11 +50,11 @@ class views.TextBox extends Backbone.View
 
 
   up: ->
-    $(@el).css "z-index", @getZIndex() + 1
+    $(@el).css "z-index", parseInt(@getZIndex(), 10) + 1
     @saveEdit()
 
   down: ->
-    $(@el).css "z-index", @getZIndex() - 1
+    $(@el).css "z-index", parseInt(@getZIndex(), 10) - 1
     @saveEdit()
 
   getZIndex: ->
