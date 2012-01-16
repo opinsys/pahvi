@@ -5,5 +5,11 @@ models = NS "Example.models"
 
 $ ->
 
-  text = $(".text")
-  text.draggable()
+  t = new views.TextBox
+    name: "Testi"
+
+  $("body").append t.el
+  t.render()
+
+
+
