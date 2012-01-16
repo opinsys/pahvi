@@ -3,7 +3,7 @@
 models = NS "Example.models"
 
 
-class models.LocalStore extends Backbone.Model
+class LocalStore extends Backbone.Model
 
   constructor: ({name})->
     super
@@ -22,12 +22,16 @@ class models.LocalStore extends Backbone.Model
 
 
 
-class models.TextBoxModel extends models.LocalStore
+class models.Settings extends LocalStore
+  defaults:
+    mode: "edit"
+
+class models.TextBoxModel extends LocalStore
 
   defaults:
     top: "100px"
     left: "100px"
-    zIndex: 1000
+    zIndex: 100
     text: "TextBox sample content"
 
 

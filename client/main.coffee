@@ -5,10 +5,8 @@ models = NS "Example.models"
 
 $ ->
 
-  window.settings = new models.LocalStore
+  window.settings = new models.Settings
     name: "settings"
-    defaults:
-      mode: "presentation"
 
   menu = new views.Menu
     el: ".menu"
@@ -25,9 +23,11 @@ $ ->
       model: m
 
     $("body").append t.el
+
     t.render()
     t.startDrag()
 
 
   addTextBox "first"
   addTextBox "second"
+

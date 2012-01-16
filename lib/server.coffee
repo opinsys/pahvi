@@ -73,6 +73,8 @@ app.configure ->
   js.addFile rootDir + "/client/vendor/zoomooz/jquery.animtrans.js"
   js.addFile rootDir + "/client/vendor/zoomooz/jquery.zoomooz.js"
 
+  js.addFile rootDir + "/client/vendor/hallo/hallo.coffee"
+  js.addFile rootDir + "/client/vendor/hallo/format.coffee"
 
 
 

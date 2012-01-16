@@ -80,9 +80,32 @@ class views.TextBox extends Backbone.View
 
   startEdit: requireMode("edit") ->
     @_endDrag()
-    @edit.attr "contenteditable", true
+    # @edit.bind "halloactivated", -> console.log "ACTIVEW"
+    # @edit.attr "contenteditable", true
+    # alert 23234
+    # @edit.hallo
+    #   editable: true
+    #   plugins:
+    #     halloformat: {}
+
+    $("span", @el).hallo
+      editable: true
+      plugins:
+        halloformat: {}
+
     @edit.focus()
-    console.log "Start edit"
+    console.log "Start edit", @edit
+
+  _endEdit: ->
+    # @edit.removeAttr "contenteditable"
+    # @edit.hallo editable: false
+    console.log "End edit"
+    @edit.blur()
+    $("span", @el).hallo
+      editable: false
+      plugins:
+        halloformat: {}
+
 
   startDrag: requireMode("edit") ->
     @_endEdit()
@@ -105,9 +128,6 @@ class views.TextBox extends Backbone.View
     @model.save()
     console.log "saved", @model.attributes
 
-  _endEdit: ->
-    @edit.removeAttr "contenteditable"
-    console.log "End edit"
 
   _endDrag: ->
     $(@el).draggable("destroy")
@@ -119,6 +139,7 @@ class views.TextBox extends Backbone.View
       text: @model.get "text"
 
     @edit = @$(".content span")
+
 
 
 
