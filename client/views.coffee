@@ -7,10 +7,12 @@ class views.TextBox extends Backbone.View
   events:
     "click .edit": "startEdit"
     "click .delete": "remove"
+    "click": "zoom"
 
-  constructor: ({name}) ->
+  constructor: ({@name, @settings}) ->
     super
-    @name = name
+
+    $(@el).addClass "box"
     $(@el).addClass "textBox"
 
     source  = $("#textboxTemplate").html()
@@ -21,11 +23,21 @@ class views.TextBox extends Backbone.View
       if $(e.target).has(@el).size() > 0
         @_offClick(e)
 
-    @_startDrag()
+
+  zoom: ->
+    return unless @settings.get("mode") is "presentation"
+    $(@el).zoomTo()
+
 
   _offClick: (e) ->
     console.log "off"
-    @endEdit()
+    if @settings.get("mode") is "edit"
+      @startDrag()
+
+    if @settings.get("mode") is "presentation"
+      $("body").zoomTo
+        targetSize: 1.0
+
 
   startEdit: ->
     @_endDrag()
@@ -33,17 +45,16 @@ class views.TextBox extends Backbone.View
     @edit.focus()
     console.log "Start edit"
 
-  endEdit: ->
-    @edit.removeAttr "contenteditable"
-    @_startDrag()
-    console.log "End edit"
-
-
-  _startDrag: ->
+  startDrag: ->
+    @_endEdit()
     $(@el).draggable
       cursor: "pointer"
-
     console.log "Dragging"
+
+
+  _endEdit: ->
+    @edit.removeAttr "contenteditable"
+    console.log "End edit"
 
   _endDrag: ->
     $(@el).draggable("destroy")

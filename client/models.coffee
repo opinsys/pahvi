@@ -3,7 +3,7 @@
 models = NS "Example.models"
 
 
-class models.Store extends Backbone.Model
+class models.LocalStore extends Backbone.Model
 
   constructor: ({name})->
     super
@@ -19,3 +19,4 @@ class models.Store extends Backbone.Model
 
   save: ->
     localStorage[@name] = JSON.stringify @attributes
+
