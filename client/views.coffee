@@ -12,8 +12,12 @@ class views.TextBox extends Backbone.View
 
   className: "box textBox"
 
-  constructor: ({@name, @settings}) ->
+  constructor: ({@name, @settings, position}) ->
     super
+
+    $(@el).css
+      left: position.left + "px"
+      top: position.top + "px"
 
     source  = $("#textboxTemplate").html()
     @template = Handlebars.compile source
