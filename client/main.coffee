@@ -7,6 +7,15 @@ $ ->
 
   window.settings = new models.LocalStore
     name: "settings"
+    defaults:
+      mode: "presentation"
+
+  menu = new views.Menu
+    el: ".menu"
+    settings: settings
+  menu.render()
+
+
 
   t = new views.TextBox
     name: "Testi"
@@ -15,14 +24,6 @@ $ ->
   $("body").append t.el
   t.render()
   t.startDrag()
-
-
-
-  if window.location.hash is "#zoom"
-    settings.set mode: "presentation"
-  else
-    settings.set mode: "edit"
-
 
 
 

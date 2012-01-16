@@ -1,36 +1,47 @@
 
 views = NS "Example.views"
 
+requireMode = (mode) -> (method) -> ->
+  if @settings.get("mode") is mode
+    return method.apply @, arguments
+  else
+    console.log "not allowed call in #{ mode } mode"
+    undefined
+
 class views.TextBox extends Backbone.View
 
-
-  events:
-    "click .edit": "startEdit"
-    "click .delete": "remove"
-    "click": "zoom"
+  className: "box textBox"
 
   constructor: ({@name, @settings}) ->
     super
 
-    $(@el).addClass "box"
-    $(@el).addClass "textBox"
-
     source  = $("#textboxTemplate").html()
     @template = Handlebars.compile source
+
+    @settings.bind "change:mode", =>
+      if @settings.get("mode") is "presentation"
+        @_endDrag()
+        @_endEdit()
+      if @settings.get("mode") is "edit"
+        @startDrag()
 
 
     $(window).click (e) =>
       if $(e.target).has(@el).size() > 0
         @_offClick(e)
 
+  events:
+    "click .edit": "startEdit"
+    "click .delete": "remove"
+    "click": "zoom"
 
-  zoom: ->
-    return unless @settings.get("mode") is "presentation"
+  zoom: requireMode("presentation") ->
     $(@el).zoomTo()
 
 
   _offClick: (e) ->
     console.log "off"
+
     if @settings.get("mode") is "edit"
       @startDrag()
 
@@ -39,13 +50,13 @@ class views.TextBox extends Backbone.View
         targetSize: 1.0
 
 
-  startEdit: ->
+  startEdit: requireMode("edit") ->
     @_endDrag()
     @edit.attr "contenteditable", true
     @edit.focus()
     console.log "Start edit"
 
-  startDrag: ->
+  startDrag: requireMode("edit") ->
     @_endEdit()
     $(@el).draggable
       cursor: "pointer"
@@ -67,7 +78,41 @@ class views.TextBox extends Backbone.View
     @edit = @$(".content span")
 
 
-  # update: ->
-  #   console.log "editor: updating model"
-  #   @model.set text: @input.val()
+
+class views.Menu extends Backbone.View
+
+  events:
+    "click button.modeToggle": "toggle"
+
+  constructor: ({@settings}) ->
+    super
+
+    source  = $("#topmenuTemplate").html()
+    @template = Handlebars.compile source
+
+    @settings.bind "change:mode", => @render()
+
+
+  toggle: ->
+    if @settings.get("mode") is "edit"
+      @settings.set mode: "presentation"
+    else
+      @settings.set mode: "edit"
+
+  render: ->
+
+    ob = modeName: "Unkown mode"
+
+    if @settings.get("mode") is "edit"
+      ob.modeName = "Switch to presentation mode"
+      $("body").removeClass "presentation"
+
+    if @settings.get("mode") is "presentation"
+      ob.modeName = "Switch to edit mode"
+      $("body").addClass "presentation"
+
+
+    $(@el).html @template ob
+
+
 
