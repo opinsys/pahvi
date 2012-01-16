@@ -57,11 +57,24 @@ app.configure ->
   app.set 'view engine', 'hbs'
 
 
+
   js.addFile rootDir + "/client/vendor/jquery.js"
   js.addFile rootDir + "/client/vendor/handlebars.js"
   js.addFile rootDir + "/client/vendor/underscore.js"
   js.addFile rootDir + "/client/vendor/backbone.js"
   js.addFile rootDir + "/client/vendor/async.js"
+
+  js.addFile rootDir + "/client/vendor/jquery-ui/jquery-ui.js"
+  css.addFile rootDir + "/client/vendor/jquery-ui/jquery-ui.css"
+
+  css.addFile rootDir + "/client/vendor/zoomooz/zoomooz.css"
+  js.addFile rootDir + "/client/vendor/zoomooz/sylvester.js"
+  js.addFile rootDir + "/client/vendor/zoomooz/purecssmatrix.js"
+  js.addFile rootDir + "/client/vendor/zoomooz/jquery.animtrans.js"
+  js.addFile rootDir + "/client/vendor/zoomooz/jquery.zoomooz.js"
+
+
+
 
   js.addFile rootDir + "/client/helpers.coffee"
   js.addFile rootDir + "/client/models.coffee"
