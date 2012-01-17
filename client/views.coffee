@@ -122,6 +122,8 @@ class views.TextBox extends Backbone.View
     super
     @$el = $ @el
 
+    @$el = $ @el
+
     source  = $("#textboxTemplate").html()
     @template = Handlebars.compile source
 
@@ -202,6 +204,8 @@ class views.TextBox extends Backbone.View
         halloformat: {}
 
     @edit.focus()
+    @$el.addClass "editing"
+
     @$el.addClass "editing"
 
   _endEdit: ->

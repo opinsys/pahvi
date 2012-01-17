@@ -105,8 +105,10 @@ button:hover
         border 1px solid black
 
 
-      .textBox .tools
-        visibility hidden
+      // We need to use class hovering instean of meta selector :hover so that
+      // we can also "hover" programatically using JavaScript
+      .textBox.hovering .tools
+        visibility visible
         button
           background-color pahvigray
           border none
@@ -235,7 +237,6 @@ button:hover
 
 .layersSortable .hovering
   color red
-
 
 // Testing only
 .textBox
