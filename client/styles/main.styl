@@ -26,6 +26,7 @@ hr
 button:hover
   cursor pointer
 .container
+  height 100%
   margin 0 auto
   max-width 1920px
   min-width 800px
@@ -54,17 +55,19 @@ button:hover
       width 150px
     h1,h2
       color fontc
+      font-family "Trebuchet MS", Helvetica, sans-serif
       line-height 1
-      text-shadow 0 1px 0 pahvigray, 0 -1px 0 black
+      text-shadow 0 -2px 4px pahvigray
       text-transform uppercase
     h2
       font-size 0.8em 
   .wrap
+    height 100%
     width 100%
     .pasteboard
       background url("/img/pahvi-bg.jpg") repeat 0 0 scroll
       border solid 1px pahvigray
-      height 700px
+      height 100%
       margin 0
       position relative
       width 100%
@@ -72,9 +75,9 @@ button:hover
       .textBox.ui-draggable-dragging
         border dotted 2px black !important
         box-shadow 0px 0px 10px black
-        cursor move
+        cursor move !important
       .textBox.ui-draggable
-        cursor pointer !important
+        cursor pointer
       .menu
         margin 0 5px 0
         position absolute
@@ -146,7 +149,7 @@ button:hover
       background pahvicream repeat 0 0 scroll
       border-top 1px solid pahvigray
       border-left 1px solid pahvigray
-      height 700px
+      height 100%
       position absolute
       right 0
       top 0
