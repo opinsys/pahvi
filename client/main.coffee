@@ -17,13 +17,15 @@ $ ->
   boxes = new models.Boxes
   boxes.bind "add", -> console.log "box added"
 
-  layers = new views.Layers
+  window.layers = new views.Layers
     collection: boxes
 
   layers.render()
   $(".media").html layers.el
 
 
+
+  parent = $(".pahvi")
 
   addTextBox = (name) ->
     m = new models.TextBoxModel
@@ -34,14 +36,16 @@ $ ->
     t = new views.TextBox
       settings: settings
       model: m
+      parent: parent
 
-    $(".pasteboard").append t.el
+    parent.append t.el
 
     t.render()
     t.startDrag()
 
 
-  addTextBox "first"
-  addTextBox "second"
-  addTextBox "third"
+  addTextBox "a"
+  addTextBox "b"
+  addTextBox "c"
+  addTextBox "d"
 

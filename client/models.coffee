@@ -6,6 +6,12 @@ models = NS "Example.models"
 
 class models.Boxes extends Backbone.Collection
 
+  constructor: ->
+    super
+
+  comparator: (box) ->
+    console.log "comparing"
+    -1 * parseInt box.get "zIndex"
 
 
 class LocalStore extends Backbone.Model
@@ -18,9 +24,7 @@ class LocalStore extends Backbone.Model
     if localStorage[@name]?
       @attributes = JSON.parse localStorage[@name]
 
-    @bind "change", =>
-      console.log "store: saving model"
-      @save()
+    @bind "change", => @save()
 
   save: ->
     localStorage[@name] = JSON.stringify @attributes
