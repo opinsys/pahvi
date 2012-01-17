@@ -84,6 +84,17 @@ class views.Layers extends Backbone.View
     @render()
 
 
+
+  updateZIndexes: (orderedCids) ->
+
+    for cid, index in orderedCids
+      if model = @collection.getByCid cid
+        model.set zIndex: index + 100
+
+    @collection.sort()
+    @render()
+
+
   render: ->
     $(@el).html @template
       boxes: @collection.map (m) ->
@@ -191,7 +202,6 @@ class views.TextBox extends Backbone.View
         halloformat: {}
 
     @edit.focus()
-
     @$el.addClass "editing"
 
   _endEdit: ->
@@ -229,6 +239,7 @@ class views.TextBox extends Backbone.View
   _endDrag: ->
     @$el.draggable "destroy"
     # @$el.resizable "destroy"
+    $(@el).draggable("destroy")
 
   render: ->
 
