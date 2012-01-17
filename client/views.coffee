@@ -41,6 +41,7 @@ class views.TextBox extends Backbone.View
 
   events:
     "click .edit": "startEdit"
+    "dblclick": "startEdit"
     "click .delete": "remove"
     "click": "zoom"
     "click button.up": "up"
