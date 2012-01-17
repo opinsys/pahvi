@@ -1,7 +1,10 @@
 @import 'nib'
-pahvig = #363636
-pahvic = #f5f4f0
 bordergray = #c2c2c2
+fontc = #fffdf1
+pahvicream = #f5f4f0
+pahvigray = #363636
+pahvigreen = #339900
+pahvired = #CD8989
 body
   font 1em/1.4 "Helvetica Neue","Lucida Grande", tahoma, arial, sans-serif
 
@@ -29,7 +32,7 @@ button:hover
   position relative
   width 100%
   button
-    background-color pahvic
+    background-color pahvicream
     border none
     font 300 0.7em/1 tahoma, sans-serif
     height 60px
@@ -50,40 +53,54 @@ button:hover
       text-align center
       width 150px
     h1,h2
-      color #fffdf1
+      color fontc
       line-height 1
-      text-shadow 0 2px 3px pahvig
+      text-shadow 0 1px 0 pahvigray, 0 -1px 0 black
       text-transform uppercase
     h2
       font-size 0.8em 
-      letter-spacing 1px
   .wrap
     width 100%
     .pasteboard
       background url("/img/pahvi-bg.jpg") repeat 0 0 scroll
-      border solid 1px pahvig
+      border solid 1px pahvigray
       height 700px
       margin 0
       position relative
       width 100%
       z-index 1
+      .textBox.ui-draggable-dragging
+        border dotted 2px black !important
+        box-shadow 0px 0px 10px black
+        cursor move
+      .textBox.ui-draggable
+        cursor pointer !important
       .menu
         margin 0 5px 0
         position absolute
         right 30%
         top -60px
       .modeToggle
-        background url("/img/iconset.png") no-repeat 10px -350px pahvic
-        border-bottom 1px solid pahvig
+        background url("/img/iconset.png") no-repeat 10px -350px pahvicream
+        border-bottom 1px solid pahvigray
       .tools
         background-color #f3f3f3
+        display block
         height 30px
+        margin 0
         position relative
+        visibility hidden
         width 100%
+      .content
+        padding .5em 1em 1em
+      .textBox
+        border 1px solid black
+      .textBox:hover .tools
+        visibility visible
         button
-          background-color pahvig
+          background-color pahvigray
           border none
-          color #fffdf1
+          color fontc
           position absolute
         .edit
           border-radius 10px
@@ -93,44 +110,69 @@ button:hover
           top 2px
           width auto
           white-space nowrap
+          &:hover
+            background-color pahvigreen
         .delete
-          border 2px solid #fffdf1
+          border 2px solid fontc
           border-radius 20px
-          font-size 1em
+          font-size 0.8em
+          font-weight 600
           height 30px
-          padding 0.1em
+          line-height 1
+          padding 0
           right -15px
           text-align center
           top -15px
           width 30px
+          &:hover
+            background-color pahvired
         .down, .up
-          height 30px
+          height 25px
           padding 0
           right -15px
           text-indent -9999px
           width 30px
         .up
-          background url("/img/iconset.png") no-repeat 0 -445px transparent
-          top 25px
+          background url("/img/iconset.png") no-repeat 0 -450px transparent
+          top 30px
+          &:hover
+            background url("/img/iconset.png") no-repeat 0 -485px transparent
         .down
-          background url("/img/iconset.png") no-repeat 0 -485px transparent
-          top 50px
+          background url("/img/iconset.png") no-repeat 0 -525px transparent
+          top 60px
+          &:hover
+            background url("/img/iconset.png") no-repeat 0 -560px transparent
     .mediamenu
-      background pahvic repeat 0 0 scroll
-      border-top 1px solid pahvig
-      border-left 1px solid pahvig
+      background pahvicream repeat 0 0 scroll
+      border-top 1px solid pahvigray
+      border-left 1px solid pahvigray
       height 700px
       position absolute
       right 0
       top 0
       width 30%
       z-index 9999
+      .closeMediamenuBtn
+        background-color rgba(255,253,241,0.7)
+        background-image url("/img/iconset.png") 
+        background-repeat no-repeat 
+        background-position 10px -655px
+        border-top-left-radius 10px 15px 
+        border-bottom-left-radius 10px 15px
+        left -55px
+        height 35px
+        position absolute
+        text-indent -9999px
+        top 40%
+        width 55px
+        &:hover
+          background-position 10px -690px
       nav
         height 50px
         margin 0 0 0 5px
         width 100%
         a
-          background-color pahvic
+          background-color pahvicream
           border-left solid 1px bordergray
           border-top solid 1px bordergray
           border-right solid 1px bordergray
@@ -140,14 +182,20 @@ button:hover
           width 50px
           &:first-child
             background url("/img/iconset.png") no-repeat 10px 10px transparent
+            &:hover
+              background url("/img/iconset.png") no-repeat 10px -40px white
           &:nth-child(2)
             background url("/img/iconset.png") no-repeat 10px -85px transparent
+            &:hover
+              background url("/img/iconset.png") no-repeat 10px -130px white
           &:nth-child(3)
             background url("/img/iconset.png") no-repeat 10px -175px transparent
-          &:hover
-            background-color #ffffff
+            &:hover
+              background url("/img/iconset.png") no-repeat 10px -220px white
+          &:hover, &.active
+            background-color white
       .mediamenuBtn
-        background url("/img/iconset.png") no-repeat 10px -260px pahvic
+        background url("/img/iconset.png") no-repeat 10px -260px pahvicream
         left 5px
         position absolute
         top -60px
@@ -169,19 +217,10 @@ button:hover
   z-index 2000
 
 body.presentation
-
   .textBox .tools
-    display none
+    display none !important
 
-.textBox
-  border 1px solid black
-  padding-bottom 1em
-  .tools
-    margin-bottom 1em
 
-.textBox.ui-draggable
-  cursor pointer
 
-.textBox.ui-draggable-dragging
-  cursor move
-  box-shadow 0px 0px 10px black
+
+  
