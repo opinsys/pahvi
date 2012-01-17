@@ -3,6 +3,11 @@
 models = NS "Example.models"
 
 
+
+class models.Boxes extends Backbone.Collection
+
+
+
 class LocalStore extends Backbone.Model
 
   constructor: ({name})->
