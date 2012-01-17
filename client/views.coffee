@@ -1,23 +1,28 @@
 
+models = NS "Example.models"
 views = NS "Example.views"
+
 
 requireMode = (mode) -> (method) -> ->
   if @settings.get("mode") is mode
     return method.apply @, arguments
   else
-    console.log "not allowed call in #{ mode } mode"
     undefined
+
 
 class views.TextBox extends Backbone.View
 
+
   className: "box textBox"
 
-  constructor: ({@name, @settings, position}) ->
+  constructor: ({@settings, position}) ->
     super
 
+    $(@el).css "z-index",  @model.get "zIndex"
     $(@el).css
-      left: position.left + "px"
-      top: position.top + "px"
+      left: @model.get "left"
+      top: @model.get "top"
+
 
     source  = $("#textboxTemplate").html()
     @template = Handlebars.compile source
@@ -36,8 +41,26 @@ class views.TextBox extends Backbone.View
 
   events:
     "click .edit": "startEdit"
+    "dblclick": "startEdit"
     "click .delete": "remove"
     "click": "zoom"
+    "click button.up": "up"
+    "click button.down": "down"
+    "dragstop": "saveEdit"
+
+
+
+  up: ->
+    $(@el).css "z-index", parseInt(@getZIndex(), 10) + 1
+    @saveEdit()
+
+  down: ->
+    $(@el).css "z-index", parseInt(@getZIndex(), 10) - 1
+    @saveEdit()
+
+  getZIndex: ->
+    $(@el).css "z-index"
+
 
   zoom: requireMode("presentation") ->
     $(@el).zoomTo()
@@ -48,6 +71,7 @@ class views.TextBox extends Backbone.View
 
     if @settings.get("mode") is "edit"
       @startDrag()
+      @saveEdit()
 
     if @settings.get("mode") is "presentation"
       $("body").zoomTo
@@ -56,20 +80,54 @@ class views.TextBox extends Backbone.View
 
   startEdit: requireMode("edit") ->
     @_endDrag()
-    @edit.attr "contenteditable", true
+    # @edit.bind "halloactivated", -> console.log "ACTIVEW"
+    # @edit.attr "contenteditable", true
+    # alert 23234
+    # @edit.hallo
+    #   editable: true
+    #   plugins:
+    #     halloformat: {}
+
+    $("span", @el).hallo
+      editable: true
+      plugins:
+        halloformat: {}
+
     @edit.focus()
-    console.log "Start edit"
+    console.log "Start edit", @edit
+
+  _endEdit: ->
+    # @edit.removeAttr "contenteditable"
+    # @edit.hallo editable: false
+    console.log "End edit"
+    @edit.blur()
+    $("span", @el).hallo
+      editable: false
+      plugins:
+        halloformat: {}
+
 
   startDrag: requireMode("edit") ->
     @_endEdit()
     $(@el).draggable
       cursor: "pointer"
+
     console.log "Dragging"
 
 
-  _endEdit: ->
-    @edit.removeAttr "contenteditable"
-    console.log "End edit"
+  saveEdit: ->
+
+    @model.set
+      left: $(@el).css "left"
+      top: $(@el).css "top"
+      zIndex: @getZIndex()
+      text: @$(".content span").html()
+    ,
+      silent: true
+
+    @model.save()
+    console.log "saved", @model.attributes
+
 
   _endDrag: ->
     $(@el).draggable("destroy")
@@ -77,9 +135,11 @@ class views.TextBox extends Backbone.View
 
   render: ->
 
-    $(@el).html @template()
+    $(@el).html @template
+      text: @model.get "text"
 
     @edit = @$(".content span")
+
 
 
 

@@ -79,6 +79,7 @@ button:hover
         background-color #f3f3f3
         height 30px
         position relative
+        width 100%
         button
           background-color pahvig
           border none
@@ -102,6 +103,18 @@ button:hover
           text-align center
           top -15px
           width 30px
+        .down, .up
+          height 30px
+          padding 0
+          right -15px
+          text-indent -9999px
+          width 30px
+        .up
+          background url("/img/iconset.png") no-repeat 0 -445px transparent
+          top 25px
+        .down
+          background url("/img/iconset.png") no-repeat 0 -485px transparent
+          top 50px
     .mediamenu
       background pahvic repeat 0 0 scroll
       border-top 1px solid pahvig
@@ -152,6 +165,9 @@ button:hover
   width 500px
   background-color white
 
+.hallotoolbar
+  z-index 2000
+
 body.presentation
 
   .textBox .tools
@@ -159,6 +175,9 @@ body.presentation
 
 .textBox
   border 1px solid black
+  padding-bottom 1em
+  .tools
+    margin-bottom 1em
 
 .textBox.ui-draggable
   cursor pointer

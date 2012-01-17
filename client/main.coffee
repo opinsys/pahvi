@@ -5,10 +5,8 @@ models = NS "Example.models"
 
 $ ->
 
-  window.settings = new models.LocalStore
+  window.settings = new models.Settings
     name: "settings"
-    defaults:
-      mode: "presentation"
 
   menu = new views.Menu
     el: ".menu"
@@ -16,21 +14,20 @@ $ ->
   menu.render()
 
 
-  addTextBox = (pos) ->
+  addTextBox = (name) ->
+    m = new models.TextBoxModel
+      name: name
+
     t = new views.TextBox
-      name: "Testi"
       settings: settings
-      position: pos
+      model: m
 
     $(".pasteboard").append t.el
+
     t.render()
     t.startDrag()
 
 
-  addTextBox
-    top: 100
-    left: 100
+  addTextBox "first"
+  addTextBox "second"
 
-  addTextBox
-    top: 300
-    left: 200
