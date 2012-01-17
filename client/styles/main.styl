@@ -1,38 +1,161 @@
-
 @import 'nib'
+pahvig = #363636
+pahvic = #f5f4f0
+bordergray = #c2c2c2
+body
+  font 1em/1.4 "Helvetica Neue","Lucida Grande", tahoma, arial, sans-serif
 
+h1,h2
+  margin 0
+  padding 0
+h1
+  font-size 3em
+h2
+  font-size 1.5em
+
+hr
+  clear both
+  border none
+  float none
+  height 0px
+  margin 0
+  width 100%
+button:hover
+  cursor pointer
 .container
   margin 0 auto
   max-width 1920px
-  min-width 600px
+  min-width 800px
   position relative
   width 100%
+  button
+    background-color pahvic
+    border none
+    font 300 0.7em/1 tahoma, sans-serif
+    height 60px
+    margin 0
+    padding 0 0.2em 0 50px
+    text-align left
+    text-transform uppercase
+    word-wrap break-word
+    width 140px
   header
     background url("/img/header-bg.jpg") repeat 0 0 scroll
-    height 100px
-    width 100%
-  .wrap
+    height 65px
+    padding 1em 1em 0 1em
     position relative
+    width 100%
+    hgroup
+      margin -0.5em 0
+      text-align center
+      width 150px
+    h1,h2
+      color #fffdf1
+      line-height 1
+      text-shadow 0 2px 3px pahvig
+      text-transform uppercase
+    h2
+      font-size 0.8em 
+      letter-spacing 1px
+  .wrap
     width 100%
     .pasteboard
       background url("/img/pahvi-bg.jpg") repeat 0 0 scroll
+      border solid 1px pahvig
       height 700px
       margin 0
+      position relative
       width 100%
+      z-index 1
+      .menu
+        margin 0 5px 0
+        position absolute
+        right 30%
+        top -60px
+      .modeToggle
+        background url("/img/iconset.png") no-repeat 10px -350px pahvic
+        border-bottom 1px solid pahvig
+      .tools
+        background-color #f3f3f3
+        height 30px
+        position relative
+        button
+          background-color pahvig
+          border none
+          color #fffdf1
+          position absolute
+        .edit
+          border-radius 10px
+          height 25px
+          padding 0.2em 1em
+          right 2em
+          top 2px
+          width auto
+          white-space nowrap
+        .delete
+          border 2px solid #fffdf1
+          border-radius 20px
+          font-size 1em
+          height 30px
+          padding 0.1em
+          right -15px
+          text-align center
+          top -15px
+          width 30px
     .mediamenu
-      background #fffdf1 repeat 0 0 scroll
+      background pahvic repeat 0 0 scroll
+      border-top 1px solid pahvig
+      border-left 1px solid pahvig
       height 700px
       position absolute
       right 0
       top 0
       width 30%
+      z-index 9999
+      nav
+        height 50px
+        margin 0 0 0 5px
+        width 100%
+        a
+          background-color pahvic
+          border-left solid 1px bordergray
+          border-top solid 1px bordergray
+          border-right solid 1px bordergray
+          float left
+          height 50px
+          text-indent -9999px
+          width 50px
+          &:first-child
+            background url("/img/iconset.png") no-repeat 10px 10px transparent
+          &:nth-child(2)
+            background url("/img/iconset.png") no-repeat 10px -85px transparent
+          &:nth-child(3)
+            background url("/img/iconset.png") no-repeat 10px -175px transparent
+          &:hover
+            background-color #ffffff
+      .mediamenuBtn
+        background url("/img/iconset.png") no-repeat 10px -260px pahvic
+        left 5px
+        position absolute
+        top -60px
+      .media
+        background-color #FFFFFF
+        border-top solid 1px bordergray
+        display block
+        height 100%
+        width 100%
+      
 
+    
 // Testing only
 .textBox
-  position absolute
-  top 200px
-  left 200px
   width 500px
+  background-color white
+
+body.presentation
+
+  .textBox .tools
+    display none
 
 .textBox
   border 1px solid black
