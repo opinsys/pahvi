@@ -31,9 +31,10 @@ class LocalStore extends Backbone.Model
 
 
 
-class models.Settings extends LocalStore
+class models.Settings extends Backbone.Model
   defaults:
     mode: "edit"
+    hover: null
 
 class models.TextBoxModel extends LocalStore
 

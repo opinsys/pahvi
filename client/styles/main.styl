@@ -99,7 +99,11 @@ button:hover
         padding .5em 1em 1em
       .textBox
         border 1px solid black
-      .textBox:hover .tools
+
+
+      // We need to use class hovering instean of meta selector :hover so that
+      // we can also "hover" programatically using JavaScript
+      .textBox.hovering .tools
         visibility visible
         button
           background-color pahvigray
@@ -146,6 +150,10 @@ button:hover
           top 60px
           &:hover
             background url("/img/iconset.png") no-repeat 0 -560px transparent
+
+
+
+
     .mediamenu
       background pahvicream repeat 0 0 scroll
       border-top 1px solid pahvigray
@@ -210,6 +218,8 @@ button:hover
         height 100%
         width 100%
 
+.layersSortable .hovering
+  color red
 
 
 // Testing only

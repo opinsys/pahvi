@@ -19,6 +19,7 @@ $ ->
 
   window.layers = new views.Layers
     collection: boxes
+    settings: settings
 
   layers.render()
   $(".media").html layers.el

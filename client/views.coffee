@@ -14,7 +14,7 @@ class views.Layers extends Backbone.View
 
   className: "layers"
 
-  constructor: ->
+  constructor: ({@settings}) ->
     super
     source  = $("#layersTemplate").html()
     @template = Handlebars.compile source
@@ -32,10 +32,19 @@ class views.Layers extends Backbone.View
       console.log "push UP", box
       @move box, 1
 
+    @settings.bind "change:hoverBox", =>
+      @$(".layersSortable li").removeClass "hovering"
+      if cid = @settings.get "hoverBox"
+        console.log cid, @$(".layersSortable li##{ cid }").addClass "hovering"
+
 
 
   events:
     "sortupdate": "updateFromSortable"
+    "hover li": "updateHover"
+
+  updateHover: (e) ->
+    @settings.set hoverBox: $(e.target).attr "id"
 
   move: (box, offset) ->
 
@@ -98,8 +107,10 @@ class views.TextBox extends Backbone.View
 
   className: "box textBox"
 
-  constructor: ({@settings, @parent}, position) ->
+  constructor: ({@settings}, position) ->
     super
+
+    @$el = $ @el
 
     source  = $("#textboxTemplate").html()
     @template = Handlebars.compile source
@@ -117,6 +128,18 @@ class views.TextBox extends Backbone.View
     $(window).click (e) =>
       if $(e.target).has(@el).size() > 0
         @_offClick(e)
+
+
+    $(@el).hover => @settings.set hoverBox: @model.cid
+    ,            => @settings.set hoverBox: null
+
+    @settings.bind "change:hoverBox", =>
+      if @settings.get("hoverBox") is @model.cid
+        @$el.addClass "hovering"
+      else
+        @$el.removeClass "hovering"
+
+
 
   events:
     "click .edit": "startEdit"
@@ -168,6 +191,8 @@ class views.TextBox extends Backbone.View
 
     @edit.focus()
 
+    @$el.addClass "editing"
+
   _endEdit: ->
     # @edit.removeAttr "contenteditable"
     # @edit.hallo editable: false
@@ -177,6 +202,7 @@ class views.TextBox extends Backbone.View
       plugins:
         halloformat: {}
 
+    @$el.removeClass "editing"
 
   startDrag: requireMode("edit") ->
     @_endEdit()
