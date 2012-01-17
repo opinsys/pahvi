@@ -208,9 +208,8 @@ button:hover
         display block
         height 100%
         width 100%
-      
 
-    
+
 // Testing only
 .textBox
   width 500px
@@ -225,5 +224,7 @@ body.presentation
 
 
 
-
-  
+// Make sure that in edit mode the hovered box is always on top regardless
+// the layer positioning so that it is possible to edit it.
+body.edit .textBox:hover
+  z-index 2000 !important

@@ -285,6 +285,9 @@
                     that._updateToolbarPosition that._getToolbarPosition(event)
 
         _updateToolbarPosition: (position) ->
+            if not position
+                console.log "Cannot updata hallo position. Got undefined"
+                return
             this.toolbar.css "top", position.top
             this.toolbar.css "left", position.left
 

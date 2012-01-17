@@ -10,6 +10,40 @@ requireMode = (mode) -> (method) -> ->
     undefined
 
 
+class views.Layers extends Backbone.View
+
+  className: "layers"
+
+  constructor: ->
+    super
+    source  = $("#layersTemplate").html()
+    @template = Handlebars.compile source
+
+    @collection.bind "add", => @render()
+
+  events:
+    "sortupdate": "update"
+
+  update: (e, ui) ->
+    console.log "Short update", ui.item
+
+    for cid, index in @sortable.sortable "toArray"
+      model = @collection.getByCid cid
+      if not model
+        continue
+      model.set zIndex: index + 1000
+
+  render: ->
+    $(@el).html @template
+      boxes: @collection.map (m) ->
+        cid: m.cid
+        name: m.get "name"
+
+
+    @sortable = @$("ul").sortable()
+
+
+
 class views.TextBox extends Backbone.View
 
 
@@ -18,14 +52,10 @@ class views.TextBox extends Backbone.View
   constructor: ({@settings, position}) ->
     super
 
-    $(@el).css "z-index",  @model.get "zIndex"
-    $(@el).css
-      left: @model.get "left"
-      top: @model.get "top"
-
-
     source  = $("#textboxTemplate").html()
     @template = Handlebars.compile source
+
+    @model.bind "change", => @render()
 
     @settings.bind "change:mode", =>
       if @settings.get("mode") is "presentation"
@@ -138,6 +168,11 @@ class views.TextBox extends Backbone.View
     $(@el).html @template
       text: @model.get "text"
 
+    $(@el).css "z-index",  @model.get "zIndex"
+    $(@el).css
+      left: @model.get "left"
+      top: @model.get "top"
+
     @edit = @$(".content span")
 
 
@@ -170,10 +205,12 @@ class views.Menu extends Backbone.View
     if @settings.get("mode") is "edit"
       ob.modeName = "Switch to presentation mode"
       $("body").removeClass "presentation"
+      $("body").addClass "edit"
 
     if @settings.get("mode") is "presentation"
       ob.modeName = "Switch to edit mode"
       $("body").addClass "presentation"
+      $("body").removeClass "edit"
 
 
     $(@el).html @template ob
