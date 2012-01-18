@@ -105,10 +105,8 @@ button:hover
         border 1px solid black
 
 
-      // We need to use class hovering instean of meta selector :hover so that
-      // we can also "hover" programatically using JavaScript
-      .textBox.hovering .tools
-        visibility visible
+      .textBox .tools
+        visibility hidden
         button
           background-color pahvigray
           border none
@@ -162,7 +160,6 @@ button:hover
       .textBox.hovering .tools
         visibility visible
 
-
     .mediamenu.open
       .closeOpenMediamenuBtn
         background-position 10px -470px
@@ -173,6 +170,7 @@ button:hover
          background-position 10px -400px
          &:hover
           background-position 10px -435px
+
 
     .mediamenu
       background pahvicream repeat 0 0 scroll
@@ -257,3 +255,4 @@ body.presentation
 // the layer positioning so that it is possible to edit it.
 .editing
   z-index 2000 !important
+

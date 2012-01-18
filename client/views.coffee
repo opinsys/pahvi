@@ -122,7 +122,6 @@ class views.TextBox extends Backbone.View
     super
     @$el = $ @el
 
-    @$el = $ @el
 
     source  = $("#textboxTemplate").html()
     @template = Handlebars.compile source
@@ -243,7 +242,6 @@ class views.TextBox extends Backbone.View
   _endDrag: ->
     @$el.draggable "destroy"
     # @$el.resizable "destroy"
-    $(@el).draggable("destroy")
 
   render: ->
 
