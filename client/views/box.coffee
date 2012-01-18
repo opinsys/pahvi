@@ -39,10 +39,10 @@ class views.TextBox extends Backbone.View
         @_offClick(e)
 
 
-    $(@el).click => @settings.set hoverBox: @model.cid
+    $(@el).click => @settings.set activeBox: @model.cid
 
-    @settings.bind "change:hoverBox", =>
-      if @settings.get("hoverBox") is @model.cid
+    @settings.bind "change:activeBox", =>
+      if @settings.get("activeBox") is @model.cid
         @$el.addClass "hovering"
       else
         @$el.removeClass "hovering"
@@ -74,8 +74,7 @@ class views.TextBox extends Backbone.View
 
 
   _offClick: (e) ->
-
-    @settings.set hoverBox: null
+    @settings.set activeBox: null
 
     if @settings.get("mode") is "edit"
       @startDrag()

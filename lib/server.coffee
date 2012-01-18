@@ -83,6 +83,7 @@ app.configure ->
 
   js.addFile rootDir + "/client/views/box.coffee"
   js.addFile rootDir + "/client/views/layers.coffee"
+  js.addFile rootDir + "/client/views/sidemenu.coffee"
   js.addFile rootDir + "/client/views/topmenu.coffee"
 
   js.addFile rootDir + "/client/main.coffee"

@@ -8,6 +8,7 @@ class views.Layers extends Backbone.View
 
   constructor: ({@settings}) ->
     super
+    @$el = $ @el
     source  = $("#layersTemplate").html()
     @template = Handlebars.compile source
 
@@ -24,9 +25,9 @@ class views.Layers extends Backbone.View
       console.log "push UP", box
       @move box, 1
 
-    @settings.bind "change:hoverBox", =>
+    @settings.bind "change:activeBox", =>
       @$(".layersSortable li").removeClass "hovering"
-      if cid = @settings.get "hoverBox"
+      if cid = @settings.get "activeBox"
         console.log cid, @$(".layersSortable li##{ cid }").addClass "hovering"
 
 
@@ -36,7 +37,7 @@ class views.Layers extends Backbone.View
     "hover li": "updateHover"
 
   updateHover: (e) ->
-    @settings.set hoverBox: $(e.target).attr "id"
+    @settings.set activeBox: $(e.target).attr "id"
 
   move: (box, offset) ->
 
