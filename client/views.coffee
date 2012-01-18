@@ -109,13 +109,13 @@ class views.TextBox extends Backbone.View
 
   constructor: ({@settings}, position) ->
     super
-
     @$el = $ @el
 
     source  = $("#textboxTemplate").html()
     @template = Handlebars.compile source
 
     @model.bind "change", => @render()
+
 
     @settings.bind "change:mode", =>
       if @settings.get("mode") is "presentation"
@@ -130,8 +130,7 @@ class views.TextBox extends Backbone.View
         @_offClick(e)
 
 
-    $(@el).hover => @settings.set hoverBox: @model.cid
-    ,            => @settings.set hoverBox: null
+    $(@el).click => @settings.set hoverBox: @model.cid
 
     @settings.bind "change:hoverBox", =>
       if @settings.get("hoverBox") is @model.cid
@@ -164,6 +163,8 @@ class views.TextBox extends Backbone.View
 
 
   _offClick: (e) ->
+
+    @settings.set hoverBox: null
 
     if @settings.get("mode") is "edit"
       @startDrag()
@@ -206,7 +207,9 @@ class views.TextBox extends Backbone.View
 
   startDrag: requireMode("edit") ->
     @_endEdit()
-    $(@el).draggable
+
+    # @$el.resizable()
+    @$el.draggable
       cursor: "pointer"
       # zIndex: @model.get "zIndex"
 
@@ -224,7 +227,8 @@ class views.TextBox extends Backbone.View
 
 
   _endDrag: ->
-    $(@el).draggable("destroy")
+    @$el.draggable "destroy"
+    # @$el.resizable "destroy"
 
   render: ->
 

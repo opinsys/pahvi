@@ -101,10 +101,8 @@ button:hover
         border 1px solid black
 
 
-      // We need to use class hovering instean of meta selector :hover so that
-      // we can also "hover" programatically using JavaScript
-      .textBox.hovering .tools
-        visibility visible
+      .textBox .tools
+        visibility hidden
         button
           background-color pahvigray
           border none
@@ -153,6 +151,10 @@ button:hover
           &:hover
             background url("/img/iconset.png") no-repeat 0 -560px transparent
 
+      // We need to use class hovering instean of meta selector :hover so that
+      // we can also "hover" programatically using JavaScript
+      .textBox.hovering .tools
+        visibility visible
 
 
 
@@ -226,7 +228,6 @@ button:hover
 
 // Testing only
 .textBox
-  width 500px
   background-color white
 
 .hallotoolbar
@@ -240,10 +241,10 @@ body.presentation
 .box
   position absolute
 
-// Make sure that in edit mode the hovered box is always on top regardless
+// Make sure that in edit mode the selected box is always on top regardless
 // the layer positioning so that it is possible to edit it.
-// body.edit .textBox:hover
-//   z-index 2000 !important
+.editing
+  z-index 2000 !important
 
 
 
