@@ -4,12 +4,11 @@ pahviyellow = #fffdf1
 pahvicream = #f5f4f0
 pahvigray = #363636
 pahvigreen = #339900
-pahvired = #CD8989
+pahvired = #FF0000
 iconurl = url("/img/iconset.png")
 
 body
   font 1em/1.4 "Helvetica Neue","Lucida Grande", tahoma, arial, sans-serif
-
 h1,h2
   margin 0
   padding 0
@@ -17,7 +16,6 @@ h1
   font-size 3em
 h2
   font-size 1.5em
-
 hr
   clear both
   border none
@@ -119,6 +117,9 @@ button:hover
         padding .5em 1em 1em
       .textBox
         border 1px solid black
+        min-height 100px
+        min-width 100px
+        padding-bottom 0.5em
       .textBox .tools
         visibility hidden
         button
@@ -257,12 +258,13 @@ button:hover
             figure
               float left
               margin 0
-              padding 0 0.5em
+              padding 0 1em
             span
               font-size 0.7em
               display block
               padding 0
               margin 0 0 0.2em
+              text-align center
             .colorPicker
               background-color pahvigreen
               border 2px solid black
