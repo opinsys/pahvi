@@ -1,6 +1,6 @@
 
 
-models = NS "Example.models"
+models = NS "Pahvi.models"
 
 
 

@@ -1,7 +1,7 @@
 
 
-views = NS "Example.views"
-models = NS "Example.models"
+views = NS "Pahvi.views"
+models = NS "Pahvi.models"
 
 $ ->
 
