@@ -5,6 +5,9 @@ pahvicream = #f5f4f0
 pahvigray = #363636
 pahvigreen = #339900
 pahvired = #CD8989
+iconurl = url("/img/iconset.png")
+html
+  overflow hidden
 body
   font 1em/1.4 "Helvetica Neue","Lucida Grande", tahoma, arial, sans-serif
 
@@ -60,8 +63,7 @@ button:hover
       text-shadow 0 -2px 4px pahvigray
       text-transform uppercase
     h2
-      font-size 0.8em
-      letter-spacing 1px
+      font-size 0.8em 
   .wrap
     height 100%
     width 100%
@@ -85,8 +87,10 @@ button:hover
         right 30%
         top -60px
       .modeToggle
-        background url("/img/iconset.png") no-repeat 10px -350px pahvicream
+        background iconurl no-repeat 10px -635px pahvicream
         border-bottom 1px solid pahvigray
+        &:hover
+          background-position 10px -690px
       .tools
         background-color #f3f3f3
         display block
@@ -141,15 +145,16 @@ button:hover
           text-indent -9999px
           width 30px
         .up
-          background url("/img/iconset.png") no-repeat 0 -450px transparent
+          background iconurl no-repeat 0 -270px transparent
           top 30px
           &:hover
-            background url("/img/iconset.png") no-repeat 0 -485px transparent
+            background iconurl no-repeat 0 -305px transparent
         .down
-          background url("/img/iconset.png") no-repeat 0 -525px transparent
+          background iconurl no-repeat 0 -340px transparent
           top 60px
           &:hover
             background url("/img/iconset.png") no-repeat 0 -560px transparent
+            background iconurl no-repeat 0 -375px transparent
 
       // We need to use class hovering instean of meta selector :hover so that
       // we can also "hover" programatically using JavaScript
@@ -157,6 +162,17 @@ button:hover
         visibility visible
 
 
+
+    .mediamenu.open
+      .closeOpenMediamenuBtn
+        background-position 10px -470px
+        &:hover
+          background-position 10px -505px
+    .mediamenu.closed
+      .closeOpenMediamenuBtn
+         background-position 10px -400px
+         &:hover
+          background-position 10px -435px
 
     .mediamenu
       background pahvicream repeat 0 0 scroll
@@ -168,11 +184,10 @@ button:hover
       top 0
       width 30%
       z-index 9999
-      .closeMediamenuBtn
+      .closeOpenMediamenuBtn
         background-color rgba(255,253,241,0.7)
-        background-image url("/img/iconset.png") 
+        background-image iconurl 
         background-repeat no-repeat 
-        background-position 10px -655px
         border-top-left-radius 10px 15px 
         border-bottom-left-radius 10px 15px
         left -55px
@@ -181,8 +196,6 @@ button:hover
         text-indent -9999px
         top 40%
         width 55px
-        &:hover
-          background-position 10px -690px
       nav
         height 50px
         margin 0 0 0 5px
@@ -197,21 +210,17 @@ button:hover
           text-indent -9999px
           width 50px
           &:first-child
-            background url("/img/iconset.png") no-repeat 10px 10px transparent
+            background iconurl no-repeat 10px -745px transparent
             &:hover
-              background url("/img/iconset.png") no-repeat 10px -40px white
+              background iconurl no-repeat 10px -790px white
           &:nth-child(2)
-            background url("/img/iconset.png") no-repeat 10px -85px transparent
+            background iconurl no-repeat 10px -170px transparent
             &:hover
-              background url("/img/iconset.png") no-repeat 10px -130px white
-          &:nth-child(3)
-            background url("/img/iconset.png") no-repeat 10px -175px transparent
-            &:hover
-              background url("/img/iconset.png") no-repeat 10px -220px white
+              background iconurl no-repeat 10px -215px white
           &:hover, &.active
             background-color white
       .mediamenuBtn
-        background url("/img/iconset.png") no-repeat 10px -260px pahvicream
+        background iconurl no-repeat 10px -535px pahvicream
         left 5px
         position absolute
         top -60px
@@ -224,7 +233,6 @@ button:hover
 
 .layersSortable .hovering
   color red
-
 
 // Testing only
 .textBox
@@ -245,9 +253,3 @@ body.presentation
 // the layer positioning so that it is possible to edit it.
 .editing
   z-index 2000 !important
-
-
-
-
-
-
