@@ -147,7 +147,9 @@ class views.TextBox extends Backbone.View
     "click": "zoom"
     "click button.up": "up"
     "click button.down": "down"
+
     "dragstop": "saveEdit"
+    "resizestop": "saveEdit"
 
 
 
@@ -208,7 +210,7 @@ class views.TextBox extends Backbone.View
   startDrag: requireMode("edit") ->
     @_endEdit()
 
-    # @$el.resizable()
+
     @$el.draggable
       cursor: "pointer"
       # zIndex: @model.get "zIndex"
@@ -217,8 +219,10 @@ class views.TextBox extends Backbone.View
 
   saveEdit: ->
     @model.set
-      left: $(@el).css "left"
-      top: $(@el).css "top"
+      left: @$el.css "left"
+      top: @$el.css "top"
+      width: @$el.css "width"
+      height: @$el.css "height"
       text: @$(".content span").html()
     ,
       silent: true
@@ -228,15 +232,18 @@ class views.TextBox extends Backbone.View
 
   _endDrag: ->
     @$el.draggable "destroy"
-    # @$el.resizable "destroy"
 
   render: ->
+
+    @$el.resizable "destroy"
 
     $(@el).html @template @model.toJSON()
 
     $(@el).css
       left: @model.get "left"
       top: @model.get "top"
+      width: @model.get "width"
+      height: @model.get "height"
 
     @edit = @$(".content span")
 
@@ -244,6 +251,7 @@ class views.TextBox extends Backbone.View
     # $(@el).draggable "option", "zIndex", @model.get("zIndex")
     # console.log "Setting #{ @model.get("name") } zIndex to #{ @model.get("zIndex") }"
 
+    @$el.resizable()
 
 
 
