@@ -31,6 +31,7 @@ button:hover
 .container
   height 100%
   margin 0 auto
+  overflow auto
   position relative
   width 100%
   button
@@ -64,6 +65,7 @@ button:hover
       font-size 0.8em 
   .wrap
     height 100%
+    position relative
     width 100%
     .pasteboard
       background url("/img/pahvi-bg.jpg") repeat 0 0 scroll
@@ -101,8 +103,8 @@ button:hover
         padding .5em 1em 1em
       .textBox
         border 1px solid black
-      .textBox:hover .tools
-        visibility visible
+      .textBox .tools
+        visibility hidden
         button
           background-color pahvigray
           border none
@@ -132,6 +134,8 @@ button:hover
           width 30px
           &:hover
             background-color pahvired
+        .name
+          margin-left 0.5em
         .down, .up
           height 25px
           padding 0
@@ -148,6 +152,10 @@ button:hover
           top 60px
           &:hover
             background iconurl no-repeat 0 -375px transparent
+      // We need to use class hovering instean of meta selector :hover so that
+      // we can also "hover" programatically using JavaScript
+      .textBox.hovering .tools
+        visibility visible
     .mediamenu.open
       .closeOpenMediamenuBtn
         background-position 10px -470px
@@ -214,27 +222,45 @@ button:hover
         display block
         height 100%
         width 100%
-
+        .layersSortable 
+          list-style-type none
+          margin 0.5em 1em
+          padding 0
+          li
+            border-bottom 1px solid black
+            padding 1em 0 1em 50px
+            width 80%
+            &:hover
+              cursor pointer
+          .text
+            background iconurl no-repeat 0 -75px transparent
+          .image
+            background iconurl no-repeat 0 10px transparent
+        .layersSortable .hovering
+          color red
 
 // Testing only
 .textBox
-  width 500px
   background-color white
 
 .hallotoolbar
-  z-index 2000
+  z-index 2001
 
 body.presentation
+  .box
+    cursor url("/img/zoom-cursor.png"), pointer
+  .pasteboard
+    cursor url("/img/zoom-out-cursor.png"), pointer
   .textBox .tools
     display none !important
-  .container
-    overflow auto
   .mediamenu
     display none
 
 
+.box
+  position absolute
 
-// Make sure that in edit mode the hovered box is always on top regardless
+// Make sure that in edit mode the selected box is always on top regardless
 // the layer positioning so that it is possible to edit it.
-body.edit .textBox:hover
+.editing
   z-index 2000 !important

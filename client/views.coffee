@@ -14,33 +14,102 @@ class views.Layers extends Backbone.View
 
   className: "layers"
 
-  constructor: ->
+  constructor: ({@settings}) ->
     super
     source  = $("#layersTemplate").html()
     @template = Handlebars.compile source
 
-    @collection.bind "add", => @render()
+    @collection.bind "add", =>
+
+      @updateZIndexes @collection.map (box) -> box.cid
+
+
+    @collection.bind "pushdown", (box) =>
+      console.log "push DOWN", box
+      @move box, -1
+
+    @collection.bind "pushup", (box) =>
+      console.log "push UP", box
+      @move box, 1
+
+    @settings.bind "change:hoverBox", =>
+      @$(".layersSortable li").removeClass "hovering"
+      if cid = @settings.get "hoverBox"
+        console.log cid, @$(".layersSortable li##{ cid }").addClass "hovering"
+
+
 
   events:
-    "sortupdate": "update"
+    "sortupdate": "updateFromSortable"
+    "hover li": "updateHover"
 
-  update: (e, ui) ->
-    console.log "Short update", ui.item
+  updateHover: (e) ->
+    @settings.set hoverBox: $(e.target).attr "id"
 
-    for cid, index in @sortable.sortable "toArray"
-      model = @collection.getByCid cid
-      if not model
-        continue
-      model.set zIndex: index + 1000
+  move: (box, offset) ->
+
+    currentIndex = @collection.indexOf box
+    newIndex = currentIndex + offset * -1
+
+    orderedCids = @collection.map (box) -> box.cid
+
+    console.log "#{ box.get "name" } moving from #{ currentIndex } to #{ newIndex }"
+    console.log "Before", JSON.stringify orderedCids
+
+    tmp = orderedCids[newIndex]
+    orderedCids[newIndex] = box.cid
+
+    orderedCids[currentIndex] = tmp if tmp
+
+    console.log "After", JSON.stringify orderedCids
+
+    orderedCids.reverse()
+    @updateZIndexes orderedCids
+
+
+  updateFromSortable: ->
+    console.log "SORT update"
+    orderedCids = @sortable.sortable "toArray"
+    orderedCids.reverse()
+    @updateZIndexes orderedCids
+
+
+  updateZIndexes: (orderedCids) ->
+
+    for cid, index in orderedCids
+      if model = @collection.getByCid cid
+        model.set zIndex: index + 100
+
+    @collection.sort()
+    @render()
+
+
+
+  updateZIndexes: (orderedCids) ->
+
+    for cid, index in orderedCids
+      if model = @collection.getByCid cid
+        model.set zIndex: index + 100
+
+    @collection.sort()
+    @render()
+
 
   render: ->
     $(@el).html @template
       boxes: @collection.map (m) ->
         cid: m.cid
         name: m.get "name"
+        zIndex: m.get "zIndex"
+
+    console.log "SORT RENDER"
 
 
     @sortable = @$("ul").sortable()
+
+
+
+
 
 
 
@@ -49,13 +118,16 @@ class views.TextBox extends Backbone.View
 
   className: "box textBox"
 
-  constructor: ({@settings, position}) ->
+  constructor: ({@settings}, position) ->
     super
+    @$el = $ @el
+
 
     source  = $("#textboxTemplate").html()
     @template = Handlebars.compile source
 
     @model.bind "change", => @render()
+
 
     @settings.bind "change:mode", =>
       if @settings.get("mode") is "presentation"
@@ -69,6 +141,17 @@ class views.TextBox extends Backbone.View
       if $(e.target).has(@el).size() > 0
         @_offClick(e)
 
+
+    $(@el).click => @settings.set hoverBox: @model.cid
+
+    @settings.bind "change:hoverBox", =>
+      if @settings.get("hoverBox") is @model.cid
+        @$el.addClass "hovering"
+      else
+        @$el.removeClass "hovering"
+
+
+
   events:
     "click .edit": "startEdit"
     "dblclick": "startEdit"
@@ -81,15 +164,10 @@ class views.TextBox extends Backbone.View
 
 
   up: ->
-    $(@el).css "z-index", parseInt(@getZIndex(), 10) + 1
-    @saveEdit()
+    @model.trigger "pushup", @model
 
   down: ->
-    $(@el).css "z-index", parseInt(@getZIndex(), 10) - 1
-    @saveEdit()
-
-  getZIndex: ->
-    $(@el).css "z-index"
+    @model.trigger "pushdown", @model
 
 
   zoom: requireMode("presentation") ->
@@ -97,7 +175,8 @@ class views.TextBox extends Backbone.View
 
 
   _offClick: (e) ->
-    console.log "off"
+
+    @settings.set hoverBox: null
 
     if @settings.get("mode") is "edit"
       @startDrag()
@@ -124,56 +203,60 @@ class views.TextBox extends Backbone.View
         halloformat: {}
 
     @edit.focus()
-    console.log "Start edit", @edit
+    @$el.addClass "editing"
+
+    @$el.addClass "editing"
 
   _endEdit: ->
     # @edit.removeAttr "contenteditable"
     # @edit.hallo editable: false
-    console.log "End edit"
     @edit.blur()
     $("span", @el).hallo
       editable: false
       plugins:
         halloformat: {}
 
+    @$el.removeClass "editing"
 
   startDrag: requireMode("edit") ->
     @_endEdit()
-    $(@el).draggable
-      cursor: "pointer"
 
-    console.log "Dragging"
+    # @$el.resizable()
+    @$el.draggable
+      cursor: "pointer"
+      # zIndex: @model.get "zIndex"
+
 
 
   saveEdit: ->
-
     @model.set
       left: $(@el).css "left"
       top: $(@el).css "top"
-      zIndex: @getZIndex()
       text: @$(".content span").html()
     ,
       silent: true
 
     @model.save()
-    console.log "saved", @model.attributes
 
 
   _endDrag: ->
-    $(@el).draggable("destroy")
-    console.log "end drag"
+    @$el.draggable "destroy"
+    # @$el.resizable "destroy"
 
   render: ->
 
-    $(@el).html @template
-      text: @model.get "text"
+    $(@el).html @template @model.toJSON()
 
-    $(@el).css "z-index",  @model.get "zIndex"
     $(@el).css
       left: @model.get "left"
       top: @model.get "top"
 
     @edit = @$(".content span")
+
+    $(@el).css "z-index",  @model.get "zIndex"
+    # $(@el).draggable "option", "zIndex", @model.get("zIndex")
+    # console.log "Setting #{ @model.get("name") } zIndex to #{ @model.get("zIndex") }"
+
 
 
 
