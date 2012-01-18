@@ -30,6 +30,7 @@ button:hover
 .container
   height 100%
   margin 0 auto
+  overflow auto
   position relative
   width 100%
   button
@@ -63,6 +64,7 @@ button:hover
       font-size 0.8em 
   .wrap
     height 100%
+    position relative
     width 100%
     .pasteboard
       background url("/img/pahvi-bg.jpg") repeat 0 0 scroll
@@ -100,8 +102,6 @@ button:hover
         padding .5em 1em 1em
       .textBox
         border 1px solid black
-
-
       .textBox .tools
         visibility hidden
         button
@@ -150,16 +150,11 @@ button:hover
           background iconurl no-repeat 0 -340px transparent
           top 60px
           &:hover
-            background url("/img/iconset.png") no-repeat 0 -560px transparent
             background iconurl no-repeat 0 -375px transparent
-
       // We need to use class hovering instean of meta selector :hover so that
       // we can also "hover" programatically using JavaScript
       .textBox.hovering .tools
         visibility visible
-
-
-
     .mediamenu.open
       .closeOpenMediamenuBtn
         background-position 10px -470px
@@ -170,7 +165,6 @@ button:hover
          background-position 10px -400px
          &:hover
           background-position 10px -435px
-
     .mediamenu
       background pahvicream repeat 0 0 scroll
       border-top 1px solid pahvigray
@@ -227,9 +221,22 @@ button:hover
         display block
         height 100%
         width 100%
-
-.layersSortable .hovering
-  color red
+        .layersSortable 
+          list-style-type none
+          margin 0.5em 1em
+          padding 0
+          li
+            border-bottom 1px solid black
+            padding 1em 0 1em 50px
+            width 80%
+            &:hover
+              cursor pointer
+          .text
+            background iconurl no-repeat 0 -75px transparent
+          .image
+            background iconurl no-repeat 0 10px transparent
+        .layersSortable .hovering
+          color red
 
 // Testing only
 .textBox
@@ -239,6 +246,10 @@ button:hover
   z-index 2001
 
 body.presentation
+  .box
+    cursor url("/img/zoom-cursor.png"), pointer
+  .pasteboard
+    cursor url("/img/zoom-out-cursor.png"), pointer
   .textBox .tools
     display none !important
   .mediamenu
