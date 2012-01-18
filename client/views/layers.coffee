@@ -8,6 +8,7 @@ class views.Layers extends Backbone.View
 
   constructor: ({@settings}) ->
     super
+    @$el = $ @el
     source  = $("#layersTemplate").html()
     @template = Handlebars.compile source
 
