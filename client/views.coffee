@@ -1,6 +1,6 @@
 
-models = NS "Example.models"
-views = NS "Example.views"
+models = NS "Pahvi.models"
+views = NS "Pahvi.views"
 
 
 requireMode = (mode) -> (method) -> ->
