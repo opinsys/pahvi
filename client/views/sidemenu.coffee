@@ -35,6 +35,26 @@ class views.SideMenu extends Backbone.View
 
   events:
     "click a": "selectSubview"
+    "click .closeOpenMediamenuBtn": "toggleOpen"
+
+  toggleOpen: ->
+
+    if @$el.hasClass "open"
+      @$el.removeClass "open"
+      @$el.addClass "closed"
+    else
+      @$el.removeClass "closed"
+      @$el.addClass "open"
+
+    movement = 0
+    # CSS property 'right' is 0px when side menu is open
+    if parseInt(@$el.css('right'), 10) is 0
+      movement =  @$el.outerWidth() * -1
+
+    # When we want to close the menu we set it move off screen 
+    @$el.animate
+      right: movement
+
 
   selectSubview: (e) ->
     e.preventDefault()
