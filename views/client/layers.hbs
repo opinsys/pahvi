@@ -1,9 +1,17 @@
 
 <ul class="layersSortable" >
 {{#each boxes}}
-  <li class="text" id="{{this.cid}}">{{this.name}} {{this.zIndex}}</li>
+  <li class="text" id="{{this.cid}}">{{this.name}} {{this.zIndex}}<button class="delete">X</button></li>
 {{/each}}
-<ul>
+</ul>
+<div class="layerProperties">
+  <h2>Layer properties:</h2>
+  <figure>
+    <canvas class="colorPicker"></canvas>
+    <span>Background color</span>
+  </figure>
+  <hr>
+</div>
 
 
 
