@@ -40,6 +40,12 @@ $ ->
     t.render()
     t.startDrag()
 
+  $(".closeOpenMediamenuBtn").click (e) ->
+    mediamenu = $(".mediamenu")
+    if mediamenu.hasClass('open') then mediamenu.removeClass('open').addClass('closed') else if mediamenu.hasClass('closed') then mediamenu.removeClass('closed').addClass('open')
+    mediamenu.animate
+      right : if parseInt(mediamenu.css('right'),10) is 0 then -mediamenu.outerWidth() else 0
+
 
   addTextBox "first"
   addTextBox "second"
