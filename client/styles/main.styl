@@ -34,7 +34,7 @@ button:hover
   button
     background-color pahvicream
     border none
-    font 300 0.7em/1 tahoma, sans-serif
+    font-size 0.7em
     height 60px
     margin 0
     padding 0 0.2em 0 50px
@@ -120,16 +120,18 @@ button:hover
         min-height 100px
         min-width 100px
         padding-bottom 0.5em
+        &.hovering
+          box-shadow 0 3px 5px pahvigreen, 0 -3px 5px pahvigreen
       .textBox .tools
         visibility hidden
         button
           position absolute
         .edit
           border-radius 10px
-          height 25px
+          height 20px
           padding 0.2em 1em
           right 2em
-          top 2px
+          top 5px
           width auto
           white-space nowrap
           &:hover
@@ -266,6 +268,7 @@ button:hover
               height 35px
               margin 0 0 0.5em
               padding 1em 0.5em 0 55px
+              position relative
               width 80%
               &:hover
                 background-color pahviyellow
@@ -273,9 +276,11 @@ button:hover
               &:hover > .delete
                 display block
               .delete
-                float right
                 display none
                 margin-right 10px
+                position absolute
+                right 0
+                top 10px
             .text
               background iconurl no-repeat 10px -80px #f3f3f3
             .image
@@ -283,16 +288,20 @@ button:hover
           .layersSortable .hovering
             color red
           .layerProperties
-            border 1px solid black
-            padding 1em
-            width 80%
+            margin 0
+            padding 0
+            >div
+              border 1px solid black
+              margin 0
+              padding 1em 50px 1em 1em
+              width 80%
             h2
-              margin 0 0 0.5em
+              margin 0 0 0.25em
               padding 0
             figure
               float left
               margin 0
-              padding 0 1em
+              padding 0 1em 0 0
             span
               font-size 0.7em
               display block
