@@ -163,7 +163,7 @@ button:hover
         min-height 100px
         min-width 100px
         padding-bottom 0.5em
-        &.hovering
+        &.selected
           box-shadow 0 3px 5px pahvigreen, 0 -3px 5px pahvigreen
       .textBox .tools
         visibility hidden
@@ -194,12 +194,12 @@ button:hover
             background z-index_up_icon_hover
         .down
           background z-index_down_icon
-          top 60px
+          top 55px
           &:hover
             background z-index_down_icon_hover            
       // We need to use class hovering instean of meta selector :hover so that
       // we can also "hover" programatically using JavaScript
-      .textBox.hovering .tools
+      .textBox.selected .tools
         visibility visible
         
     .mediamenu.open
@@ -270,6 +270,9 @@ button:hover
         display block
         height 100%
         width 100%
+        .selected
+          background-color pahviblue
+          border 2px solid pahvigreen !important
         .layersSortable 
           list-style-type none
         >div
@@ -330,7 +333,7 @@ button:hover
               position relative
               width 80%
               &:hover
-                background-color pahviyellow
+                background-color pahviyellow !important
                 cursor pointer
               &:hover > .delete
                 display block
@@ -370,9 +373,6 @@ button:hover
               border 2px solid black
               height 80px
               width 80px
-.selected
-  background-color pahviblue
-  border 2px solid pahvigreen !important
 
 // Testing only
 .textBox
