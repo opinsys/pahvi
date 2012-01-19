@@ -75,6 +75,7 @@ app.configure ->
 
   js.addFile rootDir + "/client/vendor/hallo/hallo.coffee"
   js.addFile rootDir + "/client/vendor/hallo/format.coffee"
+  js.addFile rootDir + "/client/vendor/hallo/link.coffee"
 
 
 

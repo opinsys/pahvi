@@ -1,13 +1,6 @@
-# Example Webapp
+# Pahvi - Making presentations together
 
-Base for building web applications with Node.js, CoffeeScript, Stylus, Backbone.js and Handlebars.js.
-
-Cool stuff:
-
-  * Uses Handlebars.js for both the server and client templating
-  * Has buildin support for CSS live reloading
-  * Asset management. Do not ever use preminified assets. Piler will do that for us
-
+Still hacking. Come back later :)
 
 ## Directories
 
