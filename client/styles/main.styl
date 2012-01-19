@@ -224,16 +224,21 @@ button:hover
         width 100%
         .layersSortable 
           list-style-type none
+        >div
+          font-size 0.8em
+          line-height 2
+          margin 1em
+          padding 0
         .addElements
-          padding 1em
           div
             background-color pahviyellow
             border dotted 2px pahvigray
             cursor move
             height 35px
             margin 0 0 0.5em
-            padding 1em 0.5em 0 0
+            padding 1em 0.5em 0 55px
             text-align center
+            text-transform uppercase
             width 80%
           .textbox
             background-image iconurl
@@ -259,6 +264,34 @@ button:hover
           li
             border-bottom 1px solid black
             padding 1em 0 1em 50px
+          .layersSortable 
+            list-style-type none
+            margin 0
+            padding 0
+            li
+              border 2px solid pahvigray
+              height 35px
+              margin 0 0 0.5em
+              padding 1em 0.5em 0 55px
+              width 80%
+              &:hover
+                background-color pahviyellow
+                cursor pointer
+              &:hover > .delete
+                display block
+              .delete
+                float right
+                display none
+                margin-right 10px
+            .text
+              background iconurl no-repeat 10px -80px #f3f3f3
+            .image
+              background iconurl no-repeat 10px 10px #f3f3f3
+          .layersSortable .hovering
+            color red
+          .layerProperties
+            border 1px solid black
+            padding 1em
             width 80%
             &:hover
               cursor pointer
