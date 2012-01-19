@@ -58,7 +58,39 @@ class views.TextBox extends Backbone.View
     "click button.down": "down"
 
     "dragstop": "saveEdit"
-    "resizestop": "saveEdit"
+    "resizestop": "resized"
+
+  resized: ->
+    @fitFontSize()
+    @saveEdit()
+
+  fitFontSize: ->
+
+    maxWidth = parseInt(@$el.width()) - 20
+    maxHeight = parseInt(@$el.height()) - 50
+
+    prev = null
+    do recurse = (min=6, max=1000) =>
+
+      size = Math.round (min + max) / 2
+
+      # Font size did not change any more. We are down to one pixel precision
+      if size is prev
+        # Go one size back to prevent edge case overflow and be done with it.
+        @edit.css "font-size", "#{ size - 1 }px"
+        return
+
+      prev = size
+
+      @edit.css "font-size", "#{ size }px"
+
+      if parseInt(@edit.width()) >= maxWidth or parseInt(@edit.height()) >= maxHeight
+        # Font overflown. Take smaller half
+        return recurse min, size
+      else
+        # Font can be larger. Take bigger half
+        return recurse size, max
+
 
 
 
@@ -78,6 +110,7 @@ class views.TextBox extends Backbone.View
 
     if @settings.get("mode") is "edit"
       @startDrag()
+      @fitFontSize()
       @saveEdit()
 
     if @settings.get("mode") is "presentation"
@@ -99,6 +132,7 @@ class views.TextBox extends Backbone.View
       editable: true
       plugins:
         halloformat: {}
+        hallolink: {}
 
     @edit.focus()
 
@@ -131,6 +165,7 @@ class views.TextBox extends Backbone.View
       top: @$el.css "top"
       width: @$el.css "width"
       height: @$el.css "height"
+      fontSize: @$el.css "font-size"
       text: @$(".content span").html()
     ,
       silent: true
@@ -152,6 +187,7 @@ class views.TextBox extends Backbone.View
       top: @model.get "top"
       width: @model.get "width"
       height: @model.get "height"
+      "font-size": @model.get "font-size"
 
     @edit = @$(".content span")
 
@@ -160,6 +196,7 @@ class views.TextBox extends Backbone.View
     # console.log "Setting #{ @model.get("name") } zIndex to #{ @model.get("zIndex") }"
 
     @$el.resizable()
+    @fitFontSize()
 
 
 
