@@ -27,6 +27,9 @@ class LocalStore extends Backbone.Model
   save: ->
     localStorage[@get("name")] = JSON.stringify @attributes
 
+  destroy: ->
+    delete localStorage[@get("name")]
+    @trigger "destroy", this
 
 
 class models.Settings extends Backbone.Model
