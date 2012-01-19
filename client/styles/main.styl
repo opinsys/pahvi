@@ -1,6 +1,6 @@
 @import 'nib'
 bordergray = #c2c2c2
-fontc = #fffdf1
+pahviyellow = #fffdf1
 pahvicream = #f5f4f0
 pahvigray = #363636
 pahvigreen = #339900
@@ -34,7 +34,7 @@ button:hover
   button
     background-color pahvicream
     border none
-    font 300 0.7em/1 tahoma, sans-serif
+    font-size 0.7em
     height 60px
     margin 0
     padding 0 0.2em 0 50px
@@ -42,6 +42,23 @@ button:hover
     text-transform uppercase
     word-wrap break-word
     width 140px
+    &.edit, &.delete
+      background-color pahvigray
+      color pahviyellow
+    &.delete
+      border 2px solid pahviyellow !important
+      border-radius 20px
+      font-size 0.8em
+      font-weight 600
+      height 30px
+      line-height 1
+      padding 0
+      right -15px
+      text-align center
+      top -15px
+      width 30px
+      &:hover
+        background-color pahvired !important
   header
     background url("/img/header-bg.jpg") repeat 0 0 scroll
     height 65px
@@ -53,7 +70,7 @@ button:hover
       text-align center
       width 150px
     h1,h2
-      color fontc
+      color pahviyellow
       font-family "Trebuchet MS", Helvetica, sans-serif
       line-height 1
       text-shadow 0 -2px 4px pahvigray
@@ -103,37 +120,22 @@ button:hover
         min-height 100px
         min-width 100px
         padding-bottom 0.5em
+        &.hovering
+          box-shadow 0 3px 5px pahvigreen, 0 -3px 5px pahvigreen
       .textBox .tools
         visibility hidden
         button
-          background-color pahvigray
-          border none
-          color fontc
           position absolute
         .edit
           border-radius 10px
-          height 25px
+          height 20px
           padding 0.2em 1em
           right 2em
-          top 2px
+          top 5px
           width auto
           white-space nowrap
           &:hover
             background-color pahvigreen
-        .delete
-          border 2px solid fontc
-          border-radius 20px
-          font-size 0.8em
-          font-weight 600
-          height 30px
-          line-height 1
-          padding 0
-          right -15px
-          text-align center
-          top -15px
-          width 30px
-          &:hover
-            background-color pahvired
         .name
           margin-left 0.5em
         .down, .up
@@ -217,7 +219,7 @@ button:hover
         position absolute
         top -60px
       .media
-        background-color #FFFFFF
+        background-color white
         border-top solid 1px bordergray
         display block
         height 100%
@@ -292,7 +294,34 @@ button:hover
           .layerProperties
             border 1px solid black
             padding 1em
+          padding 0
+        .addElements
+          div
+            background-color pahviyellow
+            border dotted 2px pahvigray
+            cursor move
+            height 35px
+            margin 0 0 0.5em
+            padding 1em 0.5em 0 55px
+            text-align center
+            text-transform uppercase
             width 80%
+          .textbox
+            background-image iconurl
+            background-position 10px -80px
+            background-repeat no-repeat
+            &:hover
+              background-position 10px -125px
+          .plainbox
+            background-image iconurl
+            background-position 10px -835px
+            background-repeat no-repeat
+            &:hover
+              background-position 10px -880px
+          .imagebox
+            background-image iconurl
+            background-position 10px 10px
+            background-repeat no-repeat
             &:hover
               cursor pointer
           .text
@@ -303,11 +332,51 @@ button:hover
           color red
             h2
               margin 0 0 0.5em
+              background-position 10px -35px
+        .layers
+          .layersSortable 
+            list-style-type none
+            margin 0
+            padding 0
+            li
+              border 2px solid pahvigray
+              height 35px
+              margin 0 0 0.5em
+              padding 1em 0.5em 0 55px
+              position relative
+              width 80%
+              &:hover
+                background-color pahviyellow
+                cursor pointer
+              &:hover > .delete
+                display block
+              .delete
+                display none
+                margin-right 10px
+                position absolute
+                right 0
+                top 10px
+            .text
+              background iconurl no-repeat 10px -80px #f3f3f3
+            .image
+              background iconurl no-repeat 10px 10px #f3f3f3
+          .layersSortable .hovering
+            color red
+          .layerProperties
+            margin 0
+            padding 0
+            >div
+              border 1px solid black
+              margin 0
+              padding 1em 50px 1em 1em
+              width 80%
+            h2
+              margin 0 0 0.25em
               padding 0
             figure
               float left
               margin 0
-              padding 0 1em
+              padding 0 1em 0 0
             span
               font-size 0.7em
               display block
