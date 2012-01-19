@@ -25,6 +25,7 @@ class views.TextBox extends Backbone.View
     @template = Handlebars.compile source
 
     @model.bind "change", => @render()
+    @model.bind "destroy", => @remove()
 
 
     @settings.bind "change:mode", =>
@@ -53,13 +54,16 @@ class views.TextBox extends Backbone.View
   events:
     "click .edit": "startEdit"
     "dblclick": "startEdit"
-    "click .delete": "remove"
+    "click .delete": "delete"
     "click": "zoom"
     "click button.up": "up"
     "click button.down": "down"
 
     "dragstop": "saveEdit"
     "resizestop": "resized"
+
+  delete: ->
+    @model.destroy()
 
   resized: ->
     @fitFontSize()

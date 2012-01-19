@@ -13,8 +13,11 @@ class views.Layers extends Backbone.View
     @template = Handlebars.compile source
 
     @collection.bind "add", =>
-
       @updateZIndexes @collection.map (box) -> box.cid
+      @render()
+
+    @collection.bind "destroy", (box) =>
+      @render()
 
 
     @collection.bind "pushdown", (box) =>
@@ -24,6 +27,7 @@ class views.Layers extends Backbone.View
     @collection.bind "pushup", (box) =>
       console.log "push UP", box
       @move box, 1
+
 
     @settings.bind "change:activeBox", =>
       @$(".layersSortable li").removeClass "selected"
@@ -35,6 +39,12 @@ class views.Layers extends Backbone.View
   events:
     "sortupdate": "updateFromSortable"
     "hover li": "updateHover"
+    "click button.delete": "delete"
+
+  delete: (e, ui) ->
+    cid = $(e.target).parent("li").attr("id")
+    model = @collection.getByCid cid
+    model.destroy()
 
   updateHover: (e) ->
     @settings.set activeBox: $(e.target).attr "id"
@@ -74,7 +84,6 @@ class views.Layers extends Backbone.View
         model.set zIndex: index + 100
 
     @collection.sort()
-    @render()
 
 
   render: ->
