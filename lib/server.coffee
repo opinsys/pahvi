@@ -87,6 +87,7 @@ app.configure ->
   js.addFile rootDir + "/client/vendor/hallo/link.coffee"
   js.addUrl "/socket.io/socket.io.js"
   js.addUrl "/share/share.js"
+  js.addUrl "/share/json.js"
 
   js.addFile rootDir + "/public/vendor/wymeditor/jquery.wymeditor.js"
 

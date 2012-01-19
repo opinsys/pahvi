@@ -73,18 +73,23 @@ class LocalStore extends Backbone.Model
   constructor: ->
     super
 
-    if localStorage[@id]?
-      @attributes = JSON.parse localStorage[@get("id")]
-
-    @bind "change", => @save()
-
-  save: ->
-    localStorage[@id] = JSON.stringify @attributes
-
   destroy: ->
-    delete localStorage[@id]
-    @trigger "destroy", this
+    console.log "Not implemented"
 
+  open: (cb) ->
+    sharejs.open @get('id'), 'json', (err, doc) =>
+      console.log "Open new doc"
+      @doc = doc
+      if @doc.snapshot == null
+        @doc.submitOp([{p:[], od:null, oi:{}}])
+      else
+        console.log "Set attributes by sharejs"
+        @set @doc.snapshot[0]
+
+      @doc.on 'remoteop', (op) =>
+        console.log "Model change: " + @get('id')
+        @set @doc.snapshot[0]
+      cb err
 
 class models.Settings extends Backbone.Model
   defaults:

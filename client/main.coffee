@@ -55,9 +55,7 @@ class Workspace extends Backbone.Router
         @settings.set activeBox: null
         helpers.zoomOut()
 
-
-
-$  ->
+$ ->
 
 
   settings = new models.Settings
@@ -91,6 +89,7 @@ $  ->
     settings: settings
 
   sidemenu.render()
+<<<<<<< HEAD
 
 
   boxes.loadBoxes ->
@@ -98,4 +97,5 @@ $  ->
       settings: settings
     Backbone.history.start()
     settings.set activeBox: null
+
 
