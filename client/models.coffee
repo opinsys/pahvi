@@ -16,18 +16,16 @@ class models.Boxes extends Backbone.Collection
 
 class LocalStore extends Backbone.Model
 
-  constructor: ({name})->
+  constructor: ->
     super
 
-    @name = name
-
-    if localStorage[@name]?
-      @attributes = JSON.parse localStorage[@name]
+    if localStorage[@get("name")]?
+      @attributes = JSON.parse localStorage[@get("name")]
 
     @bind "change", => @save()
 
   save: ->
-    localStorage[@name] = JSON.stringify @attributes
+    localStorage[@get("name")] = JSON.stringify @attributes
 
 
 
@@ -38,7 +36,10 @@ class models.Settings extends Backbone.Model
 
 class models.TextBoxModel extends LocalStore
 
+  type: "text"
+
   defaults:
+    name: "Text Box"
     top: "100px"
     left: "100px"
     zIndex: 100
