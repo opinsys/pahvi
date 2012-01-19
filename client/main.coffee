@@ -43,9 +43,12 @@ class Cardboard extends Backbone.View
   events:
     "drop": "dropped"
 
-  dropped: (event, ui) ->
+  dropped: (e, ui) ->
     type = ui.draggable.data("boxtype")
-    @createBox type if type
+    if type
+      @createBox type,
+        left: ui.offset.left + "px"
+        top: ui.offset.top + "px"
 
 
 
