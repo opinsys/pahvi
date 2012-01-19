@@ -26,9 +26,9 @@ class views.Layers extends Backbone.View
       @move box, 1
 
     @settings.bind "change:activeBox", =>
-      @$(".layersSortable li").removeClass "hovering"
+      @$(".layersSortable li").removeClass "selected"
       if cid = @settings.get "activeBox"
-        console.log cid, @$(".layersSortable li##{ cid }").addClass "hovering"
+        console.log cid, @$(".layersSortable li##{ cid }").addClass "selected"
 
 
 

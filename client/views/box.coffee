@@ -44,9 +44,9 @@ class views.TextBox extends Backbone.View
 
     @settings.bind "change:activeBox", =>
       if @settings.get("activeBox") is @model.cid
-        @$el.addClass "hovering"
+        @$el.addClass "selected"
       else
-        @$el.removeClass "hovering"
+        @$el.removeClass "selected"
 
 
 
