@@ -64,6 +64,7 @@ class views.TextBox extends Backbone.View
     @fitFontSize()
     @saveEdit()
 
+  # Find maximun font-size that fits in the parent box
   fitFontSize: ->
 
     maxWidth = parseInt(@$el.width()) - 20
@@ -74,7 +75,7 @@ class views.TextBox extends Backbone.View
 
       size = Math.round (min + max) / 2
 
-      # Font size did not change any more. We are down to one pixel precision
+      # Exit condition: Font size barely change any more. We are down to one pixel precision.
       if size is prev
         # Go one size back to prevent edge case overflow and be done with it.
         @edit.css "font-size", "#{ size - 1 }px"
@@ -84,6 +85,7 @@ class views.TextBox extends Backbone.View
 
       @edit.css "font-size", "#{ size }px"
 
+      # Check box boundaries
       if parseInt(@edit.width()) >= maxWidth or parseInt(@edit.height()) >= maxHeight
         # Font overflown. Take smaller half
         return recurse min, size
