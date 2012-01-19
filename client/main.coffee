@@ -38,6 +38,8 @@ class Cardboard extends Backbone.View
       boxView.render()
       boxView.startDrag()
 
+      @settings.set activeBox: boxModel.cid
+
   events:
     "drop": "dropped"
 
@@ -88,6 +90,7 @@ $ ->
   boxes = new models.Boxes
 
   board = new Cardboard
+    settings: settings
     collection: boxes
 
   board.render()
