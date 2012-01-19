@@ -49,24 +49,26 @@ class Cardboard extends Backbone.View
 
 
 
-  createBox: (type, name) ->
+  createBox: (type, options={}) ->
     if not Cardboard.types[type]
       return alert "Unkown type #{ type }!"
 
     {Model} = Cardboard.types[type]
 
-    name or= Model::defaults.name
+    if not options?.name
+      options.name = Model::defaults.name
 
-    proposedName = name
+    proposedName = options.name
+
     i = 0
     loop
       existing = @collection.find (m) ->
-        m.get("name") is name
+        m.get("name") is options.name
 
       break if not existing
-      name = "#{ proposedName } #{ ++i }."
+      options.name = "#{ proposedName } #{ ++i }."
 
-    boxModel = new Model name: name
+    boxModel = new Model name: options.name
     @collection.add boxModel
     boxModel
 
