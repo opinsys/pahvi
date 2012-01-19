@@ -10,8 +10,18 @@ class views.ToolBox extends Backbone.View
     source  = $("#toolboxTemplate").html()
     @template = Handlebars.compile source
 
+  events:
+    "dragstop": "restore"
+
+  restore: ->
+    @render()
+
   render: ->
     @$el.html @template()
+    @$(".addElements * ").draggable()
+
+
+
 
 class views.SideMenu extends Backbone.View
 
