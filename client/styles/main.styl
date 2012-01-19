@@ -6,16 +6,41 @@ pahvigray = #363636
 pahvigreen = #339900
 pahvired = #FF0000
 iconurl = url("/img/iconset.png")
+switch_mode_icon = iconurl no-repeat 10px -635px pahvicream
+switch_mode_icon_position_hover = 10px -690px
+z-index_up_icon = iconurl no-repeat 0 -270px transparent
+z-index_up_icon_hover = iconurl no-repeat 0 -305px transparent
+z-index_down_icon = iconurl no-repeat 0 -340px transparent
+z-index_down_icon_hover = iconurl no-repeat 0 -375px transparent
+close_mediamenu_icon_position = 10px -470px
+close_mediamenu_icon_position_hover = 10px -505px
+open_mediamenu_icon_position = 10px -400px
+open_mediamenu_icon_position_hover = 10px -435px
+add_objects_icon = iconurl no-repeat 10px -745px transparent
+add_objects_icon_hover = iconurl no-repeat 10px -790px white
+layers_icon = iconurl no-repeat 10px -170px transparent
+layers_icon_hover = iconurl no-repeat 10px -215px white
+mediamenu_icon = iconurl no-repeat 10px -535px pahvicream
+text_icon_position = 10px -80px
+text_icon_position_hover = 10px -125px
+image_icon_position = 10px 10px
+image_icon_position_hover = 10px -35px
+plainbox_icon_position = 10px -835px
+plainbox_icon_position_hover = 10px -880px
 
 body
   font 1em/1.4 "Helvetica Neue","Lucida Grande", tahoma, arial, sans-serif
+  
 h1,h2
   margin 0
   padding 0
+  
 h1
   font-size 3em
+  
 h2
   font-size 1.5em
+  
 hr
   clear both
   border none
@@ -23,14 +48,17 @@ hr
   height 0px
   margin 0
   width 100%
+  
 button:hover
   cursor pointer
+  
 .container
   height 100%
   margin 0 auto
   overflow auto
   position relative
   width 100%
+  
   button
     background-color pahvicream
     border none
@@ -45,10 +73,11 @@ button:hover
     &.edit, &.delete
       background-color pahvigray
       color pahviyellow
+      font-size 0.6em
     &.delete
       border 2px solid pahviyellow !important
       border-radius 20px
-      font-size 0.8em
+      font-size 12px
       font-weight 600
       height 30px
       line-height 1
@@ -59,6 +88,7 @@ button:hover
       width 30px
       &:hover
         background-color pahvired !important
+        
   header
     background url("/img/header-bg.jpg") repeat 0 0 scroll
     height 65px
@@ -71,16 +101,17 @@ button:hover
       width 150px
     h1,h2
       color pahviyellow
-      font-family "Trebuchet MS", Helvetica, sans-serif
       line-height 1
-      text-shadow 0 -2px 4px pahvigray
+      text-shadow 0 -1px 3px black, 0 2px 2px pahvigray
       text-transform uppercase
     h2
-      font-size 0.8em 
+      font-size 0.8em
+      
   .wrap
     height 100%
     position relative
     width 100%
+    
     .pasteboard
       background url("/img/pahvi-bg.jpg") repeat 0 0 scroll
       border solid 1px pahvigray
@@ -89,32 +120,43 @@ button:hover
       position relative
       width 100%
       z-index 1
+      
       .textBox.ui-draggable-dragging
         border dotted 2px black !important
         box-shadow 0px 0px 10px black
         cursor move !important
       .textBox.ui-draggable
         cursor pointer
+        
       .menu
         margin 0 5px 0
         position absolute
         right 30%
         top -60px
       .modeToggle
-        background iconurl no-repeat 10px -635px pahvicream
+        background switch_mode_icon
         border-bottom 1px solid pahvigray
         &:hover
-          background-position 10px -690px
+          background-position switch_mode_icon_position_hover
+
       .tools
         background-color #f3f3f3
+        border-left 1px solid pahvigray
+        border-right 1px solid pahvigray
+        border-top 1px solid pahvigray
         display block
         height 30px
+        left -1px
         margin 0
-        position relative
+        padding 0
+        position absolute
+        top -30px
         visibility hidden
         width 100%
+        
       .content
         padding .5em 1em 1em
+        
       .textBox
         border 1px solid black
         min-height 100px
@@ -145,29 +187,31 @@ button:hover
           text-indent -9999px
           width 30px
         .up
-          background iconurl no-repeat 0 -270px transparent
+          background z-index_up_icon
           top 30px
           &:hover
-            background iconurl no-repeat 0 -305px transparent
+            background z-index_up_icon_hover
         .down
-          background iconurl no-repeat 0 -340px transparent
+          background z-index_down_icon
           top 60px
           &:hover
-            background iconurl no-repeat 0 -375px transparent
+            background z-index_down_icon_hover            
       // We need to use class hovering instean of meta selector :hover so that
       // we can also "hover" programatically using JavaScript
       .textBox.hovering .tools
         visibility visible
+        
     .mediamenu.open
       .closeOpenMediamenuBtn
-        background-position 10px -470px
+        background-position close_mediamenu_icon_position
         &:hover
-          background-position 10px -505px
+          background-position close_mediamenu_icon_position_hover
     .mediamenu.closed
       .closeOpenMediamenuBtn
-         background-position 10px -400px
+         background-position open_mediamenu_icon_position
          &:hover
-          background-position 10px -435px
+          background-position open_mediamenu_icon_position_hover
+          
     .mediamenu
       background pahvicream repeat 0 0 scroll
       border-top 1px solid pahvigray
@@ -204,20 +248,21 @@ button:hover
           text-indent -9999px
           width 50px
           &:first-child
-            background iconurl no-repeat 10px -745px transparent
+            background add_objects_icon
             &:hover
-              background iconurl no-repeat 10px -790px white
+              background add_objects_icon_hover
           &:nth-child(2)
-            background iconurl no-repeat 10px -170px transparent
+            background layers_icon
             &:hover
-              background iconurl no-repeat 10px -215px white
+              background layers_icon_hover
           &:hover, &.active
             background-color white
       .mediamenuBtn
-        background iconurl no-repeat 10px -535px pahvicream
+        background mediamenu_icon
         left 5px
         position absolute
         top -60px
+        
       .media
         background-color white
         border-top solid 1px bordergray
@@ -229,6 +274,7 @@ button:hover
           line-height 2
           margin 1em
           padding 0
+          
         .addElements
           div
             background-color pahviyellow
@@ -242,28 +288,32 @@ button:hover
             width 80%
           .textbox
             background-image iconurl
-            background-position 10px -80px
+            background-position text_icon_position
             background-repeat no-repeat
             &:hover
-              background-position 10px -125px
+              background-position text_icon_position_hover
           .plainbox
             background-image iconurl
-            background-position 10px -835px
+            background-position plainbox_icon_position
             background-repeat no-repeat
             &:hover
-              background-position 10px -880px
+              background-position plainbox_icon_position_hover
           .imagebox
             background-image iconurl
-            background-position 10px 10px
+            background-position image_icon_position
             background-repeat no-repeat
             &:hover
-              background-position 10px -35px
+              background-position image_icon_position_hover
+              
         .layers
           .layersSortable 
             list-style-type none
             margin 0
             padding 0
             li
+              background-color #f3f3f3
+              background-image iconurl
+              background-repeat no-repeat
               border 2px solid pahvigray
               height 35px
               margin 0 0 0.5em
@@ -272,6 +322,7 @@ button:hover
               width 80%
               &:hover
                 background-color pahviyellow
+                color pahvigreen
                 cursor pointer
               &:hover > .delete
                 display block
@@ -282,11 +333,9 @@ button:hover
                 right 0
                 top 10px
             .text
-              background iconurl no-repeat 10px -80px #f3f3f3
+              background-position text_icon_position
             .image
-              background iconurl no-repeat 10px 10px #f3f3f3
-          .layersSortable .hovering
-            color red
+              background-position image_icon_position
           .layerProperties
             margin 0
             padding 0
@@ -323,9 +372,14 @@ button:hover
 
 body.presentation
   .box
-    cursor url("/img/zoom-cursor.png"), pointer
+    background-color transparent !important
+    box-shadow none !important
+    cursor url("/img/zoom-cursor.png") 15 15, pointer
+    padding 0.2em
+    .content
+      padding 0 !important
   .pasteboard
-    cursor url("/img/zoom-out-cursor.png"), pointer
+    cursor url("/img/zoom-out-cursor.png") 15 15, pointer
   .textBox .tools
     display none !important
   .mediamenu
