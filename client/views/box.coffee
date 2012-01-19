@@ -13,6 +13,7 @@ requireMode = (mode) -> (method) -> ->
 
 class views.TextBox extends Backbone.View
 
+  type: "text"
 
   className: "box textBox"
 
