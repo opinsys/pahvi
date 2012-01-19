@@ -222,16 +222,21 @@ button:hover
         display block
         height 100%
         width 100%
+        >div
+          font-size 0.8em
+          line-height 2
+          margin 1em
+          padding 0
         .addElements
-          padding 1em
           div
             background-color pahviyellow
             border dotted 2px pahvigray
             cursor move
             height 35px
             margin 0 0 0.5em
-            padding 1em 0.5em 0 0
+            padding 1em 0.5em 0 55px
             text-align center
+            text-transform uppercase
             width 80%
           .textbox
             background-image iconurl
@@ -252,14 +257,15 @@ button:hover
             &:hover
               background-position 10px -35px
         .layers
-          margin 0.5em 1em
-          padding 0
           .layersSortable 
             list-style-type none
+            margin 0
             padding 0
             li
-              border-bottom 1px solid black
-              padding 1em 0 1em 55px
+              border 2px solid pahvigray
+              height 35px
+              margin 0 0 0.5em
+              padding 1em 0.5em 0 55px
               width 80%
               &:hover
                 background-color pahviyellow
