@@ -107,8 +107,3 @@ $ ->
   sidemenu.render()
 
 
-  board.createBox "text"
-  board.createBox "text", "Custom name"
-  board.createBox "text"
-  board.createBox "text"
-
