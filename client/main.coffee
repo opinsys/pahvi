@@ -42,18 +42,32 @@ class Cardboard extends Backbone.View
     "drop": "dropped"
 
   dropped: (event, ui) ->
-    console.log  ui.draggable.data("boxtype")
+    type = ui.draggable.data("boxtype")
+    @createBox type if type
+
+
 
 
 
   createBox: (type, name) ->
+    if not Cardboard.types[type]
+      return alert "Unkown type #{ type }!"
+
     {Model} = Cardboard.types[type]
 
-    boxModel = new Model
-      name: name
+    name or= Model::defaults.name
 
+    proposedName = name
+    i = 0
+    loop
+      existing = @collection.find (m) ->
+        m.get("name") is name
+
+      break if not existing
+      name = "#{ proposedName } #{ ++i }."
+
+    boxModel = new Model name: name
     @collection.add boxModel
-
     boxModel
 
   render: ->
