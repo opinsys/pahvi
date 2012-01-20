@@ -48,6 +48,8 @@ class BaseConfig extends Backbone.View
 
 class configs.BackgroundColor extends BaseConfig
 
+  className: "config colorConfig backgroundColor"
+
   colors: [
     [ "Red", "#ff0000" ],
     [ "Green", "#008000" ],
@@ -56,34 +58,40 @@ class configs.BackgroundColor extends BaseConfig
 
   title: "Background Color"
 
+  colorProperty: "backgroundColor"
+
+
   constructor: ->
     super
 
     source  = $("#config_colorTemplate").html()
     @template = Handlebars.compile source
+    @model.bind "change:#{ @colorProperty }", => @render()
 
   events:
     "click button": "update"
 
   update: (e) ->
-    @model.set backgroundColor: $(e.target).data("value")
+    ob = {}
+    ob[@colorProperty] = $(e.target).data("value")
+    @model.set ob
 
   render: ->
     @$el.html @template
       title: @title
-      colors: @colors.map (color) ->
+      colors: @colors.map (color) =>
         name: color[0]
         value: color[1]
+        current: color[1] is @model.get @colorProperty
 
 
 
 
 class configs.TextColor extends configs.BackgroundColor
-
+  className: "config colorConfig textColor"
   title: "Text Color"
+  colorProperty: "textColor"
 
-  update: (e) ->
-    @model.set textColor: $(e.target).data("value")
 
 
 

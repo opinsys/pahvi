@@ -2,7 +2,7 @@
   <h1 class="propertyTite">{{title}}</h1>
   {{#each colors}}
 
-    <button class="color"
+    <button class="color{{#if this.current}} selectedColor{{/if}}"
             title="{{this.name}}"
             data-value="{{this.value}}"
             style="background-color: {{this.value}} !important"> </button>
