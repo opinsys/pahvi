@@ -37,7 +37,10 @@ class models.Settings extends Backbone.Model
     mode: "edit"
     hover: null
 
-class models.TextBoxModel extends LocalStore
+
+class BaseBoxModel extends LocalStore
+
+class models.TextBoxModel extends BaseBoxModel
 
   type: "text"
 
@@ -47,6 +50,18 @@ class models.TextBoxModel extends LocalStore
     left: "100px"
     zIndex: 100
     text: "TextBox sample content"
+    "backgroundColor": "white"
 
 
+
+class models.PlainBoxModel extends BaseBoxModel
+
+  type: "plain"
+
+  defaults:
+    name: "Plain Box"
+    top: "100px"
+    left: "100px"
+    zIndex: 100
+    "backgroundColor": "white"
 
