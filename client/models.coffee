@@ -67,7 +67,6 @@ class models.PlainBoxModel extends BaseBoxModel
   type: "plain"
 
   configs: [
-    "Color",
     "BackgroundColor",
     "Rotation",
     "Border"
