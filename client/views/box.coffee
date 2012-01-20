@@ -27,13 +27,17 @@ class views.BaseBox extends Backbone.View
       if $(e.target).has(@el).size() > 0
         @_offClick(e)
 
-
     @settings.bind "change:activeBox", =>
-      if @settings.get("activeBox") is @model.cid
-        @$el.addClass "selected"
+      if @isActive()
+          @onActivate()
       else
-        @$el.removeClass "selected"
+        @onDeactivate()
 
+    @settings.bind "change:mode", =>
+      if @settings.get("mode") is "presentation"
+        @startPresentation()
+      else
+        @endPresentation()
 
     @delegateEvents @baseEvents
 
@@ -41,14 +45,33 @@ class views.BaseBox extends Backbone.View
   baseEvents:
     "click button.up": "up"
     "click button.down": "down"
-    "click": "zoom"
+
+    "click": "activate"
 
     "click .delete": "delete"
-    "click": "activate"
     "dragstart": "activate"
+    "resizestart": "activate"
 
     "resizestop": "saveEdit"
     "dragstop": "saveEdit"
+
+
+  startPresentation: ->
+    @$el.resizable "destroy"
+
+  endPresentation: ->
+    @$el.resizable()
+
+  onActivate: ->
+
+    if @settings.get("mode") is "presentation"
+      @$el.zoomTo()
+
+    @$el.addClass "selected"
+
+
+  onDeactivate: ->
+    @$el.removeClass "selected"
 
   activate: ->
     @settings.set activeBox: @model.cid
@@ -56,13 +79,16 @@ class views.BaseBox extends Backbone.View
   isActive: ->
     @settings.get("activeBox") is @model.cid
 
+  deactivate: ->
+    @settings.set activeBox: null
+
   delete: ->
     @model.destroy()
 
   _offClick: (e) ->
     return unless @isActive()
 
-    @settings.set activeBox: null
+    @deactivate()
 
     @$el.resizable()
     @saveEdit()
@@ -83,8 +109,6 @@ class views.BaseBox extends Backbone.View
   down: ->
     @model.trigger "pushdown", @model
 
-  zoom: requireMode("presentation") ->
-    $(@el).zoomTo()
 
   saveEdit: ->
     @model.set
@@ -144,19 +168,13 @@ class views.TextBox extends views.BaseBox
     @template = Handlebars.compile source
 
 
-
-    @settings.bind "change:mode", =>
-      if @settings.get("mode") is "presentation"
-        @endDrag()
-        @_endEdit()
-      if @settings.get("mode") is "edit"
-        @_endEdit()
-        @startDrag()
-
-
   events:
     "click .edit": "startEdit"
     "dblclick": "startEdit"
+
+  startPresentation: ->
+    super
+    @_endEdit()
 
 
   # Find maximun font-size that fits in this widget

@@ -30,6 +30,7 @@ image_icon_position_hover = 10px -35px
 plainbox_icon_position = 10px -835px
 plainbox_icon_position_hover = 10px -880px
 
+
 body
   font 1em/1.4 "Helvetica Neue","Lucida Grande", tahoma, arial, sans-serif
   
@@ -39,7 +40,7 @@ h1,h2
   
 h1
   font-size 3em
-  font-weight 500
+  font-weight 800
   
 h2
   font-size 1.5em
@@ -104,10 +105,10 @@ button:hover
     h1,h2
       color pahviyellow
       line-height 1
-      text-shadow 0 -1px 3px pahvigray, 0 2px 4px pahvigray
+      text-shadow  0 2px 3px pahvigray
       text-transform uppercase
     h2
-      font-size 0.9em
+      font-size 0.8em
       
   .wrap
     height 100%
@@ -378,11 +379,11 @@ body.presentation
 
   .box
     box-shadow none !important
-    cursor url("/img/zoom-cursor.png") 15 15, pointer
+    cursor url("/img/zoom-cursor.png") 15 15, pointer !important
     .content
       padding 0 !important
   .pasteboard
-    cursor url("/img/zoom-out-cursor.png") 15 15, pointer
+    cursor url("/img/zoom-out-cursor.png") 15 15, pointer !important
 
   .box .tools
     display none !important
@@ -403,6 +404,7 @@ body.presentation
   height 100%
 
 .boxProperties
+  background-color white
   margin 0
   padding 1em
   >div
@@ -410,8 +412,10 @@ body.presentation
     margin 0
     padding 1em 50px 1em 1em
     width 80%
-  h2
-    margin 0 0 0.25em
+  h1
+    font-size 1.5em
+    line-height 1
+    margin 0 0 0.5em
     padding 0
   figure
     float left
@@ -438,13 +442,15 @@ body.presentation
       
   .colorConfig
     h1
-      font-size 14pt
+      font-size 1em
     button
       border 2px solid gray
       height 40px
       margin 0.25em
       padding 0
       width 40px
+      &.transparentColor
+        background url("/img/transparent.png") no-repeat 0 0 transparent
     button.selectedColor
       border 2px solid black
 
