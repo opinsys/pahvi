@@ -11,6 +11,9 @@ class views.PropertiesManager extends Backbone.View
     super
     @$el = $ @el
 
+    source  = $("#boxpropertiesTemplate").html()
+    @template = Handlebars.compile source
+
     @activeConfigs = []
 
     @settings.bind "change:activeBox", =>
@@ -19,21 +22,26 @@ class views.PropertiesManager extends Backbone.View
 
 
   render: ->
-    if not @model
-      @$el.empty()
-      return
 
     for config in @activeConfigs
       config.remove()
 
-    @activeConfigs = for configName in @model.configs
-      config = new configs[configName]
-        model: @model
+    if not @model
+      @activeConfigs = []
+    else
+      @activeConfigs = for configName in @model.configs
+        config = new configs[configName]
+          model: @model
+        config.render()
+        config
 
+    @$el.html @template active: !!@model
+
+    @configContainer = @$(".configs")
+
+    for config in @activeConfigs
       config.render()
-      @$el.append config.el
-
-      config
+      @configContainer.append config.el
 
 
 class BaseConfig extends Backbone.View
