@@ -27,7 +27,6 @@ class views.BaseBox extends Backbone.View
       if $(e.target).has(@el).size() > 0
         @_offClick(e)
 
-    $(@el).click => @settings.set activeBox: @model.cid
 
     @settings.bind "change:activeBox", =>
       if @settings.get("activeBox") is @model.cid
@@ -35,8 +34,30 @@ class views.BaseBox extends Backbone.View
       else
         @$el.removeClass "selected"
 
+
+    @delegateEvents @baseEvents
+
+
+  baseEvents:
+    "click button.up": "up"
+    "click button.down": "down"
+    "click": "zoom"
+
+    "click .delete": "delete"
+    "click": "activate"
+    "dragstart": "activate"
+
+    "resizestop": "saveEdit"
+    "dragstop": "saveEdit"
+
+  activate: ->
+    @settings.set activeBox: @model.cid
+
   isActive: ->
-    @$el.hasClass "selected"
+    @settings.get("activeBox") is @model.cid
+
+  delete: ->
+    @model.destroy()
 
   _offClick: (e) ->
     return unless @isActive()
@@ -56,7 +77,22 @@ class views.BaseBox extends Backbone.View
   endDrag: ->
     @$el.draggable "destroy"
 
+  up: ->
+    @model.trigger "pushup", @model
 
+  down: ->
+    @model.trigger "pushdown", @model
+
+  zoom: requireMode("presentation") ->
+    $(@el).zoomTo()
+
+  saveEdit: ->
+    @model.set
+      left: @$el.css "left"
+      top: @$el.css "top"
+      width: @$el.css "width"
+      height: @$el.css "height"
+      fontSize: @$el.css "font-size"
 
   render: ->
     @$el.resizable "destroy"
@@ -69,9 +105,13 @@ class views.BaseBox extends Backbone.View
       width: @model.get "width"
       height: @model.get "height"
       "z-index": @model.get "zIndex"
-      "background-color": @model.get "backgroundColor"
+      "background-color": @model.get("backgroundColor") or "white" # XXX
 
     @$el.resizable()
+
+
+
+
 
 class views.PlainBox extends views.BaseBox
 
@@ -86,6 +126,9 @@ class views.PlainBox extends views.BaseBox
     @template = Handlebars.compile source
 
   render: -> super
+
+
+
 
 
 class views.TextBox extends views.BaseBox
@@ -111,25 +154,10 @@ class views.TextBox extends views.BaseBox
         @startDrag()
 
 
-
-
   events:
     "click .edit": "startEdit"
     "dblclick": "startEdit"
-    "click .delete": "delete"
-    "click": "zoom"
-    "click button.up": "up"
-    "click button.down": "down"
 
-    "dragstop": "saveEdit"
-    "resizestop": "resized"
-
-  delete: ->
-    @model.destroy()
-
-  resized: ->
-    @fitFontSize()
-    @saveEdit()
 
   # Find maximun font-size that fits in this widget
   fitFontSize: ->
@@ -168,15 +196,6 @@ class views.TextBox extends views.BaseBox
 
 
 
-  up: ->
-    @model.trigger "pushup", @model
-
-  down: ->
-    @model.trigger "pushdown", @model
-
-
-  zoom: requireMode("presentation") ->
-    $(@el).zoomTo()
 
 
   _offClick: (e) ->
@@ -211,13 +230,9 @@ class views.TextBox extends views.BaseBox
 
 
   saveEdit: ->
-    @model.set
-      left: @$el.css "left"
-      top: @$el.css "top"
-      width: @$el.css "width"
-      height: @$el.css "height"
-      fontSize: @$el.css "font-size"
-      text: @$(".content span").html()
+    @fitFontSize()
+    @model.set text: @$(".content span").html()
+    super
 
 
 
