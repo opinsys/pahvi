@@ -35,7 +35,7 @@ class views.Cardboard extends Backbone.View
       @$el.append boxView.el
 
       boxView.render()
-      boxView.startDrag()
+      boxView.activateDrag()
 
       @settings.set activeBox: boxModel.cid
 

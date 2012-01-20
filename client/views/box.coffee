@@ -34,9 +34,11 @@ class views.BaseBox extends Backbone.View
         @onDeactivate()
 
     @settings.bind "change:mode", =>
+
       if @settings.get("mode") is "presentation"
         @startPresentation()
-      else
+
+      if @settings.get("mode") is "edit"
         @endPresentation()
 
     @delegateEvents @baseEvents
@@ -57,10 +59,19 @@ class views.BaseBox extends Backbone.View
 
 
   startPresentation: ->
-    @$el.resizable "destroy"
+    @disableResize()
+    @disableDrag()
+
 
   endPresentation: ->
-    @$el.resizable()
+    @activateResize()
+    @activateDrag()
+
+  activateDrag: requireMode("edit") -> @$el.draggable()
+  disableDrag: -> @$el.draggable "destroy"
+
+  activateResize: -> @$el.resizable()
+  disableResize: -> @$el.resizable "destroy"
 
   onActivate: ->
 
@@ -90,18 +101,14 @@ class views.BaseBox extends Backbone.View
 
     @deactivate()
 
-    @$el.resizable()
-    @saveEdit()
+    if @settings.get("mode") is "edit"
+      @saveEdit()
 
     if @settings.get("mode") is "presentation"
       $("body").zoomTo
         targetSize: 1.0
 
-  startDrag: requireMode("edit") ->
-    @$el.draggable cursor: "pointer"
 
-  endDrag: ->
-    @$el.draggable "destroy"
 
   up: ->
     @model.trigger "pushup", @model
@@ -119,7 +126,8 @@ class views.BaseBox extends Backbone.View
       fontSize: @$el.css "font-size"
 
   render: ->
-    @$el.resizable "destroy"
+
+    @disableResize()
 
     @$el.html @template @model.toJSON()
 
@@ -131,7 +139,11 @@ class views.BaseBox extends Backbone.View
       "z-index": @model.get "zIndex"
       "background-color": @model.get("backgroundColor") or "white" # XXX
 
-    @$el.resizable()
+    # We need to activate resizable always after rendering because jQuery UI
+    # adds some elements to this widget
+    if @settings.get("mode") is "edit"
+      @activateResize()
+
 
 
 
@@ -221,11 +233,11 @@ class views.TextBox extends views.BaseBox
 
     if @settings.get("mode") is "edit"
       @_endEdit()
-      @startDrag()
+      @activateDrag()
 
 
   startEdit: requireMode("edit") ->
-    @endDrag()
+    @disableDrag()
 
     $("span", @el).hallo
       editable: true
