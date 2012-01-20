@@ -38,6 +38,7 @@ h1,h2
   
 h1
   font-size 3em
+  font-weight 500
   
 h2
   font-size 1.5em
@@ -56,7 +57,6 @@ button:hover
 .container
   height 100%
   margin 0 auto
-  overflow auto
   position relative
   width 100%
   
@@ -93,20 +93,20 @@ button:hover
   header
     background url("/img/header-bg.jpg") repeat 0 0 scroll
     height 65px
-    padding 1em 1em 0 1em
+    padding 0.5em 0 0.25em
     position relative
     width 100%
     hgroup
-      margin -0.5em 0
+      margin 0 0 0 0.5em
       text-align center
       width 150px
     h1,h2
       color pahviyellow
       line-height 1
-      text-shadow 0 -1px 3px black, 0 2px 2px pahvigray
+      text-shadow 0 -1px 3px pahvigray, 0 2px 4px pahvigray
       text-transform uppercase
     h2
-      font-size 0.8em
+      font-size 0.9em
       
   .wrap
     height 100%
@@ -117,7 +117,7 @@ button:hover
       background url("/img/pahvi-bg.jpg") repeat 0 0 scroll
       border solid 1px pahvigray
       height 100%
-      margin 0
+      margin -1px
       position relative
       width 100%
       z-index 1
@@ -282,6 +282,18 @@ button:hover
           padding 0
           
         .addElements
+          background url("/img/drag-drop-arrow.png") no-repeat 0 100% transparent
+          padding 0 0 110px
+          p
+            background-color pahviyellow
+            border 2px dotted pahvigray
+            border-radius 10px
+            box-shadow 1px 2px 4px pahvigray, -1px -1px 3px pahvigray
+            line-height 1.2
+            padding 0.35em
+            text-align center
+            transform rotate(10deg) translate(25%,-5%)
+            width 120px
           div
             background-color pahviyellow
             border dotted 2px pahvigray
@@ -382,6 +394,9 @@ button:hover
   z-index 2001
 
 body.presentation
+  .container
+    overflow auto
+
   .box
     background-color transparent !important
     box-shadow none !important
@@ -390,6 +405,7 @@ body.presentation
       padding 0 !important
   .pasteboard
     cursor url("/img/zoom-out-cursor.png") 15 15, pointer
+
   .textBox .tools
     display none !important
   .mediamenu
