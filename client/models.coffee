@@ -44,6 +44,14 @@ class models.TextBoxModel extends BaseBoxModel
 
   type: "text"
 
+  configs: [
+    "Color",
+    "BackgroundColor",
+    "FontSize",
+    "Rotation",
+    "Border"
+  ]
+
   defaults:
     name: "Text Box"
     top: "100px"
@@ -57,6 +65,13 @@ class models.TextBoxModel extends BaseBoxModel
 class models.PlainBoxModel extends BaseBoxModel
 
   type: "plain"
+
+  configs: [
+    "Color",
+    "BackgroundColor",
+    "Rotation",
+    "Border"
+  ]
 
   defaults:
     name: "Plain Box"
