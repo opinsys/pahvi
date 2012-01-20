@@ -37,4 +37,12 @@ $ ->
     max: 30
   $( "#borderRadiusSlider" ).bind "slide", (event, ui) =>
     borderRadius = $( "#borderRadiusSlider" ).slider "option", "value"
-    $("#borderRadiusSliderNumber").html(parseInt(borderRadius,10))
+    $("#borderRadiusSliderNumber").html("Border-radius: "+parseInt(borderRadius,10)+"px")
+
+  $("#fontSizeSlider").slider
+    min: 8
+    max: 100
+  $( "#fontSizeSlider" ).bind "slide", (event, ui) =>
+    fontSize = $( "#fontSizeSlider" ).slider "option", "value"
+    $("#fontSizeNumber").html("Font-size: "+parseInt(fontSize,10)+"px")
+    
