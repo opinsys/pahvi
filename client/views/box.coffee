@@ -61,6 +61,7 @@ class views.BaseBox extends Backbone.View
   startPresentation: ->
     @disableResize()
     @disableDrag()
+    @deactivate()
 
 
   endPresentation: ->
