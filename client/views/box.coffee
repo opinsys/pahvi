@@ -264,7 +264,6 @@ class views.TextBox extends views.BaseBox
     lightbox.renderToBody()
 
 
-
   render: ->
     super
 

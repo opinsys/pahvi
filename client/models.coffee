@@ -73,23 +73,59 @@ class LocalStore extends Backbone.Model
   constructor: ->
     super
 
+    @name = name
+
   destroy: ->
     console.log "Not implemented"
 
+  update: (changedAttributes) ->
+    console.log "method: update. set attributes to model"
+    @alreadySaved = changedAttributes
+    @set changedAttributes
+
+
   open: (cb) ->
-    sharejs.open @get('id'), 'json', (err, doc) =>
+    @bind "change", =>
+      console.log "method: open, model change"
+      if not _.isEqual @changedAttributes(), @alreadySaved
+        console.log "not already saved -> send to sharejs"
+        @send @changedAttributes()
+        @aleardySave = null
+      else
+        console.log "Attributes has already saved!"
+
+
+
+    sharejs.open @name, 'json', (err, doc) =>
       console.log "Open new doc"
       @doc = doc
       if @doc.snapshot == null
         @doc.submitOp([{p:[], od:null, oi:{}}])
       else
-        console.log "Set attributes by sharejs"
-        @set @doc.snapshot[0]
+        console.log "Set/update attributes from sharejs"
+        @update @doc.snapshot
 
       @doc.on 'remoteop', (op) =>
-        console.log "Model change: " + @get('id')
-        @set @doc.snapshot[0]
+        console.log "event: remoteop, model change: " + @attributes['name']
+        if op[0]["p"].length == 0
+          console.log "update all attributes"
+          @update @doc.snapshot
+        else
+          new_attributes = {}
+          for o in op
+            attr = o["p"][0]
+            new_attributes[o["p"][0]] = @doc.snapshot[attr]
+          console.log "update special attributes"
+          @update new_attributes
       cb err
+
+  send: (attributes) ->
+    console.log "method: send"
+    submitOpValue = []
+    for key, value of attributes
+      submitOpValue.push { p:[key], od:null, oi:value }
+    @doc.submitOp(submitOpValue)
+
 
 class models.Settings extends Backbone.Model
   defaults:
