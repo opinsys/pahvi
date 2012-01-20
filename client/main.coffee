@@ -32,4 +32,9 @@ $ ->
 
   sidemenu.render()
 
-
+  $("#borderRadiusSlider").slider
+    min: 0
+    max: 30
+  $( "#borderRadiusSlider" ).bind "slide", (event, ui) =>
+    borderRadius = $( "#borderRadiusSlider" ).slider "option", "value"
+    $("#borderRadiusSliderNumber").html(parseInt(borderRadius,10))
