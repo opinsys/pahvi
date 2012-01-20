@@ -18,13 +18,13 @@ js = piler.createJSManager()
 
 css.bind app
 js.bind app
-sharejs.bind app,
+sharejs.attach app,
   db:
     type: 'memory'
 
 
 app.configure "development", ->
-  js.liveUpdate css
+#  js.liveUpdate css
 
 
 templateCache = {}
@@ -85,6 +85,8 @@ app.configure ->
   js.addFile rootDir + "/client/vendor/hallo/hallo.coffee"
   js.addFile rootDir + "/client/vendor/hallo/format.coffee"
   js.addFile rootDir + "/client/vendor/hallo/link.coffee"
+  js.addUrl "/socket.io/socket.io.js"
+  js.addUrl "/share/share.js"
 
   js.addFile rootDir + "/public/vendor/wymeditor/jquery.wymeditor.js"
 

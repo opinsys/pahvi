@@ -57,7 +57,7 @@ class Workspace extends Backbone.Router
 
 
 
-$ ->
+$  ->
 
 
   settings = new models.Settings
@@ -98,5 +98,4 @@ $ ->
       settings: settings
     Backbone.history.start()
     settings.set activeBox: null
-
 
