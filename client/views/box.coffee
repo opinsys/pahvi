@@ -240,6 +240,7 @@ class views.TextBox extends views.BaseBox
     super
 
     @$el.css "font-size", @model.get "font-size"
+    @$el.css "color", @model.get "textColor"
     @edit = @$(".content span")
 
     @fitFontSize()

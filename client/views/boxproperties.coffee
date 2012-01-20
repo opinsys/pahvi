@@ -6,6 +6,7 @@ configs = NS "Pahvi.configs"
 
 class views.PropertiesManager extends Backbone.View
 
+
   constructor: ({@settings}) ->
     super
     @$el = $ @el
@@ -45,7 +46,6 @@ class BaseConfig extends Backbone.View
     @$el.html "<div>Config for #{ @constructor.name } is not implemented yet</div>"
 
 
-class configs.Color extends BaseConfig
 class configs.BackgroundColor extends BaseConfig
 
   colors: [
@@ -78,8 +78,7 @@ class configs.BackgroundColor extends BaseConfig
 
 
 
-
-class configs.Color extends configs.BackgroundColor
+class configs.TextColor extends configs.BackgroundColor
 
   title: "Text Color"
 

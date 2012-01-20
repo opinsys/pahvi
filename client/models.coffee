@@ -45,7 +45,7 @@ class models.TextBoxModel extends BaseBoxModel
   type: "text"
 
   configs: [
-    "Color",
+    "TextColor",
     "BackgroundColor",
     "FontSize",
     "Rotation",
