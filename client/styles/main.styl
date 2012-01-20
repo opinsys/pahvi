@@ -4,6 +4,7 @@ pahviyellow = #fffdf1
 pahvicream = #f5f4f0
 pahvigray = #363636
 pahvigreen = #339900
+pahvilightgreen = #d6f3c7
 pahvired = #FF0000
 pahviblue = #A2D7F5 !important
 iconurl = url("/img/iconset.png")
@@ -124,8 +125,13 @@ button:hover
       
       .box.ui-draggable-dragging
         border dotted 2px black !important
-        box-shadow 0px 0px 10px black
+        box-shadow 0px 0px 20px black !important
         cursor move !important
+      .box.ui-draggable-dragging .tools
+        border-left dotted 2px black !important
+        border-right dotted 2px black !important
+        border-top dotted 2px black !important
+        margin-left -1px
       .box.ui-draggable
         cursor pointer
         
@@ -161,7 +167,7 @@ button:hover
         min-height 100px
         min-width 100px
         &.selected
-          box-shadow 0 3px 5px pahvigreen, 0 -3px 5px pahvigreen
+          box-shadow 0 3px 10px pahvigreen, 0 -3px 10px pahvigreen
         
       // Only text box needs bottom padding?
       .textBox
