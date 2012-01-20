@@ -32,7 +32,7 @@ class views.Layers extends Backbone.View
     @settings.bind "change:activeBox", =>
       @$(".layersSortable li").removeClass "selected"
       if cid = @settings.get "activeBox"
-        console.log cid, @$(".layersSortable li##{ cid }").addClass "selected"
+        @$(".layersSortable li##{ cid }").addClass "selected"
 
 
 

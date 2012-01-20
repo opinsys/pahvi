@@ -122,11 +122,11 @@ button:hover
       width 100%
       z-index 1
       
-      .textBox.ui-draggable-dragging
+      .box.ui-draggable-dragging
         border dotted 2px black !important
         box-shadow 0px 0px 10px black
         cursor move !important
-      .textBox.ui-draggable
+      .box.ui-draggable
         cursor pointer
         
       .menu
@@ -157,15 +157,17 @@ button:hover
 
       .box
         padding .25em
-        
-      .textBox
         border 1px solid black
         min-height 100px
         min-width 100px
-        padding-bottom 0.5em
         &.selected
           box-shadow 0 3px 5px pahvigreen, 0 -3px 5px pahvigreen
-      .textBox .tools
+        
+      // Only text box needs bottom padding?
+      .textBox
+        padding-bottom 0.5em
+
+      .box .tools
         visibility hidden
         button
           position absolute
@@ -199,7 +201,7 @@ button:hover
             background z-index_down_icon_hover            
       // We need to use class hovering instean of meta selector :hover so that
       // we can also "hover" programatically using JavaScript
-      .textBox.selected .tools
+      .box.selected .tools
         visibility visible
         
     .mediamenu.open
@@ -312,14 +314,14 @@ button:hover
               background-position text_icon_position_hover
           .plainbox
             background-image iconurl
-            background-position plainbox_icon_position
             background-repeat no-repeat
+            background-position plainbox_icon_position
             &:hover
               background-position plainbox_icon_position_hover
           .imagebox
             background-image iconurl
-            background-position image_icon_position
             background-repeat no-repeat
+            background-position image_icon_position
             &:hover
               background-position image_icon_position_hover
           .text
@@ -388,9 +390,6 @@ button:hover
             .slider
               width 80px
 
-// Testing only
-.textBox
-  background-color white
 
 .hallotoolbar
   z-index 2001
@@ -408,7 +407,7 @@ body.presentation
   .pasteboard
     cursor url("/img/zoom-out-cursor.png") 15 15, pointer
 
-  .textBox .tools
+  .box .tools
     display none !important
   .mediamenu
     display none

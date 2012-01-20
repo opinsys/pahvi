@@ -10,38 +10,23 @@ requireMode = (mode) -> (method) -> ->
 
 
 
+class views.BaseBox extends Backbone.View
 
-class views.TextBox extends Backbone.View
+  className: "box"
 
-  type: "text"
+  type: null
 
-  className: "box textBox"
-
-  constructor: ({@settings}, position) ->
+  constructor: ({@settings}) ->
     super
     @$el = $ @el
 
-    source  = $("#textboxTemplate").html()
-    @template = Handlebars.compile source
-
     @model.bind "change", => @render()
     @model.bind "destroy", => @remove()
-
-
-    @settings.bind "change:mode", =>
-      if @settings.get("mode") is "presentation"
-        @_endDrag()
-        @_endEdit()
-      if @settings.get("mode") is "edit"
-        @startDrag()
-
 
     $(window).click (e) =>
       if $(e.target).has(@el).size() > 0
         @_offClick(e)
 
-
-    $(@el).click => @settings.set activeBox: @model.cid
 
     @settings.bind "change:activeBox", =>
       if @settings.get("activeBox") is @model.cid
@@ -50,24 +35,129 @@ class views.TextBox extends Backbone.View
         @$el.removeClass "selected"
 
 
+    @delegateEvents @baseEvents
 
-  events:
-    "click .edit": "startEdit"
-    "dblclick": "startEdit"
-    "click .delete": "delete"
-    "click": "zoom"
+
+  baseEvents:
     "click button.up": "up"
     "click button.down": "down"
+    "click": "zoom"
 
+    "click .delete": "delete"
+    "click": "activate"
+    "dragstart": "activate"
+
+    "resizestop": "saveEdit"
     "dragstop": "saveEdit"
-    "resizestop": "resized"
+
+  activate: ->
+    @settings.set activeBox: @model.cid
+
+  isActive: ->
+    @settings.get("activeBox") is @model.cid
 
   delete: ->
     @model.destroy()
 
-  resized: ->
-    @fitFontSize()
+  _offClick: (e) ->
+    return unless @isActive()
+
+    @settings.set activeBox: null
+
+    @$el.resizable()
     @saveEdit()
+
+    if @settings.get("mode") is "presentation"
+      $("body").zoomTo
+        targetSize: 1.0
+
+  startDrag: requireMode("edit") ->
+    @$el.draggable cursor: "pointer"
+
+  endDrag: ->
+    @$el.draggable "destroy"
+
+  up: ->
+    @model.trigger "pushup", @model
+
+  down: ->
+    @model.trigger "pushdown", @model
+
+  zoom: requireMode("presentation") ->
+    $(@el).zoomTo()
+
+  saveEdit: ->
+    @model.set
+      left: @$el.css "left"
+      top: @$el.css "top"
+      width: @$el.css "width"
+      height: @$el.css "height"
+      fontSize: @$el.css "font-size"
+
+  render: ->
+    @$el.resizable "destroy"
+
+    @$el.html @template @model.toJSON()
+
+    @$el.css
+      left: @model.get "left"
+      top: @model.get "top"
+      width: @model.get "width"
+      height: @model.get "height"
+      "z-index": @model.get "zIndex"
+      "background-color": @model.get("backgroundColor") or "white" # XXX
+
+    @$el.resizable()
+
+
+
+
+
+class views.PlainBox extends views.BaseBox
+
+  className: "box plainBox"
+
+  type: "plain"
+
+  constructor: ({@settings}) ->
+    super
+
+    source  = $("#plainboxTemplate").html()
+    @template = Handlebars.compile source
+
+  render: -> super
+
+
+
+
+
+class views.TextBox extends views.BaseBox
+
+  type: "text"
+
+  className: "box textBox"
+
+  constructor: ({@settings}) ->
+    super
+
+    source  = $("#textboxTemplate").html()
+    @template = Handlebars.compile source
+
+
+
+    @settings.bind "change:mode", =>
+      if @settings.get("mode") is "presentation"
+        @endDrag()
+        @_endEdit()
+      if @settings.get("mode") is "edit"
+        @_endEdit()
+        @startDrag()
+
+
+  events:
+    "click .edit": "startEdit"
+    "dblclick": "startEdit"
+
 
   # Find maximun font-size that fits in this widget
   fitFontSize: ->
@@ -106,109 +196,51 @@ class views.TextBox extends Backbone.View
 
 
 
-  up: ->
-    @model.trigger "pushup", @model
-
-  down: ->
-    @model.trigger "pushdown", @model
-
-
-  zoom: requireMode("presentation") ->
-    $(@el).zoomTo()
 
 
   _offClick: (e) ->
-    @settings.set activeBox: null
+    super
 
     if @settings.get("mode") is "edit"
+      @_endEdit()
       @startDrag()
-      @fitFontSize()
-      @saveEdit()
-
-    if @settings.get("mode") is "presentation"
-      $("body").zoomTo
-        targetSize: 1.0
 
 
   startEdit: requireMode("edit") ->
-    @_endDrag()
-    # @edit.bind "halloactivated", -> console.log "ACTIVEW"
-    # @edit.attr "contenteditable", true
-    # alert 23234
-    # @edit.hallo
-    #   editable: true
-    #   plugins:
-    #     halloformat: {}
+    @endDrag()
 
     $("span", @el).hallo
       editable: true
       plugins:
         halloformat: {}
-        hallolink: {}
 
     @edit.focus()
 
     @$el.addClass "editing"
 
   _endEdit: ->
-    # @edit.removeAttr "contenteditable"
-    # @edit.hallo editable: false
     @edit.blur()
-    $("span", @el).hallo
+    $(".content span", @el).hallo
       editable: false
       plugins:
         halloformat: {}
 
     @$el.removeClass "editing"
 
-  startDrag: requireMode("edit") ->
-    @_endEdit()
-
-
-    @$el.draggable
-      cursor: "pointer"
-      # zIndex: @model.get "zIndex"
-
 
 
   saveEdit: ->
-    @model.set
-      left: @$el.css "left"
-      top: @$el.css "top"
-      width: @$el.css "width"
-      height: @$el.css "height"
-      fontSize: @$el.css "font-size"
-      text: @$(".content span").html()
-    ,
-      silent: true
-
-    @model.save()
+    @fitFontSize()
+    @model.set text: @$(".content span").html()
+    super
 
 
-  _endDrag: ->
-    @$el.draggable "destroy"
 
   render: ->
+    super
 
-    @$el.resizable "destroy"
-
-    $(@el).html @template @model.toJSON()
-
-    $(@el).css
-      left: @model.get "left"
-      top: @model.get "top"
-      width: @model.get "width"
-      height: @model.get "height"
-      "font-size": @model.get "font-size"
-
+    @$el.css "font-size", @model.get "font-size"
     @edit = @$(".content span")
 
-    $(@el).css "z-index",  @model.get "zIndex"
-    # $(@el).draggable "option", "zIndex", @model.get("zIndex")
-    # console.log "Setting #{ @model.get("name") } zIndex to #{ @model.get("zIndex") }"
-
-    @$el.resizable()
     @fitFontSize()
-
-
 

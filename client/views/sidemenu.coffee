@@ -33,6 +33,10 @@ class views.SideMenu extends Backbone.View
     source  = $("#sidemenuTemplate").html()
     @template = Handlebars.compile source
 
+    @boxProperties = new views.PropertiesManager
+      collection: @collection
+      settings: @settings
+
     @subviews =
       "toolbox": new views.ToolBox
       "layers": new views.Layers
@@ -85,5 +89,9 @@ class views.SideMenu extends Backbone.View
   render: ->
     @$el.html @template()
     @subviewContainer = @$(".media")
+
+    @boxProperties.render()
+    @$(".boxProperties").html @boxProperties.el
+
     @renderSubview()
 
