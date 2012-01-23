@@ -51,7 +51,10 @@ class BaseConfig extends Backbone.View
     @$el = $ @el
 
   render: ->
-    @$el.html "<div>Config for #{ @constructor.name } is not implemented yet</div>"
+    if @template
+      @$el.html @template @model.toJSON()
+    else
+      @$el.html "<div>Config for #{ @constructor.name } is not implemented yet</div>"
 
 
 class configs.BackgroundColor extends BaseConfig
@@ -130,9 +133,22 @@ class configs.ImageSrc extends BaseConfig
   onKeyUp: ->
     @model.set imgSrc: @$("input").val()
 
-  render: ->
-    @$el.html @template @model.toJSON()
 
+
+
+class configs.TextEditor extends BaseConfig
+
+  className: "config texteditor"
+
+  constructor: ->
+    super
+    source  = $("#config_texteditorTemplate").html()
+    @template = Handlebars.compile source
+
+
+  remove: ->
+    @model.set text: @$("textarea").val()
+    super
 
 
 

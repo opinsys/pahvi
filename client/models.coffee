@@ -40,6 +40,11 @@ class models.Settings extends Backbone.Model
 
 class BaseBoxModel extends LocalStore
 
+  constructor: ->
+    super
+    @set type: @type
+
+
 class models.TextBoxModel extends BaseBoxModel
 
   type: "text"
