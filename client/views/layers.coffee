@@ -13,74 +13,80 @@ class views.Layers extends Backbone.View
     @template = Handlebars.compile source
 
     @collection.bind "add", =>
-      @updateZIndexes @collection.map (box) -> box.cid
+      @updateZIndexes @collection.map (box) -> box.id
       @render()
 
-    @collection.bind "destroy", (box) =>
-      @render()
+    @collection.bind "destroy", (box) => @render()
 
-
-    @collection.bind "pushdown", (box) =>
-      console.log "push DOWN", box
-      @move box, -1
-
-    @collection.bind "pushup", (box) =>
-      console.log "push UP", box
-      @move box, 1
+    @collection.bind "pushdown", (box) => @move box, -1
+    @collection.bind "pushup", (box) => @move box, 1
 
 
     @settings.bind "change:activeBox", =>
       @$(".layersSortable li").removeClass "selected"
-      if cid = @settings.get "activeBox"
-        @$(".layersSortable li##{ cid }").addClass "selected"
+      if id = @settings.get "activeBox"
+
+        e = @$(".layersSortable li").filter( ->
+          $(this).data("id") is id
+        ).addClass "selected"
+
+
+    @settings.bind "change:hoveredBox", =>
+      @$(".layersSortable li").removeClass "hovering"
+      if id = @settings.get "hoveredBox"
+        @$(".layersSortable li[data-id='#{ id }'").addClass "hovering"
 
 
 
   events:
     "sortupdate": "updateFromSortable"
-    "hover li": "updateHover"
+    "hover li": "onHoverLayer"
+    "click li": "onClickLayer"
     "click button.delete": "delete"
 
   delete: (e, ui) ->
-    cid = $(e.target).parent("li").attr("id")
-    model = @collection.getByCid cid
+    id = $(e.target).parent("li").attr("id")
+    model = @collection.get id
     model.destroy()
 
-  updateHover: (e) ->
-    @settings.set activeBox: $(e.target).attr "id"
+  onClickLayer: (e) ->
+    @settings.set activeBox: $(e.target).data "id"
+
+  onHoverLayer: (e) ->
+    @settings.set hoveredBox: $(e.target).data "id"
 
   move: (box, offset) ->
 
     currentIndex = @collection.indexOf box
     newIndex = currentIndex + offset * -1
 
-    orderedCids = @collection.map (box) -> box.cid
+    orderedIds = @collection.map (box) -> box.id
 
-    console.log "#{ box.get "name" } moving from #{ currentIndex } to #{ newIndex }"
-    console.log "Before", JSON.stringify orderedCids
+    console.log "#{ box.get "id" } moving from #{ currentIndex } to #{ newIndex }"
+    console.log "Before", JSON.stringify orderedIds
 
-    tmp = orderedCids[newIndex]
-    orderedCids[newIndex] = box.cid
+    tmp = orderedIds[newIndex]
+    orderedIds[newIndex] = box.id
 
-    orderedCids[currentIndex] = tmp if tmp
+    orderedIds[currentIndex] = tmp if tmp
 
-    console.log "After", JSON.stringify orderedCids
+    console.log "After", JSON.stringify orderedIds
 
-    orderedCids.reverse()
-    @updateZIndexes orderedCids
+    orderedIds.reverse()
+    @updateZIndexes orderedIds
 
 
   updateFromSortable: ->
     console.log "SORT update"
-    orderedCids = @sortable.sortable "toArray"
-    orderedCids.reverse()
-    @updateZIndexes orderedCids
+    orderedIds = @sortable.sortable "toArray"
+    orderedIds.reverse()
+    @updateZIndexes orderedIds
 
 
-  updateZIndexes: (orderedCids) ->
+  updateZIndexes: (orderedIds) ->
 
-    for cid, index in orderedCids
-      if model = @collection.getByCid cid
+    for id, index in orderedIds
+      if model = @collection.get id
         model.set zIndex: index + 100
 
     @collection.sort()
@@ -89,8 +95,7 @@ class views.Layers extends Backbone.View
   render: ->
     $(@el).html @template
       boxes: @collection.map (m) ->
-        cid: m.cid
-        name: m.get "name"
+        id: m.id
         zIndex: m.get "zIndex"
 
     console.log "SORT RENDER"

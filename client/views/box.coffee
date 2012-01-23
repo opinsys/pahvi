@@ -100,10 +100,10 @@ class views.BaseBox extends Backbone.View
     @$el.removeClass "selected"
 
   activate: ->
-    @settings.set activeBox: @model.cid
+    @settings.set activeBox: @model.id
 
   isActive: ->
-    @settings.get("activeBox") is @model.cid
+    @settings.get("activeBox") is @model.id
 
   deactivate: ->
     @settings.set activeBox: null

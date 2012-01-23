@@ -5,8 +5,6 @@ configureViews = NS "Pahvi.views.configure"
 
 class views.Cardboard extends Backbone.View
 
-  el: ".pahvi"
-
 
   # Create model/view/configure mapping of available Box types.  Box Models,
   # Views and Configure views are connected together by their `type` property.
@@ -32,7 +30,7 @@ class views.Cardboard extends Backbone.View
       {View} = Cardboard.types[boxModel.type]
 
       boxView = new View
-        settings: settings
+        settings: @settings
         model: boxModel
 
       @$el.append boxView.el
@@ -40,7 +38,7 @@ class views.Cardboard extends Backbone.View
       boxView.render()
       boxView.activateDrag()
 
-      @settings.set activeBox: boxModel.cid
+      @settings.set activeBox: boxModel.id
 
   events:
     "drop": "dropped"
@@ -62,20 +60,20 @@ class views.Cardboard extends Backbone.View
 
     {Model} = Cardboard.types[type]
 
-    if not options?.name
-      options.name = Model::defaults.name
+    if not options?.id
+      options.id = Model::defaults.id
 
-    proposedName = options.name
+    proposedId = options.id
     i = 0
 
     loop
       existing = @collection.find (m) ->
-        m.get("name") is options.name
+        m.id is options.id
 
       break if not existing
-      options.name = "#{ proposedName } #{ ++i }."
+      options.id = "#{ proposedId } #{ ++i }."
 
-    boxModel = new Model name: options.name
+    boxModel = new Model options
     @collection.add boxModel
     boxModel
 

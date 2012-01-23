@@ -19,16 +19,16 @@ class LocalStore extends Backbone.Model
   constructor: ->
     super
 
-    if localStorage[@get("name")]?
-      @attributes = JSON.parse localStorage[@get("name")]
+    if localStorage[@get("id")]?
+      @attributes = JSON.parse localStorage[@get("id")]
 
     @bind "change", => @save()
 
   save: ->
-    localStorage[@get("name")] = JSON.stringify @attributes
+    localStorage[@get("id")] = JSON.stringify @attributes
 
   destroy: ->
-    delete localStorage[@get("name")]
+    delete localStorage[@get("id")]
     @trigger "destroy", this
 
 
@@ -52,7 +52,7 @@ class models.TextBoxModel extends BaseBoxModel
   ]
 
   defaults:
-    name: "Text Box"
+    id: "Text Box"
     top: "100px"
     left: "100px"
     zIndex: 100
@@ -71,7 +71,7 @@ class models.PlainBoxModel extends BaseBoxModel
   ]
 
   defaults:
-    name: "Plain Box"
+    id: "Plain Box"
     top: "100px"
     left: "100px"
     zIndex: 100
