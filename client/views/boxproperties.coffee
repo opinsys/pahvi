@@ -92,6 +92,10 @@ class configs.BackgroundColor extends BaseConfig
     @model.set ob
 
   render: ->
+    $("button.color").tooltip
+      effect: "fade",
+      position: "center left"
+    
     @$el.html @template
       title: @title
       colors: @colors.map (color) =>
