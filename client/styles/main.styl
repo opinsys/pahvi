@@ -33,7 +33,7 @@ plainbox_icon_position_hover = 10px -880px
 
 body
   font 1em/1.4 "Helvetica Neue","Lucida Grande", tahoma, arial, sans-serif
-  
+  overflow hidden
 h1,h2
   margin 0
   padding 0
@@ -169,7 +169,18 @@ button:hover
         min-width 100px
         &.selected
           box-shadow 0 3px 10px pahvigreen, 0 -3px 10px pahvigreen
-        
+          .transformable-handle-rotate
+            background iconurl no-repeat 0 -930px pahvigray
+            border-radius 20px
+            height 20px
+            left -15px
+            padding 5px
+            top -40px !important
+            width 20px
+        &.hovering
+          box-shadow 0 10px 10px pahviyellow, 0 -10px 10px pahviyellow
+        .transformable-handle-rotate
+          background none
       // Only text box needs bottom padding?
       .textBox
         padding-bottom 0.5em
@@ -376,12 +387,13 @@ button:hover
 body.presentation
   .container
     overflow auto
-
   .box
     box-shadow none !important
     cursor url("/img/zoom-cursor.png") 15 15, pointer !important
     .content
       padding 0 !important
+  	.box.selected
+  	  cursor auto !important
   .pasteboard
     cursor url("/img/zoom-out-cursor.png") 15 15, pointer !important
 
@@ -417,14 +429,6 @@ body.presentation
     line-height 1
     margin 0 0 0.5em
     padding 0
-  figure
-    float left
-    margin 0 0 1em
-    min-height 120px
-    min-width 100px
-    padding 0 1em 0
-    position relative
-    text-align center
     span
       font-size 0.8em
       display block
@@ -439,7 +443,11 @@ body.presentation
       margin 0 auto 1em
       height 80px
       width 80px
-      
+
+  .configs > div
+    padding 0.5em 0
+    &:not(:first-child)
+      border-top 2px solid pahvigray
   .colorConfig
     h1
       font-size 1em
