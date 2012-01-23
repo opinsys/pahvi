@@ -1,5 +1,6 @@
 
 views = NS "Pahvi.views"
+configs = NS "Pahvi.configs"
 
 
 requireMode = (mode) -> (method) -> ->
@@ -44,7 +45,6 @@ class views.BaseBox extends Backbone.View
         @$el.removeClass "hovering"
 
 
-    @settings.bind "change:mode", => @render()
 
 
 
@@ -172,8 +172,6 @@ class views.ImageBox extends views.BaseBox
     source  = $("#imageboxTemplate").html()
     @template = Handlebars.compile source
 
-    @model.bind "change:imgSrc", =>
-      @render()
 
 
 
@@ -214,15 +212,15 @@ class views.TextBox extends views.BaseBox
       # one pixel precision to optimal size
       if size is prev
         # Go one size back to prevent edge case overflow and be done with it.
-        @edit.css "font-size", "#{ size - 1 }px"
+        @text.css "font-size", "#{ size - 1 }px"
         return
 
       prev = size
 
-      @edit.css "font-size", "#{ size }px"
+      @text.css "font-size", "#{ size }px"
 
       # Check widget boundaries
-      if parseInt(@edit.width()) >= maxWidth or parseInt(@edit.height()) >= maxHeight
+      if parseInt(@text.width()) >= maxWidth or parseInt(@text.height()) >= maxHeight
         # Font overflown. Take smaller half
         return recurse min, size
       else
@@ -237,36 +235,19 @@ class views.TextBox extends views.BaseBox
     @fitFontSize()
 
 
-  onOffClick: (e) ->
-    super
-    if @settings.get("mode") is "edit"
-      @_endEdit()
-
-
   startEdit:  ->
-
-    $("span", @el).hallo
-      editable: true
-      plugins:
-        halloformat: {}
-
-    @edit.focus()
 
     @$el.addClass "editing"
 
-  _endEdit: ->
-    @edit.blur()
-    $(".content span", @el).hallo
-      editable: false
-      plugins:
-        halloformat: {}
+    lightbox = new views.LightBox
+      views: new configs.TextEditor
+        model: @model
 
-    @$el.removeClass "editing"
-    @fitFontSize()
-    @model.set text: @$(".content span").html()
+    lightbox.bind "close", =>
+      @$el.removeClass "editing"
 
-
-
+    lightbox.render()
+    $("body").append lightbox.el
 
 
 
@@ -275,7 +256,8 @@ class views.TextBox extends views.BaseBox
 
     @$el.css "font-size", @model.get "font-size"
     @$el.css "color", @model.get "textColor"
-    @edit = @$(".content span")
+    @text = @$(".content span")
+    @text.html @model.get "text"
 
     @fitFontSize()
 
