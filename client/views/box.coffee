@@ -31,15 +31,9 @@ class views.BaseBox extends Backbone.View
 
     @settings.bind "change:activeBox", =>
       if @isActive()
-          @onActivate()
+        @onActivate()
       else
         @onDeactivate()
-
-
-    @$el.hover =>
-      @settings.set hoveredBox: @model.id
-    , =>
-      @settings.set hoveredBox: null
 
     @settings.bind "change:hoveredBox", =>
       if @settings.get("hoveredBox") is @model.id
@@ -63,6 +57,8 @@ class views.BaseBox extends Backbone.View
     "click button.down": "down"
 
     "click": "activate"
+    "mouseenter": "onMouseEnter"
+    "mouseleave": "onMouseLeave"
 
     "click .delete": "delete"
     "dragstart": "activate"
@@ -71,6 +67,12 @@ class views.BaseBox extends Backbone.View
     "resizestop": "saveEdit"
     "dragstop": "saveEdit"
 
+  onMouseEnter: (e) ->
+    console.log "Settting #{ @model.id } as hovered"
+    @settings.set hoveredBox: @model.id
+
+  onMouseLeave: (e) ->
+    @settings.set hoveredBox: null
 
   startPresentation: ->
     @disableResize()

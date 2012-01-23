@@ -23,38 +23,47 @@ class views.Layers extends Backbone.View
 
 
     @settings.bind "change:activeBox", =>
-      @$(".layersSortable li").removeClass "selected"
-      if id = @settings.get "activeBox"
-        @$(".layersSortable li").filter( ->
-          $(this).data("id") is id
-        ).addClass "selected"
-
+      @addUniqueClass @settings.get("activeBox"), "selected"
 
     @settings.bind "change:hoveredBox", =>
-      @$(".layersSortable li").removeClass "hovering"
-      if id = @settings.get "hoveredBox"
-        @$(".layersSortable li").filter( ->
-          $(this).data("id") is id
-        ).addClass "hovering"
+      @addUniqueClass @settings.get("hoveredBox"), "hovering"
+
 
 
 
   events:
     "sortupdate": "updateFromSortable"
-    "hover li": "onHoverLayer"
-    "click li": "onClickLayer"
     "click button.delete": "delete"
+    "click .layersSortable li": "onClickItem"
+    "mouseenter .layersSortable li": "onMouseEnterItem"
+    "mouseleave .layersSortable li": "onMouseLeaveItem"
+
+
+  addUniqueClass: (id, className) ->
+    return if not @items
+    @items.removeClass(className)
+    if id
+      selected = @items.filter(-> $(this).data("id") is id)
+      console.log "selecting #{ id }", selected, className
+      selected.addClass className
+
 
   delete: (e, ui) ->
     id = $(e.target).parent("li").attr("id")
     model = @collection.get id
     model.destroy()
 
-  onClickLayer: (e) ->
+
+  onMouseEnterItem: (e) ->
+    @settings.set hoveredBox: $(e.target).data "id"
+
+  onMouseLeaveItem: (e) ->
+    @settings.set hoveredBox: null
+
+
+  onClickItem: (e) ->
     @settings.set activeBox: $(e.target).data "id"
 
-  onHoverLayer: (e) ->
-    @settings.set hoveredBox: $(e.target).data "id"
 
   move: (box, offset) ->
 
@@ -99,8 +108,9 @@ class views.Layers extends Backbone.View
         id: m.id
         zIndex: m.get "zIndex"
 
-    console.log "SORT RENDER"
-
-
     @sortable = @$("ul").sortable()
+    @items = @$(".layersSortable li")
+
+
+
 
