@@ -79,6 +79,10 @@ $ ->
     settings: settings
     collection: boxes
 
+  board.open (err) =>
+    throw err if err
+    console.log "Cardboard open"
+
   board.render()
 
 
