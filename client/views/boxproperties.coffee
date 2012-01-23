@@ -66,8 +66,9 @@ class configs.BackgroundColor extends BaseConfig
     [ "White", "#ffffff" ],
     [ "Pahvi Yellow", "#fffdf1" ],
     [ "Pahvi Cream", "#f5f4f0" ],
-    [ "Pahvi Gray", "#363636" ],
     [ "Gray", "#c2c2c2" ],
+    [ "Pahvi Gray", "#363636" ],
+    [ "Black", "#000000" ],
   ]
 
   title: "Background Color"
