@@ -63,3 +63,6 @@ $ ->
 
   board.loadBoxesFromLocalStorage()
   Backbone.history.start()
+
+  views.showMessage "Welcome to Pahvi!"
+
