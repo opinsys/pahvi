@@ -13,7 +13,10 @@ class views.Cardboard extends Backbone.View
   # This will go through those and creates `Cardboard.types` mapping for them.
   # Later this can be used to get corresponding View/Model/CongigureView
   Cardboard.types = {}
-  for metaClassName, namespace of {Model: models, View: views, ConfView: configureViews}
+  typeSources =
+    Model: models
+    View: views
+  for metaClassName, namespace of typeSources
     for __, metaClass of namespace when metaClass.prototype?.type
       Cardboard.types[metaClass.prototype.type] ?= {}
       Cardboard.types[metaClass.prototype.type][metaClassName] = metaClass
