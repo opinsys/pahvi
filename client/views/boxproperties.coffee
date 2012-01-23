@@ -59,9 +59,15 @@ class configs.BackgroundColor extends BaseConfig
   className: "config colorConfig backgroundColor"
 
   colors: [
+    [ "Transparent", "transparent" ],
     [ "Red", "#ff0000" ],
     [ "Green", "#008000" ],
     [ "Blue", "#0000ff" ],
+    [ "White", "#ffffff" ],
+    [ "Pahvi Yellow", "#fffdf1" ],
+    [ "Pahvi Cream", "#f5f4f0" ],
+    [ "Pahvi Gray", "#363636" ],
+    [ "Gray", "#c2c2c2" ],
   ]
 
   title: "Background Color"
@@ -90,6 +96,7 @@ class configs.BackgroundColor extends BaseConfig
       colors: @colors.map (color) =>
         name: color[0]
         value: color[1]
+        transparent: color[1] is "transparent"
         current: color[1] is @model.get @colorProperty
 
 

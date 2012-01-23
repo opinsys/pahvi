@@ -4,6 +4,7 @@ pahviyellow = #fffdf1
 pahvicream = #f5f4f0
 pahvigray = #363636
 pahvigreen = #339900
+pahvilightgreen = #d6f3c7
 pahvired = #FF0000
 pahviblue = #A2D7F5 !important
 iconurl = url("/img/iconset.png")
@@ -29,6 +30,7 @@ image_icon_position_hover = 10px -35px
 plainbox_icon_position = 10px -835px
 plainbox_icon_position_hover = 10px -880px
 
+
 body
   font 1em/1.4 "Helvetica Neue","Lucida Grande", tahoma, arial, sans-serif
   
@@ -38,7 +40,7 @@ h1,h2
   
 h1
   font-size 3em
-  font-weight 500
+  font-weight 800
   
 h2
   font-size 1.5em
@@ -103,10 +105,10 @@ button:hover
     h1,h2
       color pahviyellow
       line-height 1
-      text-shadow 0 -1px 3px pahvigray, 0 2px 4px pahvigray
+      text-shadow  0 2px 3px pahvigray
       text-transform uppercase
     h2
-      font-size 0.9em
+      font-size 0.8em
       
   .wrap
     height 100%
@@ -124,8 +126,15 @@ button:hover
       
       .box.ui-draggable-dragging
         border dotted 2px black !important
-        box-shadow 0px 0px 10px black
+        box-shadow 0px 0px 20px black !important
         cursor move !important
+      .box.ui-draggable-dragging .tools
+        border-left dotted 2px black !important
+        border-right dotted 2px black !important
+        border-top dotted 2px black !important
+        margin-left -1px
+      .box.ui-draggable
+        cursor pointer
         
       .menu
         margin 0 5px 0
@@ -159,7 +168,7 @@ button:hover
         min-height 100px
         min-width 100px
         &.selected
-          box-shadow 0 3px 5px pahvigreen, 0 -3px 5px pahvigreen
+          box-shadow 0 3px 10px pahvigreen, 0 -3px 10px pahvigreen
         
       // Only text box needs bottom padding?
       .textBox
@@ -359,32 +368,6 @@ button:hover
               background-position text_icon_position
             .image
               background-position image_icon_position
-          .layerProperties
-            margin 0
-            padding 0
-            >div
-              border 1px solid black
-              margin 0
-              padding 1em 50px 1em 1em
-              width 80%
-            h2
-              margin 0 0 0.25em
-              padding 0
-            figure
-              float left
-              margin 0
-              padding 0 1em 0 0
-            span
-              font-size 0.7em
-              display block
-              padding 0
-              margin 0 0 0.2em
-              text-align center
-            .colorPicker
-              background-color pahvigreen
-              border 2px solid black
-              height 80px
-              width 80px
 
 
 .hallotoolbar
@@ -396,11 +379,11 @@ body.presentation
 
   .box
     box-shadow none !important
-    cursor url("/img/zoom-cursor.png") 15 15, pointer
+    cursor url("/img/zoom-cursor.png") 15 15, pointer !important
     .content
       padding 0 !important
   .pasteboard
-    cursor url("/img/zoom-out-cursor.png") 15 15, pointer
+    cursor url("/img/zoom-out-cursor.png") 15 15, pointer !important
 
   .box .tools
     display none !important
@@ -420,15 +403,54 @@ body.presentation
   width 100%
   height 100%
 
-
 .boxProperties
+  background-color white
+  margin 0
+  padding 1em
+  >div
+    border 1px solid black
+    margin 0
+    padding 1em 50px 1em 1em
+    width 80%
+  h1
+    font-size 1.5em
+    line-height 1
+    margin 0 0 0.5em
+    padding 0
+  figure
+    float left
+    margin 0 0 1em
+    min-height 120px
+    min-width 100px
+    padding 0 1em 0
+    position relative
+    text-align center
+    span
+      font-size 0.8em
+      display block
+      padding 0
+      margin 0.2em 0
+    .colorPicker
+      background-color pahvigreen
+      border 2px solid black
+      height 80px
+      width 80px
+    .slider
+      margin 0 auto 1em
+      height 80px
+      width 80px
+      
   .colorConfig
     h1
-      font-size 14pt
+      font-size 1em
     button
       border 2px solid gray
-      width 20px
-      height 20px
+      height 40px
+      margin 0.25em
+      padding 0
+      width 40px
+      &.transparentColor
+        background url("/img/transparent.png") no-repeat 0 0 transparent
     button.selectedColor
       border 2px solid black
 

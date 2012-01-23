@@ -78,7 +78,7 @@ class views.SideMenu extends Backbone.View
 
   renderSubview: ->
 
-    currentView = @subviews[@settings.get("sideMenu") or "layers"]
+    currentView = @subviews[@settings.get("sideMenu") or "toolbox"]
     currentView.render()
 
     for k, view of @subviews
