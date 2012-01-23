@@ -5,8 +5,6 @@ views = NS "Pahvi.views"
 
 class views.Menu extends Backbone.View
 
-  events:
-    "click button.modeToggle": "toggle"
 
   constructor: ({@settings}) ->
     super
@@ -15,6 +13,10 @@ class views.Menu extends Backbone.View
     @template = Handlebars.compile source
 
     @settings.bind "change:mode", => @render()
+
+
+  events:
+    "click button.modeToggle": "toggle"
 
 
   toggle: ->

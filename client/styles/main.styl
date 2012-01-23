@@ -167,6 +167,8 @@ button:hover
         border 1px solid black
         min-height 100px
         min-width 100px
+        &.hovering
+          box-shadow 0 3px 10px blue, 0 -3px 10px blue
         &.selected
           box-shadow 0 3px 10px pahvigreen, 0 -3px 10px pahvigreen
         
@@ -279,6 +281,8 @@ button:hover
         display block
         height 100%
         width 100%
+        .hovering
+          box-shadow 0 3px 10px blue, 0 -3px 10px blue // Kauhea! korjaa :)
         .selected
           background-color pahviblue
           border 2px solid pahvigreen !important
@@ -317,7 +321,7 @@ button:hover
             background-image iconurl
             background-position text_icon_position
             background-repeat no-repeat
-            &:hover
+            &.hovering
               background-position text_icon_position_hover
           .plainbox
             background-image iconurl

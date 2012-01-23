@@ -35,6 +35,19 @@ class views.BaseBox extends Backbone.View
       else
         @onDeactivate()
 
+
+    @$el.hover =>
+      @settings.set hoveredBox: @model.id
+    , =>
+      @settings.set hoveredBox: null
+
+    @settings.bind "change:hoveredBox", =>
+      if @settings.get("hoveredBox") is @model.id
+        @$el.addClass "hovering"
+      else
+        @$el.removeClass "hovering"
+
+
     @settings.bind "change:mode", =>
 
       if @settings.get("mode") is "presentation"
