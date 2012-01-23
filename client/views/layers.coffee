@@ -25,8 +25,7 @@ class views.Layers extends Backbone.View
     @settings.bind "change:activeBox", =>
       @$(".layersSortable li").removeClass "selected"
       if id = @settings.get "activeBox"
-
-        e = @$(".layersSortable li").filter( ->
+        @$(".layersSortable li").filter( ->
           $(this).data("id") is id
         ).addClass "selected"
 
@@ -34,7 +33,9 @@ class views.Layers extends Backbone.View
     @settings.bind "change:hoveredBox", =>
       @$(".layersSortable li").removeClass "hovering"
       if id = @settings.get "hoveredBox"
-        @$(".layersSortable li[data-id='#{ id }'").addClass "hovering"
+        @$(".layersSortable li").filter( ->
+          $(this).data("id") is id
+        ).addClass "hovering"
 
 
 
