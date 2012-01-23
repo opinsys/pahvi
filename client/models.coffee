@@ -72,6 +72,7 @@ class LocalStore extends Backbone.Model
 
   constructor: ->
     super
+    @set type: @type
 
   destroy: ->
     console.log "Not implemented"
