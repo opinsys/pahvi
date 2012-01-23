@@ -27,13 +27,15 @@ class views.BaseBox extends Backbone.View
 
     $(window).click (e) =>
       if $(e.target).has(@el).size() > 0
-        @_offClick(e)
+        @onOffClick(e)
 
     @settings.bind "change:activeBox", =>
-      if @isActive()
-        @onActivate()
-      else
-        @onDeactivate()
+      @$el.removeClass "selected"
+      return if not @isActive()
+      @$el.addClass "selected"
+      if @settings.get("mode") is "presentation"
+        @$el.zoomTo()
+
 
     @settings.bind "change:hoveredBox", =>
       if @settings.get("hoveredBox") is @model.id
@@ -42,13 +44,7 @@ class views.BaseBox extends Backbone.View
         @$el.removeClass "hovering"
 
 
-    @settings.bind "change:mode", =>
-
-      if @settings.get("mode") is "presentation"
-        @startPresentation()
-
-      if @settings.get("mode") is "edit"
-        @endPresentation()
+    @settings.bind "change:mode", => @render()
 
 
 
@@ -62,83 +58,38 @@ class views.BaseBox extends Backbone.View
 
     "click .delete": "delete"
     "dragstart": "activate"
-    "resizestart": "activate"
-
-    "resizestop": "saveEdit"
-    "dragstop": "saveEdit"
+    "resizestop": "onResizeStop"
+    "dragstop": "onDragStop"
 
   onMouseEnter: (e) ->
-    console.log "Settting #{ @model.id } as hovered"
     @settings.set hoveredBox: @model.id
 
   onMouseLeave: (e) ->
     @settings.set hoveredBox: null
 
-  startPresentation: ->
-    @disableResize()
-    @disableDrag()
-    @deactivate()
-
-
-  endPresentation: ->
-    @activateResize()
-    @activateDrag()
-
-  activateDrag: requireMode("edit") -> @$el.draggable()
-  disableDrag: -> @$el.draggable "destroy"
-
-  activateResize: ->
-    @$el.resizable()
-    @$el.transformable
-      skewable: false
-      scalable: false
-      rotatable: true
-      rotateStop: => @onRotateStop.apply this, arguments
-
-
   onRotateStop: (e, ui) ->
     @model.set rotate: ui.angle.rad
-
-  disableResize: ->
-    @$el.resizable "destroy"
-    @$el.transformable "destroy"
-
-  onActivate: ->
-
-    if @settings.get("mode") is "presentation"
-      @$el.zoomTo()
-
-    @$el.addClass "selected"
-
-
-  onDeactivate: ->
-    @$el.removeClass "selected"
 
   activate: ->
     @settings.set activeBox: @model.id
 
-  isActive: ->
-    @settings.get("activeBox") is @model.id
-
   deactivate: ->
     @settings.set activeBox: null
+
+  isActive: ->
+    @settings.get("activeBox") is @model.id
 
   delete: ->
     @model.destroy()
 
-  _offClick: (e) ->
+  onOffClick: (e) ->
     return unless @isActive()
 
     @deactivate()
 
-    if @settings.get("mode") is "edit"
-      @saveEdit()
-
     if @settings.get("mode") is "presentation"
       $("body").zoomTo
         targetSize: 1.0
-
-
 
   up: ->
     @model.trigger "pushup", @model
@@ -146,18 +97,22 @@ class views.BaseBox extends Backbone.View
   down: ->
     @model.trigger "pushdown", @model
 
+  onResizeStop: ->
+    @model.set
+      width: @$el.css "width"
+      height: @$el.css "height"
 
-  saveEdit: ->
+  onDragStop: ->
     @model.set
       left: @$el.css "left"
       top: @$el.css "top"
-      width: @$el.css "width"
-      height: @$el.css "height"
-      fontSize: @$el.css "font-size"
+
 
   render: ->
 
-    @disableResize()
+    @$el.resizable "destroy"
+    @$el.transformable "destroy"
+    @$el.draggable "destroy"
 
     @$el.html @template @model.toJSON()
 
@@ -169,14 +124,22 @@ class views.BaseBox extends Backbone.View
       "z-index": @model.get "zIndex"
       "background-color": @model.get("backgroundColor") or "white" # XXX
 
-
+    @$el.setTransform "rotate", @model.get "rotate"
 
     # We need to activate resizable always after rendering because jQuery UI
     # adds some elements to this widget
     if @settings.get("mode") is "edit"
-      @activateResize()
+      @$el.resizable()
+      @$el.draggable()
+      @$el.transformable
+        skewable: false
+        scalable: false
+        rotatable: true
+        rotateStop: => @onRotateStop.apply this, arguments
 
-    @$el.setTransform "rotate", @model.get "rotate"
+    if @settings.get("mode") is "presentation"
+      "pass"
+
 
 
 
@@ -231,10 +194,6 @@ class views.TextBox extends views.BaseBox
     "click .edit": "startEdit"
     "dblclick": "startEdit"
 
-  startPresentation: ->
-    super
-    @_endEdit()
-
 
   # Find maximun font-size that fits in this widget
   fitFontSize: ->
@@ -270,21 +229,21 @@ class views.TextBox extends views.BaseBox
         # Font can be larger. Take bigger half
         return recurse size, max
 
+    @model.set fontSize: @$el.css "font-size"
 
 
-
-
-
-  _offClick: (e) ->
+  onResizeStop: ->
     super
+    @fitFontSize()
 
+
+  onOffClick: (e) ->
+    super
     if @settings.get("mode") is "edit"
       @_endEdit()
-      @activateDrag()
 
 
   startEdit:  ->
-    @disableDrag()
 
     $("span", @el).hallo
       editable: true
@@ -303,13 +262,11 @@ class views.TextBox extends views.BaseBox
         halloformat: {}
 
     @$el.removeClass "editing"
-
-
-
-  saveEdit: ->
     @fitFontSize()
     @model.set text: @$(".content span").html()
-    super
+
+
+
 
 
 
