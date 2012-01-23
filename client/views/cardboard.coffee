@@ -36,7 +36,6 @@ class views.Cardboard extends Backbone.View
       @$el.append boxView.el
 
       boxView.render()
-      boxView.activateDrag()
 
       @settings.set activeBox: boxModel.id
 
@@ -51,6 +50,13 @@ class views.Cardboard extends Backbone.View
         top: ui.offset.top + "px"
 
 
+
+  loadBoxesFromLocalStorage: ->
+    for id, json_s of localStorage
+      ob = JSON.parse json_s
+      {Model} = Cardboard.types[ob.type]
+      boxModel = new Model ob
+      @collection.add boxModel
 
 
 

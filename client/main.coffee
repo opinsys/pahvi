@@ -61,4 +61,5 @@ $ ->
   sidemenu.render()
 
 
+  board.loadBoxesFromLocalStorage()
   Backbone.history.start()
