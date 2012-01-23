@@ -194,9 +194,23 @@ class views.PlainBox extends views.BaseBox
     source  = $("#plainboxTemplate").html()
     @template = Handlebars.compile source
 
-  render: -> super
 
 
+
+class views.ImageBox extends views.BaseBox
+
+  className: "box imageBox"
+
+  type: "image"
+
+  constructor: ({@settings}) ->
+    super
+
+    source  = $("#imageboxTemplate").html()
+    @template = Handlebars.compile source
+
+    @model.bind "change:imgSrc", =>
+      @render()
 
 
 

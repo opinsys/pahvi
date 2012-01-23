@@ -77,3 +77,18 @@ class models.PlainBoxModel extends BaseBoxModel
     zIndex: 100
     "backgroundColor": "white"
 
+
+class models.ImageBox extends BaseBoxModel
+
+  type: "image"
+
+  configs: [
+    "ImageSrc",
+  ]
+
+  defaults:
+    id: "Image Box"
+    top: "100px"
+    left: "100px"
+    zIndex: 100
+

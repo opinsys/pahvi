@@ -110,6 +110,27 @@ class configs.TextColor extends configs.BackgroundColor
 
 
 
+class configs.ImageSrc extends BaseConfig
+  className: "config imageSrc"
+  title: "Text Color"
+
+  constructor: ->
+    super
+    source  = $("#config_imgsrcTemplate").html()
+    @template = Handlebars.compile source
+
+
+  events:
+    "blur input": "onKeyUp"
+
+  onKeyUp: ->
+    @model.set imgSrc: @$("input").val()
+
+  render: ->
+    @$el.html @template @model.toJSON()
+
+
+
 
 class configs.FontSize extends BaseConfig
 class configs.Border extends BaseConfig
