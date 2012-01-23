@@ -67,6 +67,9 @@ app.configure ->
   js.addFile rootDir + "/client/vendor/jquery-ui/jquery-ui.js"
   css.addFile rootDir + "/client/vendor/jquery-ui/jquery-ui.css"
 
+  js.addFile rootDir + "/client/vendor/jquery.transform.js"
+  js.addFile rootDir + "/client/vendor/jquery.transformable-v.3.js"
+
   css.addFile rootDir + "/client/vendor/zoomooz/zoomooz.css"
   js.addFile rootDir + "/client/vendor/zoomooz/sylvester.js"
   js.addFile rootDir + "/client/vendor/zoomooz/purecssmatrix.js"

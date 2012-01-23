@@ -48,7 +48,6 @@ class models.TextBoxModel extends BaseBoxModel
     "TextColor",
     "BackgroundColor",
     "FontSize",
-    "Rotation",
     "Border"
   ]
 
@@ -68,7 +67,6 @@ class models.PlainBoxModel extends BaseBoxModel
 
   configs: [
     "BackgroundColor",
-    "Rotation",
     "Border"
   ]
 

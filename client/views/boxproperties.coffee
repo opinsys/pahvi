@@ -111,5 +111,4 @@ class configs.TextColor extends configs.BackgroundColor
 
 
 class configs.FontSize extends BaseConfig
-class configs.Rotation extends BaseConfig
 class configs.Border extends BaseConfig

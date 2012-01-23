@@ -72,8 +72,21 @@ class views.BaseBox extends Backbone.View
   activateDrag: requireMode("edit") -> @$el.draggable()
   disableDrag: -> @$el.draggable "destroy"
 
-  activateResize: -> @$el.resizable()
-  disableResize: -> @$el.resizable "destroy"
+  activateResize: ->
+    @$el.resizable()
+    @$el.transformable
+      skewable: false
+      scalable: false
+      rotatable: true
+      rotateStop: => @onRotateStop.apply this, arguments
+
+
+  onRotateStop: (e, ui) ->
+    @model.set rotate: ui.angle.rad
+
+  disableResize: ->
+    @$el.resizable "destroy"
+    @$el.transformable "destroy"
 
   onActivate: ->
 
@@ -141,11 +154,14 @@ class views.BaseBox extends Backbone.View
       "z-index": @model.get "zIndex"
       "background-color": @model.get("backgroundColor") or "white" # XXX
 
+
+
     # We need to activate resizable always after rendering because jQuery UI
     # adds some elements to this widget
     if @settings.get("mode") is "edit"
       @activateResize()
 
+    @$el.setTransform "rotate", @model.get "rotate"
 
 
 
