@@ -3,6 +3,7 @@ bordergray = #c2c2c2
 pahviyellow = #fffdf1
 pahvicream = #f5f4f0
 pahvigray = #363636
+pahvilightgray = #f3f3f3
 pahvigreen = #339900
 pahvilightgreen = #d6f3c7
 pahvired = #FF0000
@@ -148,7 +149,8 @@ button:hover
           background-position switch_mode_icon_position_hover
 
       .tools
-        background-color #f3f3f3
+        background rgb(226,226,226)
+        background linear-gradient(top, rgba(226,226,226,1) 0%, rgba(242,242,242,1) 50%, rgba(226,226,226,1) 100%)
         border-left 1px solid pahvigray
         border-right 1px solid pahvigray
         border-top 1px solid pahvigray
@@ -202,7 +204,8 @@ button:hover
           &:hover
             background-color pahvigreen
         .name
-          margin-left 0.5em
+          line-height 1.75
+          margin-left 1em
         .down, .up
           height 25px
           padding 0
@@ -293,7 +296,7 @@ button:hover
         height 100%
         width 100%
         .hovering
-          box-shadow 0 3px 10px blue, 0 -3px 10px blue // Kauhea! korjaa :)
+          box-shadow 0 0 2px pahvigray, 0 10px 5px pahviyellow, 0 -10px 5px pahviyellow // Kauhea! korjaa :)
         .selected
           background-color pahviblue
           border 2px solid pahvigreen !important
@@ -332,7 +335,7 @@ button:hover
             background-image iconurl
             background-position text_icon_position
             background-repeat no-repeat
-            &.hovering
+            &:hover
               background-position text_icon_position_hover
           .plainbox
             background-image iconurl
@@ -359,7 +362,7 @@ button:hover
             margin 0
             padding 0
             li
-              background-color #f3f3f3
+              background-color pahvilightgray
               background-image iconurl
               background-repeat no-repeat
               border 2px solid pahvigray
@@ -429,7 +432,7 @@ body.presentation
     padding 1em 50px 1em 1em
     width 80%
   h1
-    font-size 1.5em
+    font-size 1.25em
     line-height 1
     margin 0 0 0.5em
     padding 0
@@ -449,12 +452,23 @@ body.presentation
       width 80px
 
   .configs > div
-    padding 0.5em 0
-    &:not(:first-child)
-      border-top 2px solid pahvigray
+    background-color rgb(242,242,242)
+    background-color rgba(242,242,242,0.8)
+    border-radius 5px 5px 0 0
+    margin 1em 0 0
+    padding 0
+    .config div
+      margin 0 0.25em
   .colorConfig
     h1
-      font-size 1em
+      background rgb(194,194,194)
+      background linear-gradient(top, rgba(226,226,226,1) 0%, rgba(242,242,242,1) 50%, rgba(226,226,226,1) 100%)
+      border-bottom 1px solid rgb(205,205,205)
+      border-radius 5px 5px 0 0
+      font-size 0.7em
+      padding 0.75em 0
+      text-align center
+      text-transform uppercase
     button
       border 2px solid gray
       height 40px

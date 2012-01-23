@@ -1,5 +1,6 @@
 <div class="config colorConfig {{extraClasses}}">
-  <h1 class="propertyTite">{{title}}</h1>
+  <h1 class="propertyTitle">{{title}}</h1>
+  <div>
   {{#each colors}}
 
     <button class="color{{#if this.current}} selectedColor{{/if}} {{#if this.transparent}} transparentColor{{/if}}"
@@ -8,4 +9,5 @@
             style="background-color: {{this.value}} !important"> </button>
 
   {{/each}}
+  </div>
 </div>
