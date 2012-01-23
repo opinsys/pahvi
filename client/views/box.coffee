@@ -17,7 +17,9 @@ class views.BaseBox extends Backbone.View
   type: null
 
   constructor: ({@settings}) ->
+    @events = _.extend {}, views.BaseBox::events, @events
     super
+
     @$el = $ @el
 
     @model.bind "change", => @render()
@@ -41,10 +43,9 @@ class views.BaseBox extends Backbone.View
       if @settings.get("mode") is "edit"
         @endPresentation()
 
-    @delegateEvents @baseEvents
 
 
-  baseEvents:
+  events:
     "click button.up": "up"
     "click button.down": "down"
 
@@ -237,7 +238,7 @@ class views.TextBox extends views.BaseBox
       @activateDrag()
 
 
-  startEdit: requireMode("edit") ->
+  startEdit:  ->
     @disableDrag()
 
     $("span", @el).hallo
