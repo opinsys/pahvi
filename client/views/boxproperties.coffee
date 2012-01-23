@@ -17,7 +17,7 @@ class views.PropertiesManager extends Backbone.View
     @activeConfigs = []
 
     @settings.bind "change:activeBox", =>
-      @model = @collection.getByCid @settings.get "activeBox"
+      @model = @collection.get @settings.get "activeBox"
       @render()
 
 
