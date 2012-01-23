@@ -491,12 +491,22 @@ body.presentation
 .lightbox
   z-index 100000
   position absolute
-  width 400px
-  margin 0 auto
-  top 200px
-  left 200px
-  background-color white
-  padding 2em
+  width 100%
+  height 100%
+  top 0px
+  left 0px
+  right 0px
+
+  .content
+    z-index 100001
+    padding 2em
+    margin auto 0
+    background-color white
+    position absolute
+    width 400px
+    top 200px
+    left 200px
+
   .close
     float right
 

@@ -27,28 +27,33 @@ class views.LightBox extends Backbone.View
   className: "lightbox"
 
   constructor: ({@views}) ->
-    if not _.isArray @views
-      @views = [ @views ]
-
     super
     @$el = $ @el
+
+    if not _.isArray @views
+      @views = [ @views ]
 
     source  = $("#lightboxTemplate").html()
     @template = Handlebars.compile source
 
-    $(window).click (e) =>
-      if $(e.target).has(@el).size() > 0
-        @onOffClick(e)
 
   events:
     "click .close": "close"
+    "click": "mightClose"
+
+  mightClose: (e) ->
+    if e.target is @el
+      @close()
 
   onOffClick: -> close()
 
   close: (e) ->
-    e.preventDefault()
+    @trigger "close", this
+    e.preventDefault() if e
+
     for view in @views
-      view.remove
+      view.remove()
+
     @remove()
 
 
