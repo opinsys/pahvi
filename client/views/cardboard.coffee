@@ -63,8 +63,8 @@ class views.Cardboard extends Backbone.View
       options.name = Model::defaults.name
 
     proposedName = options.name
-
     i = 0
+
     loop
       existing = @collection.find (m) ->
         m.get("name") is options.name
@@ -76,5 +76,9 @@ class views.Cardboard extends Backbone.View
     @collection.add boxModel
     boxModel
 
+
   render: ->
-    @$el.droppable -> alert "drop"
+    @$el.droppable()
+
+
+
