@@ -1,16 +1,62 @@
 
 
 models = NS "Pahvi.models"
-
+views = NS "Pahvi.views"
 
 
 class models.Boxes extends Backbone.Collection
 
-  constructor: ->
+  constructor: (opts) ->
+    {@typeMapping} = opts
+    {@id} = opts
+    delete opts.typeMapping
+    delete opts.id
     super
+
+    @bind "add", => @save()
+
 
   comparator: (box) ->
     -1 * parseInt box.get "zIndex"
+
+  getView: (type) ->
+    @typeMapping[type].View
+
+  getModel: (type) ->
+    @typeMapping[type].Model
+
+  loadBoxes: (cb) ->
+    for id, json_s of localStorage
+      ob = JSON.parse json_s
+      Model = @getModel ob.type
+      boxModel = new Model ob
+      @add boxModel
+    cb()
+
+  createBox: (type, options={}) ->
+    if not @typeMapping[type]
+      return alert "Unkown type #{ type }!"
+
+    {Model} = @typeMapping[type]
+
+    if not options?.id
+      options.id = Model::defaults.id
+
+    proposedId = options.id
+    i = 0
+
+    loop
+      existing = @find (m) ->
+        m.id is options.id # XXX @get ....
+
+      break if not existing
+      options.id = "#{ proposedId } #{ ++i }."
+
+    boxModel = new Model options
+    @add boxModel
+
+
+  save: ->
 
 
 class LocalStore extends Backbone.Model
@@ -95,4 +141,5 @@ class models.ImageBox extends BaseBoxModel
     top: "100px"
     left: "100px"
     zIndex: 100
+
 

@@ -98,7 +98,7 @@ class configs.BackgroundColor extends BaseConfig
     $("button.color").tooltip
       effect: "fade",
       position: "center left"
-    
+
     @$el.html @template
       title: @title
       colors: @colors.map (color) =>
@@ -140,6 +140,36 @@ class configs.TextEditor extends BaseConfig
 
   className: "config texteditor"
 
+  # Override annoying window popup in WYMeditor
+  origDialog = WYMeditor.editor.prototype.dialog
+  WYMeditor.editor.prototype.dialog = (type) ->
+
+    # Override only for links
+    if type isnt WYMeditor.DIALOG_LINK
+      return origDialog.apply this, arguments
+
+    wym = this
+
+    selected = wym.selected()
+    sStamp = wym.uniqueStamp()
+    if selected and selected.tagName and selected.tagName.toLowerCase isnt WYMeditor.A
+      selected = jQuery(selected).parentsOrSelf(WYMeditor.A)
+
+    # TODO: prompt is annoying too!
+    sUrl = prompt "url", selected[0]?.href
+
+    if sUrl.length > 0
+
+      if selected[0] and selected[0].tagName.toLowerCase() is WYMeditor.A
+        link = selected
+      else
+        wym._exec WYMeditor.CREATE_LINK, sStamp
+        link = jQuery "a[href=" + sStamp + "]", wym._doc.body
+
+      link.attr(WYMeditor.HREF, sUrl).attr WYMeditor.TITLE, jQuery(wym._options.titleSelector).val()
+
+
+
   constructor: ->
     super
     source  = $("#config_texteditorTemplate").html()
@@ -173,6 +203,7 @@ class configs.TextEditor extends BaseConfig
         {'name': 'Italic', 'title': 'Emphasis', 'css': 'wym_tools_emphasis'},
         {'name': 'CreateLink', 'title': 'Link', 'css': 'wym_tools_link'},
         {'name': 'Unlink', 'title': 'Unlink', 'css': 'wym_tools_unlink'},
+        {'name': 'ToggleHtml', 'title': 'HTML', 'css': 'wym_tools_html'},
       ]
 
 

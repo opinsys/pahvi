@@ -4,6 +4,20 @@ views = NS "Pahvi.views"
 models = NS "Pahvi.models"
 helpers = NS "Pahvi.helpers"
 
+# Create model/view/configure mapping of available Box types.  Box Models,
+# Views and Configure views are connected together by their `type` property.
+# This will go through those and creates `Boxes.types` mapping for them.
+# Later this can be used to get corresponding View/Model/CongigureView
+typeMapping = {}
+typeSources =
+  Model: models
+  View: views
+for metaClassName, namespace of typeSources
+  for __, metaClass of namespace when metaClass.prototype?.type
+    typeMapping[metaClass.prototype.type] ?= {}
+    typeMapping[metaClass.prototype.type][metaClassName] = metaClass
+
+
 class Workspace extends Backbone.Router
 
   constructor: ({@settings}) ->
@@ -50,6 +64,8 @@ $ ->
     id: "settings"
 
   boxes = new models.Boxes
+    id: window.location.pathname
+    typeMapping: typeMapping
 
 
 
@@ -77,7 +93,7 @@ $ ->
   sidemenu.render()
 
 
-  board.loadBoxes ->
+  boxes.loadBoxes ->
     router = new Workspace
       settings: settings
     Backbone.history.start()
