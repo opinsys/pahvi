@@ -37,18 +37,33 @@ class views.Cardboard extends Backbone.View
       console.log "Create new doc for Cardboard"
       @doc = doc
       if @doc.snapshot == null
-        @doc.submitOp([{p:[], od:null, oi:{}}])
+        @doc.submitOp([{ p:[], oi:[] }])
       else
         console.log "Create boxes by sharejs"
+        return if @doc.snapshot == ""
+        for box in @doc.snapshot
+          console.log box['name']
+          {Model} = Cardboard.types[ box['type'] ]
+          boxModel = new Model name: box['name']
+          do (boxModel) =>
+            boxModel.open (err) =>
+              throw err if err
+              @collection.add boxModel
 
       @doc.on 'remoteop', (op) =>
         console.log "Cardboard event: remoteop"
         console.log op
-        {Model} = Cardboard.types[@doc.snapshot["boxModel"]["type"]]
-        boxModel = new Model name: @doc.snapshot["boxModel"]["name"]
-        boxModel.open (err) =>
-          throw err if err
-          @collection.add boxModel
+        alreadyBoxes = @collection.map (box) =>
+          box.get('name')
+
+        for box in @doc.snapshot
+          if not _.include(alreadyBoxes, box['name'])
+            {Model} = Cardboard.types[box['type']]
+            boxModel = new Model name: box['name']
+            do (boxModel) =>
+              boxModel.open (err) =>
+                throw err if err
+                @collection.add boxModel
 
       cb err
 
