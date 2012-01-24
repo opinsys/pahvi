@@ -26,17 +26,56 @@ class models.Boxes extends Backbone.Collection
   getModel: (type) ->
     @typeMapping[type].Model
 
-  loadBoxes: (cb) ->
-    for id, json_s of localStorage
-      ob = JSON.parse json_s
-      if ob.type
-        Model = @getModel ob.type
-        boxModel = new Model ob
-        @add boxModel
-    cb()
-
   isUnique: (attr, value) ->
     not @find (box) -> box.get(attr) is value
+
+  loadBoxes: (totalCb) ->
+
+    @sharejsdoc.open (err) ->
+      throw err if err
+
+      boxMetaData = for k, value of @sharejsdoc.snapshot[@id]
+        # XXX
+        { id: value.id, type: value.type }
+
+      async.forEach boxMetaData, (ob, cb) ->
+
+        Model = @getModel ob.type
+
+        boxModel = new Model
+          id: ob.id
+
+        @openBox.openBox boxModel, cb
+
+      , totalCb
+
+
+  createBox: (type, options={}) ->
+    if not @typeMapping[type]
+      return alert "Unkown type #{ type }!"
+
+    Model = @getModel type
+
+    if not options?.id
+      options.id = Model::defaults.id
+
+    proposedId = options.id
+    i = 0
+
+    loop
+      existing = @find (m) ->
+        m.id is options.id
+
+      break if not existing
+      options.id = "#{ proposedId } #{ ++i }."
+
+    @openBox new Model options
+
+  openBox: (box, cb=->) ->
+    box.open @sharejsdoc, (err) ->
+      throw err if err
+      @add box
+      cb()
 
   makeUniqueName: (proposedName) ->
 
@@ -48,24 +87,6 @@ class models.Boxes extends Backbone.Collection
       name = "#{ proposedName } #{ i }."
 
     return name
-
-  createBox: (type, options={}) ->
-    if not @typeMapping[type]
-      return alert "Unkown type #{ type }!"
-
-    {Model} = @typeMapping[type]
-
-    if not options?.name
-      options.name = Model::defaults.name
-
-    options.name = @makeUniqueName options.name
-
-    options.id = helpers.generateGUID()
-    boxModel = new Model options
-    @add boxModel
-
-
-  save: ->
 
 
 class LocalStore extends Backbone.Model
@@ -122,6 +143,12 @@ class LocalStore extends Backbone.Model
     for key, value of attributes
       submitOpValue.push { p:[key], od:null, oi:value }
     @doc.submitOp(submitOpValue)
+
+
+  open: (sharejsdoc, cb) ->
+    @doc = sharejsdoc
+    @set sharejsdoc.snapshot[@id] # XXX ....
+    cb()
 
 
 class models.Settings extends Backbone.Model
