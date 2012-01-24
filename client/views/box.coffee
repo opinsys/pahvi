@@ -251,8 +251,7 @@ class views.TextBox extends views.BaseBox
     lightbox.bind "close", =>
       @$el.removeClass "editing"
 
-    lightbox.render()
-    $("body").append lightbox.el
+    lightbox.renderToBody()
 
 
 

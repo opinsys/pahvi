@@ -18,9 +18,8 @@ views.showMessage = (msg) ->
   lb = new views.LightBox
     views: new views.Info
       msg: msg
-  lb.render()
+  lb.renderToBody()
 
-  $("body").append lb.el
 
 class views.LightBox extends Backbone.View
 
@@ -64,4 +63,8 @@ class views.LightBox extends Backbone.View
     for view in @views
       view.render()
       viewContainer.append view.el
+
+  renderToBody: ->
+    @render()
+    $("body").append @el
 
