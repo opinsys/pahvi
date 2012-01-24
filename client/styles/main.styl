@@ -594,20 +594,32 @@ body.presentation
 
 
 .texteditor
-  width 400px
+  width 100%
   padding 1em 0
   textarea
     width 100%
-    height 100px
-  .rte-toolbar
-    p
-      display inline
+    height 100%
   iframe
     background-color white
     border 1px solid black
     display block
-    height auto
     width 100%
+    height 50%
+
+  // WYNeditor hacks
+  .wym_status h2
+    font-size 10pt
+  .wym_area_top, .wym_area_left, .wym_area_right
+    float left
+    margin-right 15px
+    li
+      display inline
+      font-size 8pt
+      margin-right 5px
+    h2
+      font-size 10pt
+      font-weight bold
+
 
 #fontSizeTest
   position absolute

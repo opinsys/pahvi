@@ -147,15 +147,33 @@ class configs.TextEditor extends BaseConfig
 
 
   remove: ->
-    # @model.set text: @$("textarea").val()
-    @model.set text: $.fn.rte.html @$("iframe").get 0
+    @model.set text: @wyn.xhtml()
     super
 
   render: ->
     super
-    @$("textarea").rte
-      content_css_url: "/jquery-rte/jquery-rte.css"
-      media_url: "/jquery-rte/"
+
+    # http://trac.wymeditor.org/trac/wiki/0.5/Customization
+    @$("textarea").wymeditor
+      basePath: "/vendor/wymeditor/"
+      skinPath: "/vendor/wymeditor/skins/compact/"
+      preInit: (wyn) => @wyn = wyn
+      postInit: (wyn) =>
+        # Remove "1" from heading text since we have only one heading in use
+        @$("[name=H1]").text "Heading"
+      logoHtml: ''
+      containersItems: [
+        {'name': 'H1', 'title': 'Heading_1', 'css': 'wym_containers_h1'}
+        {'name': 'P', 'title': 'Paragraph', 'css': 'wym_containers_p'},
+        {'name': 'PRE', 'title': 'Preformatted', 'css': 'wym_containers_pre'},
+      ]
+      classesHtml: []
+      toolsItems: [
+        {'name': 'Bold', 'title': 'Strong', 'css': 'wym_tools_strong'},
+        {'name': 'Italic', 'title': 'Emphasis', 'css': 'wym_tools_emphasis'},
+        {'name': 'CreateLink', 'title': 'Link', 'css': 'wym_tools_link'},
+        {'name': 'Unlink', 'title': 'Unlink', 'css': 'wym_tools_unlink'},
+      ]
 
 
 
