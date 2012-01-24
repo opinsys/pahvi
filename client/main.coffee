@@ -2,6 +2,7 @@
 
 views = NS "Pahvi.views"
 models = NS "Pahvi.models"
+helpers = NS "Pahvi.helpers"
 
 class Workspace extends Backbone.Router
 
@@ -51,6 +52,7 @@ $ ->
     collection: boxes
 
   board.render()
+
 
 
   sidemenu = new views.SideMenu

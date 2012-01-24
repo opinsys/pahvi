@@ -1,6 +1,7 @@
 
 views = NS "Pahvi.views"
 configs = NS "Pahvi.configs"
+helpers = NS "Pahvi.helpers"
 
 
 requireMode = (mode) -> (method) -> ->
@@ -88,8 +89,8 @@ class views.BaseBox extends Backbone.View
     @deactivate()
 
     if @settings.get("mode") is "presentation"
-      $("body").zoomTo
-        targetSize: 1.0
+      helpers.zoomOut()
+
 
   up: ->
     @model.trigger "pushup", @model
