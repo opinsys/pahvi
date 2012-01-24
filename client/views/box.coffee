@@ -224,8 +224,14 @@ class views.TextBox extends views.BaseBox
 
       @text.css "font-size", "#{ size }px"
 
+      # http://stackoverflow.com/questions/118241/calculate-text-width-with-javascript
+      @text.attr "id", "fontSizeTest"
+      currentWidth = parseInt @text.width()
+      currentHeight = parseInt @text.height()
+      @text.removeAttr "id"
+
       # Check widget boundaries
-      if parseInt(@text.width()) >= maxWidth or parseInt(@text.height()) >= maxHeight
+      if currentWidth >= maxWidth or currentHeight >= maxHeight
         # Font overflown. Take smaller half
         return recurse min, size
       else
@@ -260,7 +266,7 @@ class views.TextBox extends views.BaseBox
 
     @$el.css "font-size", @model.get "font-size"
     @$el.css "color", @model.get "textColor"
-    @text = @$(".content span")
+    @text = @$(".content")
     @text.html @model.get "text"
 
     @fitFontSize()
