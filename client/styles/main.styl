@@ -34,7 +34,7 @@ plainbox_icon_position_hover = 10px -880px
 
 body
   font 1em/1.4 "Helvetica Neue","Lucida Grande", tahoma, arial, sans-serif
-  overflow hidden
+
 h1,h2
   margin 0
   padding 0
@@ -296,7 +296,7 @@ button:hover
         height 100%
         width 100%
         .hovering
-          box-shadow 0 0 2px pahvigray, 0 10px 5px pahviyellow, 0 -10px 5px pahviyellow // Kauhea! korjaa :)
+          box-shadow 0 0 2px pahvigray, 0 10px 5px pahviyellow, 0 -10px 5px pahviyellow
         .selected
           background-color pahviblue
           border 2px solid pahvigreen !important
@@ -481,8 +481,6 @@ body.presentation
       border 2px solid black
 
 
-
-
 .imageBox
   img
     width 100%
@@ -507,7 +505,68 @@ body.presentation
     top 200px
     left 200px
 
-  .close
-    float right
+	.texteditor textarea
+		height 100px
+		width 100%
 
+.imageBox
+	img
+	  width 100%
+	  height 100%
 
+.lightbox
+	z-index 100000
+	position absolute
+	width 100%
+	height 100%
+	top 0px
+	left 0px
+	right 0px
+	button
+		text-align center
+		text-transform uppercase
+	.content
+		background-color rgb(245,245,245)
+		background-color rgba(245,245,245,0.9)
+		box-shadow 0 3px 10px pahvigreen, 0 -3px 10px pahvigreen
+		left 200px
+		margin auto 0
+		padding 2em
+		position absolute
+		top 200px
+		width 400px
+		z-index 100001
+
+		.close
+			background-color #eeeeee
+			background-image linear-gradient(top, #eeeeee, #cccccc)
+			border 1px solid bordergray
+			border-radius 3px
+			color pahvigray
+			line-height 1
+			padding 8px 0
+			text-shadow 0 1px 0 #eee
+			font-size 1em
+			width 150px
+			&:hover
+				background-color #dddddd
+				background-image linear-gradient(top, #dddddd, #bbbbbb)
+				border 1px solid #bbb
+				border-bottom 1px solid #999
+				cursor pointer
+				text-shadow 0 1px 0 #ddd
+			&:active
+				border 1px solid #aaa
+				border-bottom 1px solid #888
+				box-shadow inset 0 0 5px 2px #aaaaaa, 0 1px 0 0 #eeeeee
+		.cancel
+			background none
+			border none
+			color #D93636
+			line-height 1
+			padding 8px 0
+			text-shadow 0 -2px 1px #ededed
+			font-size 0.7em
+			&:hover
+				color #ff0000
+				font-weight bold
