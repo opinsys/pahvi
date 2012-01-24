@@ -519,12 +519,14 @@ body.presentation
     background-color white
     position absolute
     width 400px
-    top 200px
+    top 100px
     left 200px
 
 	.texteditor textarea
-		height 100px
-		width 100%
+    height 100px
+    width 100%
+  .texteditor iframe
+    background-color white
 
 .imageBox
 	img
@@ -587,3 +589,19 @@ body.presentation
 			&:hover
 				color #ff0000
 				font-weight bold
+
+
+.texteditor
+  width 400px
+  height 400px
+  padding 1em
+  textarea
+    width 100%
+    height 100%
+  .rte-toolbar
+    p
+      display inline
+  iframe
+    border 1px solid black
+    height 100%
+    width 100%

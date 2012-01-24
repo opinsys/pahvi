@@ -147,8 +147,15 @@ class configs.TextEditor extends BaseConfig
 
 
   remove: ->
-    @model.set text: @$("textarea").val()
+    # @model.set text: @$("textarea").val()
+    @model.set text: $.fn.rte.html @$("iframe").get 0
     super
+
+  render: ->
+    super
+    @$("textarea").rte
+      content_css_url: "/jquery-rte/jquery-rte.css"
+      media_url: "/jquery-rte/"
 
 
 

@@ -44,7 +44,6 @@ class views.Layers extends Backbone.View
     @items.removeClass(className)
     if id
       selected = @items.filter(-> $(this).data("id") is id)
-      console.log "selecting #{ id }", selected, className
       selected.addClass className
 
 
@@ -72,22 +71,16 @@ class views.Layers extends Backbone.View
 
     orderedIds = @collection.map (box) -> box.id
 
-    console.log "#{ box.get "id" } moving from #{ currentIndex } to #{ newIndex }"
-    console.log "Before", JSON.stringify orderedIds
-
     tmp = orderedIds[newIndex]
     orderedIds[newIndex] = box.id
 
     orderedIds[currentIndex] = tmp if tmp
-
-    console.log "After", JSON.stringify orderedIds
 
     orderedIds.reverse()
     @updateZIndexes orderedIds
 
 
   updateFromSortable: ->
-    console.log "SORT update"
     orderedIds = @sortable.sortable "toArray"
     orderedIds.reverse()
     @updateZIndexes orderedIds

@@ -11,8 +11,14 @@ window.NS = (nsString) ->
     parent = parent[ns] ?= {}
   parent # return the asked namespace
 
+helpers = NS "Pahvi.helpers"
 
 # Do not die if we have no logging function. Eg. FF without Firebug.
 if not window.console?.log?
   window.console =
     log: ->
+
+
+helpers.zoomOut = ->
+  $("body").zoomTo
+    targetSize: 1.0

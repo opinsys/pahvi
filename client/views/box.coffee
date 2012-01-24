@@ -1,6 +1,7 @@
 
 views = NS "Pahvi.views"
 configs = NS "Pahvi.configs"
+helpers = NS "Pahvi.helpers"
 
 
 requireMode = (mode) -> (method) -> ->
@@ -24,6 +25,9 @@ class views.BaseBox extends Backbone.View
     @$el = $ @el
 
     @model.bind "change", => @render()
+    @settings.bind "change:mode", =>
+      @render()
+
     @model.bind "destroy", => @remove()
 
     $(window).click (e) =>
@@ -32,11 +36,11 @@ class views.BaseBox extends Backbone.View
 
     @settings.bind "change:activeBox", =>
       @$el.removeClass "selected"
+      console.log "Removing selected from #{ @model.id }"
       return if not @isActive()
       @$el.addClass "selected"
       if @settings.get("mode") is "presentation"
         @$el.zoomTo()
-
 
     @settings.bind "change:hoveredBox", =>
       if @settings.get("hoveredBox") is @model.id
@@ -88,8 +92,8 @@ class views.BaseBox extends Backbone.View
     @deactivate()
 
     if @settings.get("mode") is "presentation"
-      $("body").zoomTo
-        targetSize: 1.0
+      helpers.zoomOut()
+
 
   up: ->
     @model.trigger "pushup", @model
