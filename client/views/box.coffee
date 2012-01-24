@@ -36,11 +36,11 @@ class views.BaseBox extends Backbone.View
 
     @settings.bind "change:activeBox", =>
       @$el.removeClass "selected"
+      console.log "Removing selected from #{ @model.id }"
       return if not @isActive()
       @$el.addClass "selected"
       if @settings.get("mode") is "presentation"
         @$el.zoomTo()
-
 
     @settings.bind "change:hoveredBox", =>
       if @settings.get("hoveredBox") is @model.id

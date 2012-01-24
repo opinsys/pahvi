@@ -10,7 +10,6 @@ class models.Boxes extends Backbone.Collection
     super
 
   comparator: (box) ->
-    console.log "comparing"
     -1 * parseInt box.get "zIndex"
 
 
