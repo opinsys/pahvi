@@ -144,6 +144,7 @@ class views.BaseBox extends Backbone.View
     if @settings.get("mode") is "presentation"
       "pass"
 
+    @$el.attr "title", @model.get "id"
 
 
 
@@ -250,8 +251,7 @@ class views.TextBox extends views.BaseBox
     lightbox.bind "close", =>
       @$el.removeClass "editing"
 
-    lightbox.render()
-    $("body").append lightbox.el
+    lightbox.renderToBody()
 
 
 
