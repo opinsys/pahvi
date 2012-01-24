@@ -203,6 +203,7 @@ class configs.TextEditor extends BaseConfig
         {'name': 'Italic', 'title': 'Emphasis', 'css': 'wym_tools_emphasis'},
         {'name': 'CreateLink', 'title': 'Link', 'css': 'wym_tools_link'},
         {'name': 'Unlink', 'title': 'Unlink', 'css': 'wym_tools_unlink'},
+        {'name': 'ToggleHtml', 'title': 'HTML', 'css': 'wym_tools_html'},
       ]
 
 
