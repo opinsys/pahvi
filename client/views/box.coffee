@@ -55,6 +55,7 @@ class views.BaseBox extends Backbone.View
   events:
     "click button.up": "up"
     "click button.down": "down"
+    "click a": "onLinkClick"
 
     "click": "activate"
     "mouseenter": "onMouseEnter"
@@ -64,6 +65,11 @@ class views.BaseBox extends Backbone.View
     "dragstart": "activate"
     "resizestop": "onResizeStop"
     "dragstop": "onDragStop"
+
+  onLinkClick: (e) ->
+    if @settings.get("mode") is "edit"
+      console.log "Preventing link opening in edit mode. Link was #{ $(e.target).attr "href" }"
+      e.preventDefault()
 
   onMouseEnter: (e) ->
     @settings.set hoveredBox: @model.id
