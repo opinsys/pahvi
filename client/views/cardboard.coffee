@@ -38,28 +38,17 @@ class views.Cardboard extends Backbone.View
       @doc = doc
       if @doc.snapshot == null
         @doc.submitOp([{ p:[], oi:[] }])
-      else
-        console.log "Create boxes by sharejs"
-        return if @doc.snapshot == ""
-        for box in @doc.snapshot
-          console.log box['name']
-          {Model} = Cardboard.types[ box['type'] ]
-          boxModel = new Model name: box['name']
-          do (boxModel) =>
-            boxModel.open (err) =>
-              throw err if err
-              @collection.add boxModel
 
       @doc.on 'remoteop', (op) =>
         console.log "Cardboard event: remoteop"
         console.log op
         alreadyBoxes = @collection.map (box) =>
-          box.get('name')
+          box.get('id')
 
         for box in @doc.snapshot
-          if not _.include(alreadyBoxes, box['name'])
+          if not _.include(alreadyBoxes, box['id'])
             {Model} = Cardboard.types[box['type']]
-            boxModel = new Model name: box['name']
+            boxModel = new Model id: box['id']
             do (boxModel) =>
               boxModel.open (err) =>
                 throw err if err

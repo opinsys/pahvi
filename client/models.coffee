@@ -93,8 +93,8 @@ class LocalStore extends Backbone.Model
         console.log "Attributes has already saved!"
 
 
-    sharejs.open @get('name'), 'json', (err, doc) =>
-      console.log "Open new doc: " + @get('name')
+    sharejs.open @get('id'), 'json', (err, doc) =>
+      console.log "Open new doc: " + @get('id')
       @doc = doc
       if @doc.snapshot == null
         @doc.submitOp([{p:[], od:null, oi:{}}])
@@ -103,7 +103,7 @@ class LocalStore extends Backbone.Model
         @update @doc.snapshot
 
       @doc.on 'remoteop', (op) =>
-        console.log "event: remoteop, model change: " + @get('name')
+        console.log "event: remoteop, model change: " + @get('id')
         if op[0]["p"].length == 0
           console.log "update all attributes"
           @update @doc.snapshot
