@@ -39,6 +39,10 @@ class views.Cardboard extends Backbone.View
 
       @settings.set activeBox: boxModel.id
 
+      @settings.bind "change:mode", =>
+        @settings.set activeBox: null
+
+
   events:
     "drop": "dropped"
 

@@ -25,6 +25,9 @@ class views.BaseBox extends Backbone.View
     @$el = $ @el
 
     @model.bind "change", => @render()
+    @settings.bind "change:mode", =>
+      @render()
+
     @model.bind "destroy", => @remove()
 
     $(window).click (e) =>
