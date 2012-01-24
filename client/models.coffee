@@ -60,7 +60,7 @@ class models.TextBoxModel extends BaseBoxModel
     top: "100px"
     left: "100px"
     zIndex: 100
-    text: "TextBox sample content"
+    text: "<p>TextBox sample content</p>"
     "backgroundColor": "white"
 
 
