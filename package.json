@@ -27,6 +27,8 @@
         , "handlebars": ""
         , "hbs": ""
         , "socket.io": ""
+	, "redis": ""
+	, "share": ""
     }
     , "devDependencies": {
           "mocha": ""

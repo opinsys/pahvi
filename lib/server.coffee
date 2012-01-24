@@ -20,7 +20,7 @@ css.bind app
 js.bind app
 sharejs.attach app,
   db:
-    type: 'memory'
+    type: 'redis'
 
 
 app.configure "development", ->
