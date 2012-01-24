@@ -612,14 +612,39 @@ body.presentation
   .wym_area_top, .wym_area_left, .wym_area_right
     float left
     margin-right 15px
+    ul
+      height 26px
+      margin 0 0 0.25em
     li
-      display inline
-      font-size 8pt
+      font-size 12px
+      float left
+      height 26px
       margin-right 5px
+      text-indent -9999px
+      width 26px
+      a
+        display block
+        height 26px
+        width 26px 
     h2
       font-size 10pt
       font-weight bold
-
+  .wym_tools
+    .wym_tools_strong a
+      background url("/img/editor-icons.png") no-repeat 0 0 transparent
+    .wym_tools_emphasis a
+      background url("/img/editor-icons.png") no-repeat 0 -30px transparent
+    .wym_tools_link a
+      background url("/img/editor-icons.png") no-repeat 0 -150px transparent
+    .wym_tools_unlink a
+      background url("/img/editor-icons.png") no-repeat 0 -180px transparent
+  .wym_containers
+    .wym_containers_h1 a
+      background url("/img/editor-icons.png") no-repeat 0 -60px transparent
+    .wym_containers_p a
+      background url("/img/editor-icons.png") no-repeat 0 -120px transparent
+    .wym_containers_pre a
+      background url("/img/editor-icons.png") no-repeat 0 -90px transparent
 
 #fontSizeTest
   position absolute
