@@ -13,18 +13,34 @@ class Workspace extends Backbone.Router
       @navigate @settings.get "mode"
 
     @settings.bind "change:activeBox", =>
-      @navigate "#{ @settings.get "mode" }/#{ @settings.get "activeBox" }"
+      if boxId = @settings.get "activeBox"
+        @navigate "#{ @settings.get "mode" }/#{ escape boxId }"
+      else
+        @navigate "#{ @settings.get "mode" }"
 
   routes:
+    "": "welcome"
+    "/": "welcome"
     "presentation": "presentation"
     "presentation/:name": "presentation"
     "edit": "edit"
+    "edit/:name": "edit"
 
-  presentation: (boxName) ->
-    @settings.set mode: "presentation"
 
-  edit: ->
-    @settings.set mode: "edit"
+  welcome: ->
+    views.showMessage "Welcome to Pahvi!"
+
+
+  for mode in ["presentation", "edit"] then do (mode) ->
+    Workspace::[mode] = (boxName) ->
+      @settings.set mode: mode
+
+      if boxName
+        @settings.set activeBox: unescape boxName
+      else
+        @settings.set activeBox: null
+        helpers.zoomOut()
+
 
 
 $ ->
@@ -35,8 +51,6 @@ $ ->
 
   boxes = new models.Boxes
 
-  router = new Workspace
-    settings: settings
 
 
   menu = new views.Menu
@@ -63,8 +77,9 @@ $ ->
   sidemenu.render()
 
 
-  board.loadBoxesFromLocalStorage()
-  Backbone.history.start()
+  board.loadBoxes ->
+    router = new Workspace
+      settings: settings
+    Backbone.history.start()
 
-  views.showMessage "Welcome to Pahvi!"
 

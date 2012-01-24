@@ -55,12 +55,13 @@ class views.Cardboard extends Backbone.View
 
 
 
-  loadBoxesFromLocalStorage: ->
+  loadBoxes: (cb) ->
     for id, json_s of localStorage
       ob = JSON.parse json_s
       {Model} = Cardboard.types[ob.type]
       boxModel = new Model ob
       @collection.add boxModel
+    cb()
 
 
 
