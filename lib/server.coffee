@@ -78,15 +78,11 @@ app.configure ->
   js.addFile rootDir + "/client/vendor/zoomooz/jquery.animtrans.js"
   js.addFile rootDir + "/client/vendor/zoomooz/jquery.zoomooz.js"
 
-  js.addFile rootDir + "/client/vendor/jquery.rte.js"
-
   js.addFile rootDir + "/client/vendor/hallo/hallo.coffee"
   js.addFile rootDir + "/client/vendor/hallo/format.coffee"
   js.addFile rootDir + "/client/vendor/hallo/link.coffee"
 
   js.addFile rootDir + "/public/vendor/wymeditor/jquery.wymeditor.js"
-
-
 
   js.addFile rootDir + "/client/helpers.coffee"
   js.addFile rootDir + "/client/models.coffee"
