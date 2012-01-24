@@ -19,6 +19,12 @@ class models.Boxes extends Backbone.Collection
   comparator: (box) ->
     -1 * parseInt box.get "zIndex"
 
+  getView: (type) ->
+    @typeMapping[type].View
+
+  getModel: (type) ->
+    @typeMapping[type].Model
+
 
 class LocalStore extends Backbone.Model
 
