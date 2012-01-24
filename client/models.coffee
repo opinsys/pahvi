@@ -1,13 +1,20 @@
 
 
 models = NS "Pahvi.models"
-
+views = NS "Pahvi.views"
 
 
 class models.Boxes extends Backbone.Collection
 
-  constructor: ->
+  constructor: (opts) ->
+    {@typeMapping} = opts
+    {@id} = opts
+    delete opts.typeMapping
+    delete opts.id
     super
+
+    @bind "add", => @save()
+
 
   comparator: (box) ->
     -1 * parseInt box.get "zIndex"
@@ -95,4 +102,5 @@ class models.ImageBox extends BaseBoxModel
     top: "100px"
     left: "100px"
     zIndex: 100
+
 
