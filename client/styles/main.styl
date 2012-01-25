@@ -39,6 +39,8 @@ strong
   font-weight bold
 em
   font-style italic
+pre
+  font-family monaco, "Droid Sans Mono", courier, monospace
 
 h1,h2
   margin 0
@@ -317,7 +319,7 @@ button:hover
           position relative
           p
             background url("/img/drag-drop-arrow.png") no-repeat 20px 40px transparent
-            height 150px
+            height 135px
             padding 0 0 0 15px
             position absolute !important
             left 130px
@@ -385,7 +387,7 @@ button:hover
               padding 1em 0.5em 0 55px
               position relative
               width 80%
-              &:hover
+              &.hovering
                 background-color pahviyellow !important
                 cursor pointer
               &:hover > .delete
@@ -398,6 +400,8 @@ button:hover
                 top 10px
             .text
               background-position text_icon_position
+            .plain
+              background-position plainbox_icon_position
             .image
               background-position image_icon_position
 
@@ -497,11 +501,24 @@ body.presentation
       border 2px solid black
 
 
-.imageSrc
-  padding 1em 0.5em !important
+.config.imageSrc, .config.nameEditor
+  background-color transparent !important
+  
+.config
   span
     font-size 0.7em
+    display inline-block
+    height 20px
+    padding 0.25em 0 !important
     text-transform uppercase
+  input
+    background-color pahvilightgray
+    background-image linear-gradient(top, pahvilightgray 25%, #f9f9f9)
+    border 1px solid bordergray
+    float right
+    height 20px
+    padding 0.25em
+    width 180px
   
 .imageBox
   img
@@ -568,7 +585,7 @@ body.presentation
     position absolute
     z-index 100001
 
-    .close
+    .ok
       background-color #eeeeee
       background-image linear-gradient(top, #eeeeee, #cccccc)
       border 1px solid bordergray
@@ -608,8 +625,10 @@ body.presentation
   width 100%
   padding 1em 0
   textarea
-    width 100%
     height 100%
+    min-height 100px
+    padding 0
+    width 100%
   iframe
     background-color white
     border 1px solid black

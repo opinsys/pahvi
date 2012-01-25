@@ -240,6 +240,14 @@ class configs.TextEditor extends BaseConfig
         {'name': 'ToggleHtml', 'title': 'HTML', 'css': 'wym_tools_html'},
       ]
 
+    #this isnt working, why? :(
+    $(".wym_tools_html a").click ->
+      e = $(".wym_tools_html")
+      if e.hasClass("on")
+        e.removeClass("on")
+      else
+        e.addClass("on")
+
 
 
 class configs.FontSize extends BaseConfig
