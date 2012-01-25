@@ -82,7 +82,9 @@ class views.Layers extends Backbone.View
 
 
   updateFromSortable: ->
-    orderedIds = @sortable.sortable "toArray"
+    orderedIds = @sortable.find("li").toArray().map (e) ->
+      $(e).data("id")
+
     orderedIds.reverse()
     @updateZIndexes orderedIds
 
