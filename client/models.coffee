@@ -159,7 +159,7 @@ class LocalStore extends Backbone.Model
           @dirty = false
         else
           @send @changedAttributes()
-        @aleardySave = null
+        @alreadySaved = null
       else
         console.log "Attributes has already saved!"
 
