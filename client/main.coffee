@@ -26,6 +26,10 @@ class Workspace extends Backbone.Router
     @settings.bind "change:mode", =>
       @navigate @settings.get "mode"
 
+    @collection.bind "change:name", (box) =>
+      if box.id is  @settings.get "activeBox"
+        @navigate "#{ @settings.get "mode" }/#{ box.get "name" }"
+
     @settings.bind "change:activeBox", =>
       if boxId = @settings.get "activeBox"
         box = @collection.get boxId
