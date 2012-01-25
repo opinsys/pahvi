@@ -96,9 +96,6 @@ class configs.BackgroundColor extends BaseConfig
     @model.set ob
 
   render: ->
-    $("button.color").tooltip
-      effect: "fade",
-      position: "center left"
 
     @$el.html @template
       title: @title
@@ -107,6 +104,10 @@ class configs.BackgroundColor extends BaseConfig
         value: color[1]
         transparent: color[1] is "transparent"
         current: color[1] is @model.get @colorProperty
+
+    $("button.color").tooltip
+      effect: "fade",
+      position: "center left"
 
 
 
@@ -214,6 +215,16 @@ class configs.TextEditor extends BaseConfig
       @model.set text: @wyn.xhtml()
     super
 
+  _onEditorCreated: ->
+    # Remove "1" from heading text since we have only one heading in use
+    @$("[name=H1]").text "Heading"
+    @$(".wym_tools_html a").click ->
+      e = $(".wym_tools_html")
+      if e.hasClass("on")
+        e.removeClass("on")
+      else
+        e.addClass("on")
+
   render: ->
     super
 
@@ -222,9 +233,9 @@ class configs.TextEditor extends BaseConfig
       basePath: "/vendor/wymeditor/"
       skinPath: "/vendor/wymeditor/skins/compact/"
       preInit: (wyn) => @wyn = wyn
-      postInit: (wyn) =>
-        # Remove "1" from heading text since we have only one heading in use
-        @$("[name=H1]").text "Heading"
+      postInit: (wyn) => @_onEditorCreated wyn
+        
+        
       logoHtml: ''
       containersItems: [
         {'name': 'H1', 'title': 'Heading_1', 'css': 'wym_containers_h1'}
@@ -240,14 +251,7 @@ class configs.TextEditor extends BaseConfig
         {'name': 'ToggleHtml', 'title': 'HTML', 'css': 'wym_tools_html'},
       ]
 
-    #this isnt working, why? :(
-    $(".wym_tools_html a").click ->
-      e = $(".wym_tools_html")
-      if e.hasClass("on")
-        e.removeClass("on")
-      else
-        e.addClass("on")
-
+    
 
 
 class configs.FontSize extends BaseConfig

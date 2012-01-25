@@ -20,7 +20,7 @@
 /* VISUAL FEEDBACK */
 
 /* basic */
-  body  { background: #e1e8f1;}
+  body  { background: transparent;}
  
 /* make HTML blocs visible */
   p,
@@ -53,6 +53,9 @@
   td            { height: 1.6em; }
  
 /* labels */
+p,h1,h2,h3,h4,h5,h6,blockquote,pre{
+background-color:#f3f3f3;
+}
   p         { background-image: url(lbl-p.png); }
   h1        { background-image: url(lbl-h1.png); }
   h2        { background-image: url(lbl-h2.png); }
