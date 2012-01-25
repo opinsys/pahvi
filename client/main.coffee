@@ -20,7 +20,7 @@ for metaClassName, namespace of typeSources
 
 class Workspace extends Backbone.Router
 
-  constructor: ({@settings}) ->
+  constructor: ({@settings, @collection}) ->
     super
 
     @settings.bind "change:mode", =>
@@ -28,7 +28,8 @@ class Workspace extends Backbone.Router
 
     @settings.bind "change:activeBox", =>
       if boxId = @settings.get "activeBox"
-        @navigate "#{ @settings.get "mode" }/#{ escape boxId }"
+        box = @collection.get boxId
+        @navigate "#{ @settings.get "mode" }/#{ box.get "name" }"
       else
         @navigate "#{ @settings.get "mode" }"
 
@@ -50,7 +51,10 @@ class Workspace extends Backbone.Router
       @settings.set mode: mode
 
       if boxName
-        @settings.set activeBox: unescape boxName
+        box = @collection.find (box) -> box.get("name") is unescape boxName
+
+      if box
+        @settings.set activeBox: box.id
       else
         @settings.set activeBox: null
         helpers.zoomOut()
@@ -93,6 +97,7 @@ $ ->
   boxes.loadBoxes sharejs, ->
     router = new Workspace
       settings: settings
+      collection: boxes
     Backbone.history.start()
     settings.set activeBox: null
 
