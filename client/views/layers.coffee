@@ -100,6 +100,7 @@ class views.Layers extends Backbone.View
       boxes: @collection.filter( (m) -> m.id ).map (m) ->
         id: m.id
         name: m.get "name"
+        type: m.get "type"
         zIndex: m.get "zIndex"
 
     @sortable = @$("ul").sortable()
