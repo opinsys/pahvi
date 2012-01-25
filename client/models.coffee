@@ -28,9 +28,10 @@ class models.Boxes extends Backbone.Collection
   loadBoxes: (cb) ->
     for id, json_s of localStorage
       ob = JSON.parse json_s
-      Model = @getModel ob.type
-      boxModel = new Model ob
-      @add boxModel
+      if ob.type
+        Model = @getModel ob.type
+        boxModel = new Model ob
+        @add boxModel
     cb()
 
   makeUnique: (proposedId) ->
