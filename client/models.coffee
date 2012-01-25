@@ -127,7 +127,8 @@ class LocalStore extends Backbone.Model
     super
 
   destroy: ->
-    console.log "Not implemented"
+    @doc.submitOp([{ p:[@id], od:null}])
+    @trigger "destroy", this
 
   update: (changedAttributes) ->
     console.log "method: update. set attributes to model"
