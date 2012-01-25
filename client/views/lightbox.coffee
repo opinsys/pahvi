@@ -37,23 +37,30 @@ class views.LightBox extends Backbone.View
 
 
   events:
-    "click .close": "close"
-    "click": "mightClose"
+    "click": "_onBackgroundClick"
+    "click .ok": "_onOkButtonClick"
+    "click .cancel": "_onCancelButtonClick"
 
-  mightClose: (e) ->
+  _onBackgroundClick: (e) ->
     if e.target is @el
-      @close()
+      @close false
 
-  onOffClick: -> close()
+  _onOkButtonClick: (e) ->
+    e.preventDefault()
+    @close true
 
-  close: (e) ->
-    @trigger "close", this
-    e.preventDefault() if e
+  _onCancelButtonClick: (e) ->
+    e.preventDefault()
+    @close false
 
+
+  close: (ok) ->
     for view in @views
-      view.remove()
+      view.remove ok
 
     @remove()
+
+    @trigger "close", this, ok
 
 
   render: ->
