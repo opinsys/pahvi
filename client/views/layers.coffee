@@ -17,6 +17,7 @@ class views.Layers extends Backbone.View
       @render()
 
     @collection.bind "destroy", (box) => @render()
+    @collection.bind "change:name", (box) => @render()
 
     @collection.bind "pushdown", (box) => @move box, -1
     @collection.bind "pushup", (box) => @move box, 1
