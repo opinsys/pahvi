@@ -6,8 +6,9 @@ pahvigray = #363636
 pahvilightgray = #f3f3f3
 pahvigreen = #339900
 pahvilightgreen = #d6f3c7
-pahvired = #FF0000
+pahvired = #FF530D
 pahviblue = #A2D7F5 !important
+pahviurlblue = #0D8CFF
 iconurl = url("/img/iconset.png")
 switch_mode_icon = iconurl no-repeat 10px -635px pahvicream
 switch_mode_icon_position_hover = 10px -690px
@@ -52,7 +53,9 @@ h1
   
 h2
   font-size 1.5em
-  
+
+a
+  color pahviurlblue
 hr
   clear both
   border none
@@ -201,6 +204,9 @@ button:hover
           list-style decimal
         li
           margin-left 2em
+      .imageBox
+        height 200px
+        width 293px
 
       .box .tools
         visibility hidden
@@ -484,7 +490,10 @@ body.presentation
     .config div
       margin 0 0.25em
   .configs .invalid
-    color red
+    color pahvired
+    input
+      border 2px solid pahvired
+      color pahvired
   .colorConfig
     h1
       background rgb(194,194,194)

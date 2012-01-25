@@ -189,7 +189,7 @@ class configs.TextEditor extends BaseConfig
       selected = jQuery(selected).parentsOrSelf(WYMeditor.A)
 
     # TODO: prompt is annoying too!
-    sUrl = prompt "url", selected[0]?.href
+    sUrl = prompt "url", if selected[0]?.href then selected[0]?.href else "http://"
 
     if sUrl.length > 0
 
@@ -217,7 +217,7 @@ class configs.TextEditor extends BaseConfig
 
   _onEditorCreated: ->
     # Remove "1" from heading text since we have only one heading in use
-    @$("[name=H1]").text "Heading"
+    @$("[name=H1]").text "H1"
     @$(".wym_tools_html a").click ->
       e = $(".wym_tools_html")
       if e.hasClass("on")
