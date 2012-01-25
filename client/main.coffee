@@ -70,14 +70,14 @@ $ ->
 
 
   menu = new views.Menu
-    el: ".menu"
+    el: ".topmenu"
     settings: settings
 
   menu.render()
 
 
   board = new views.Cardboard
-    el: ".pahvi"
+    el: ".pasteboard"
     settings: settings
     collection: boxes
 
@@ -85,12 +85,12 @@ $ ->
 
 
 
-  sidemenu = new views.SideMenu
-    el: ".mediamenu"
-    collection: boxes
-    settings: settings
+  # sidemenu = new views.SideMenu
+  #   el: ".mediamenu"
+  #   collection: boxes
+  #   settings: settings
 
-  sidemenu.render()
+  # sidemenu.render()
 
 
   boxes.loadBoxes ->

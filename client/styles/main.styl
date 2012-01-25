@@ -120,6 +120,7 @@ button:hover
     height 100%
     position relative
     width 100%
+
     
     .pasteboard
       background url("/img/pahvi-bg.jpg") repeat 0 0 scroll
@@ -142,16 +143,6 @@ button:hover
       .box.ui-draggable
         cursor pointer
         
-      .menu
-        margin 0 5px 0
-        position absolute
-        right 30%
-        top -60px
-      .modeToggle
-        background switch_mode_icon
-        border-bottom 1px solid pahvigray
-        &:hover
-          background-position switch_mode_icon_position_hover
 
       .tools
         background rgb(226,226,226)
@@ -678,3 +669,17 @@ body.presentation
   visibility hidden
   height auto
   width auto
+
+
+.topmenu
+  z-index 1000
+  margin 0 5px 0
+  position absolute
+  right 1em
+  top 1em
+
+  .modeToggle
+    background switch_mode_icon
+    border-bottom 1px solid pahvigray
+    &:hover
+      background-position switch_mode_icon_position_hover

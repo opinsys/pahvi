@@ -66,8 +66,7 @@ class views.SideMenu extends Backbone.View
       movement =  @$el.outerWidth() * -1
 
     # When we want to close the menu we set it move off screen 
-    @$el.animate
-      right: movement
+    @$el.animate right: movement
 
 
   selectSubview: (e) ->
