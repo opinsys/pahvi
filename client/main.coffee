@@ -97,5 +97,6 @@ $ ->
     router = new Workspace
       settings: settings
     Backbone.history.start()
+    settings.set activeBox: null
 
 
