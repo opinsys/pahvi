@@ -37,7 +37,7 @@ class models.Boxes extends Backbone.Collection
         console.log op
         # Search model
         model_id = op[0]["p"][0]
-        if model = @_byId[model_id]
+        if model = @get model_id
           console.log model
           console.log op
           newAttributes = {}
@@ -47,8 +47,11 @@ class models.Boxes extends Backbone.Collection
             newAttributes[key] = value
           model.update newAttributes
         else
-          # FIXME Create new model by sharejs data
-          console.log "Not implemented"
+          modelId = op[0]["p"][0]
+          modelAttributes = op[0]["oi"]
+          Model = @getModel modelAttributes["type"]
+
+          @openBox new Model modelAttributes
 
       if @sharejsdoc.snapshot == null
         @sharejsdoc.submitOp([{p:[], od:null, oi:{}}])
@@ -129,11 +132,13 @@ class LocalStore extends Backbone.Model
   send: (attributes) ->
     console.log "method: send"
     if @doc.snapshot[@id]?
+      console.log "Send model attributes to another browser"
       submitOpValue = []
       for key, value of attributes
         submitOpValue.push { p:[@id,key], od:null, oi:value }
       @doc.submitOp(submitOpValue)
     else
+      console.log "Send new model to another browser"
       @doc.submitOp([{ p:[@id], oi:attributes }])
     console.log @doc.snapshot
 
@@ -143,16 +148,13 @@ class LocalStore extends Backbone.Model
       console.log "One Box change, open"
       if not _.isEqual @changedAttributes(), @alreadySaved
         console.log "not already saved -> send to sharejs"
-        @send @changedAttributes()
+        # FIXME send only changed attributes
+        @send @attributes
         @aleardySave = null
       else
         console.log "Attributes has already saved!"
 
     @doc = sharejsdoc
-    if not sharejsdoc.snapshot[@id]?
-      console.log "Save box to sharejs"
-      @doc.submitOp([{ p:[@id], oi:@attributes }])
-      console.log @doc.snapshot
     cb()
 
 
