@@ -49,7 +49,7 @@ class views.Layers extends Backbone.View
 
 
   delete: (e, ui) ->
-    id = $(e.target).parent("li").attr("id")
+    id = $(e.target).parent("li").data("id")
     model = @collection.get id
     model.destroy()
 
