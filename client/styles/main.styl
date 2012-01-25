@@ -314,18 +314,27 @@ button:hover
           padding 0
           
         .addElements
-          background url("/img/drag-drop-arrow.png") no-repeat 0 100% transparent
-          padding 0 0 110px
+          position relative
           p
-            background-color pahviyellow
-            border 2px dotted pahvigray
-            border-radius 10px
-            box-shadow 1px 2px 4px pahvigray, -1px -1px 3px pahvigray
-            line-height 1.2
-            padding 0.35em
-            text-align center
-            transform rotate(10deg) translate(25%,-5%)
+            background url("/img/drag-drop-arrow.png") no-repeat 20px 40px transparent
+            height 150px
+            padding 0 0 0 15px
+            position absolute !important
+            left 130px
+            top -125px
             width 120px
+            span
+              background-color pahviyellow
+              border 2px dotted pahvigray
+              border-radius 10px
+              box-shadow 1px 2px 4px pahvigray, -1px -1px 3px pahvigray
+              display block
+              line-height 1.2
+              padding 0.35em
+              text-align center
+              text-transform uppercase
+              transform rotate(10deg) translate(15%,-5%)
+              width 150px
           div
             background-color pahviyellow
             border dotted 2px pahvigray
@@ -627,24 +636,40 @@ body.presentation
         height 26px
         width 26px 
     h2
-      font-size 10pt
+      font-size 0.8em
       font-weight bold
   .wym_tools
     .wym_tools_strong a
-      background url("/img/editor-icons.png") no-repeat 0 0 transparent
+      background iconurl no-repeat -2px -970px transparent
     .wym_tools_emphasis a
-      background url("/img/editor-icons.png") no-repeat 0 -30px transparent
+      background iconurl no-repeat -2px -1000px transparent
     .wym_tools_link a
-      background url("/img/editor-icons.png") no-repeat 0 -150px transparent
+      background iconurl no-repeat -2px -1120px transparent
     .wym_tools_unlink a
-      background url("/img/editor-icons.png") no-repeat 0 -180px transparent
+      background iconurl no-repeat -2px -1150px transparent
+    .wym_tools_html a
+      background iconurl no-repeat -2px -1180px transparent
+    .wym_tools_html.on a
+      background iconurl no-repeat -2px -1210px transparent
+      
   .wym_containers
     .wym_containers_h1 a
-      background url("/img/editor-icons.png") no-repeat 0 -60px transparent
+      background iconurl no-repeat -2px -1030px transparent
     .wym_containers_p a
-      background url("/img/editor-icons.png") no-repeat 0 -120px transparent
+      background iconurl no-repeat -2px -1090px transparent
     .wym_containers_pre a
-      background url("/img/editor-icons.png") no-repeat 0 -90px transparent
+      background iconurl no-repeat -2px -1060px transparent
+
+  .wym_html.wym_section
+    h2
+      font 1em/1 monaco, "Droid Sans Mono", courier, monospace
+      float right
+      margin 30px 0 0
+      text-shadow 0 -1px 0 white, 0 1px 0 white
+      text-transform uppercase
+      
+  .wym_iframe.wym_section
+    clear both
 
 #fontSizeTest
   position absolute
