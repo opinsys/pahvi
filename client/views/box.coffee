@@ -257,6 +257,7 @@ class views.TextBox extends views.BaseBox
     @$el.addClass "editing"
 
     lightbox = new views.LightBox
+      alwaysOnTop: true
       views: new configs.TextEditor
         model: @model
 
