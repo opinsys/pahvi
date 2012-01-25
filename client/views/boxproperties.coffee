@@ -176,8 +176,10 @@ class configs.TextEditor extends BaseConfig
     @template = Handlebars.compile source
 
 
-  remove: ->
-    @model.set text: @wyn.xhtml()
+
+  remove: (ok) ->
+    if ok
+      @model.set text: @wyn.xhtml()
     super
 
   render: ->
