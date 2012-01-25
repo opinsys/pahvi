@@ -82,8 +82,12 @@ class models.Boxes extends Backbone.Collection
 
     Model = @getModel type
 
-    if not options?.id
-      options.id = Model::defaults.id
+    if not options?.name
+      options.name = Model::defaults.name
+
+    options.name = @makeUniqueName options.name
+
+    options.id = helpers.generateGUID()
 
     proposedId = options.id
     i = 0
