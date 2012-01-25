@@ -99,11 +99,13 @@ class BaseBoxModel extends LocalStore
     @set type: @type
 
 
+
 class models.TextBoxModel extends BaseBoxModel
 
   type: "text"
 
   configs: [
+    "NameEditor",
     "TextColor",
     "BackgroundColor",
     "FontSize",
@@ -143,6 +145,7 @@ class models.ImageBox extends BaseBoxModel
   type: "image"
 
   configs: [
+    "NameEditor",
     "ImageSrc",
   ]
 

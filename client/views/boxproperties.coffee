@@ -32,6 +32,7 @@ class views.PropertiesManager extends Backbone.View
       @activeConfigs = for configName in @model.configs
         config = new configs[configName]
           model: @model
+          collection: @collection
         config.render()
         config
 
@@ -116,6 +117,36 @@ class configs.TextColor extends configs.BackgroundColor
   colorProperty: "textColor"
 
 
+class configs.NameEditor extends BaseConfig
+  className: "config nameEditor"
+
+  constructor: ->
+    super
+    @$el = $ @el
+    source  = $("#config_nameeditorTemplate").html()
+    @template = Handlebars.compile source
+
+  events:
+    "keyup input": "_updateId"
+    "blur input": "_updateId"
+
+  _updateId: ->
+    name = $.trim @input.val()
+
+    if not name or name is @model.get "name"
+      return
+
+    if @collection.isUnique "name", name
+      @$el.removeClass "invalid"
+      @model.set name: name
+    else
+      @$el.addClass "invalid"
+
+  render: ->
+    @$el.html @template
+      name: @model.get "name"
+
+    @input = @$("input")
 
 class configs.ImageSrc extends BaseConfig
   className: "config imageSrc"
@@ -123,6 +154,7 @@ class configs.ImageSrc extends BaseConfig
 
   constructor: ->
     super
+    @$el = $ @el
     source  = $("#config_imgsrcTemplate").html()
     @template = Handlebars.compile source
 
