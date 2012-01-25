@@ -97,8 +97,9 @@ class views.Layers extends Backbone.View
 
   render: ->
     $(@el).html @template
-      boxes: @collection.map (m) ->
+      boxes: @collection.filter( (m) -> m.id ).map (m) ->
         id: m.id
+        name: m.get "name"
         zIndex: m.get "zIndex"
 
     @sortable = @$("ul").sortable()
