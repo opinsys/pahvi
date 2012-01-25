@@ -14,8 +14,6 @@ class models.Boxes extends Backbone.Collection
     delete opts.id
     super
 
-    @bind "add", => @save()
-
 
   comparator: (box) ->
     -1 * parseInt box.get "zIndex"
@@ -29,25 +27,50 @@ class models.Boxes extends Backbone.Collection
   isUnique: (attr, value) ->
     not @find (box) -> box.get(attr) is value
 
-  loadBoxes: (totalCb) ->
-
-    @sharejsdoc.open (err) ->
+  loadBoxes: (sharejsdoc, totalCb) ->
+    console.log @id
+    sharejsdoc.open @id, 'json', (err, doc) =>
       throw err if err
+      @sharejsdoc = doc
+      @sharejsdoc.on 'remoteop', (op) =>
+        console.log "event: remoteop, model change"
+        console.log op
+        # Search model
+        model_id = op[0]["p"][0]
+        if model = @_byId[model_id]
+          console.log model
+          console.log op
+          newAttributes = {}
+          for one in op
+            key = one["p"][1]
+            value = one["oi"]
+            newAttributes[key] = value
+          model.update newAttributes
+        else
+          # FIXME Create new model by sharejs data
+          console.log "Not implemented"
 
-      boxMetaData = for k, value of @sharejsdoc.snapshot[@id]
-        # XXX
-        { id: value.id, type: value.type }
+      if @sharejsdoc.snapshot == null
+        @sharejsdoc.submitOp([{p:[], od:null, oi:{}}])
 
-      async.forEach boxMetaData, (ob, cb) ->
+      if @sharejsdoc.snapshot != ""
+        boxMetaData = for k, value of @sharejsdoc.snapshot
+          value
+        console.log @sharejsdoc.snapshot
+        console.log "BoxMetaData"
+        console.log boxMetaData
 
-        Model = @getModel ob.type
+        async.forEach boxMetaData, (ob, cb) =>
 
-        boxModel = new Model
-          id: ob.id
+          Model = @getModel ob.type
 
-        @openBox.openBox boxModel, cb
+          boxModel = new Model(ob)
 
-      , totalCb
+          @openBox boxModel, cb
+
+        , totalCb
+      else
+        totalCb
 
 
   createBox: (type, options={}) ->
@@ -72,12 +95,13 @@ class models.Boxes extends Backbone.Collection
     @openBox new Model options
 
   openBox: (box, cb=->) ->
-    box.open @sharejsdoc, (err) ->
+    box.open @sharejsdoc, (err) =>
       throw err if err
       @add box
       cb()
 
   makeUniqueName: (proposedName) ->
+
 
     name = proposedName
     i = 0
@@ -102,10 +126,21 @@ class LocalStore extends Backbone.Model
     @alreadySaved = changedAttributes
     @set changedAttributes
 
+  send: (attributes) ->
+    console.log "method: send"
+    if @doc.snapshot[@id]?
+      submitOpValue = []
+      for key, value of attributes
+        submitOpValue.push { p:[@id,key], od:null, oi:value }
+      @doc.submitOp(submitOpValue)
+    else
+      @doc.submitOp([{ p:[@id], oi:attributes }])
+    console.log @doc.snapshot
 
-  open: (cb) ->
+
+  open: (sharejsdoc, cb) ->
     @bind "change", =>
-      console.log "method: open, model change"
+      console.log "One Box change, open"
       if not _.isEqual @changedAttributes(), @alreadySaved
         console.log "not already saved -> send to sharejs"
         @send @changedAttributes()
@@ -113,41 +148,11 @@ class LocalStore extends Backbone.Model
       else
         console.log "Attributes has already saved!"
 
-
-    sharejs.open @get('id'), 'json', (err, doc) =>
-      console.log "Open new doc: " + @get('id')
-      @doc = doc
-      if @doc.snapshot == null
-        @doc.submitOp([{p:[], od:null, oi:{}}])
-      else
-        console.log "Set/update attributes from sharejs"
-        @update @doc.snapshot
-
-      @doc.on 'remoteop', (op) =>
-        console.log "event: remoteop, model change: " + @get('id')
-        if op[0]["p"].length == 0
-          console.log "update all attributes"
-          @update @doc.snapshot
-        else
-          new_attributes = {}
-          for o in op
-            attr = o["p"][0]
-            new_attributes[o["p"][0]] = @doc.snapshot[attr]
-          console.log "update special attributes"
-          @update new_attributes
-      cb err
-
-  send: (attributes) ->
-    console.log "method: send"
-    submitOpValue = []
-    for key, value of attributes
-      submitOpValue.push { p:[key], od:null, oi:value }
-    @doc.submitOp(submitOpValue)
-
-
-  open: (sharejsdoc, cb) ->
     @doc = sharejsdoc
-    @set sharejsdoc.snapshot[@id] # XXX ....
+    if not sharejsdoc.snapshot[@id]?
+      console.log "Save box to sharejs"
+      @doc.submitOp([{ p:[@id], oi:@attributes }])
+      console.log @doc.snapshot
     cb()
 
 

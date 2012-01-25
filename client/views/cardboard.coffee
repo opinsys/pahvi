@@ -30,32 +30,6 @@ class views.Cardboard extends Backbone.View
 
       @settings.set activeBox: boxModel.id
 
-
-
-  open: (cb) ->
-    sharejs.open 'pahvi', 'json', (err, doc) =>
-      console.log "Create new doc for Cardboard"
-      @doc = doc
-      if @doc.snapshot == null
-        @doc.submitOp([{ p:[], oi:[] }])
-
-      @doc.on 'remoteop', (op) =>
-        console.log "Cardboard event: remoteop"
-        console.log op
-        alreadyBoxes = @collection.map (box) =>
-          box.get('id')
-
-        for box in @doc.snapshot
-          if not _.include(alreadyBoxes, box['id'])
-            {Model} = Cardboard.types[box['type']]
-            boxModel = new Model id: box['id']
-            do (boxModel) =>
-              boxModel.open (err) =>
-                throw err if err
-                @collection.add boxModel
-
-      cb err
-
   events:
     "drop": "dropped"
 

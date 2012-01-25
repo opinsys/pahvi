@@ -62,7 +62,7 @@ $ ->
     id: "settings"
 
   boxes = new models.Boxes
-    id: window.location.pathname
+    id: window.location.pathname[1..-1]
     typeMapping: typeMapping
 
 
@@ -90,8 +90,7 @@ $ ->
 
   sidemenu.render()
 
-
-  boxes.loadBoxes ->
+  boxes.loadBoxes sharejs, ->
     router = new Workspace
       settings: settings
     Backbone.history.start()
