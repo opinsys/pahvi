@@ -22,3 +22,9 @@ if not window.console?.log?
 helpers.zoomOut = ->
   $("body").zoomTo
     targetSize: 1.0
+
+
+S4 = -> (((1 + Math.random()) * 65536) | 0).toString(16).substring(1)
+helpers.generateGUID = ->
+  S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4()
+
