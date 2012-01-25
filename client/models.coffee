@@ -34,15 +34,19 @@ class models.Boxes extends Backbone.Collection
         @add boxModel
     cb()
 
-  makeUnique: (proposedId) ->
+  isUnique: (attr, value) ->
+    not @find (box) -> box.get(attr) is value
+
+  makeUniqueName: (proposedName) ->
+
+    name = proposedName
     i = 0
-    id = proposedId
 
-    while @get id
+    while not @isUnique "name", name
       i += 1
-      id = "#{ proposedId } #{ i }."
+      name = "#{ proposedName } #{ i }."
 
-    return id
+    return name
 
   createBox: (type, options={}) ->
     if not @typeMapping[type]
