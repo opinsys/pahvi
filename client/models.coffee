@@ -98,6 +98,7 @@ class models.Boxes extends Backbone.Collection
     @openBox new Model options
 
   openBox: (box, cb=->) ->
+    box.dirty = true
     box.open @sharejsdoc, (err) =>
       throw err if err
       @add box
@@ -149,7 +150,11 @@ class LocalStore extends Backbone.Model
       if not _.isEqual @changedAttributes(), @alreadySaved
         console.log "not already saved -> send to sharejs"
         # FIXME send only changed attributes
-        @send @attributes
+        if @dirty
+          @send @toJSON()
+          @dirty = false
+        else
+          @send @changedAttributes()
         @aleardySave = null
       else
         console.log "Attributes has already saved!"
