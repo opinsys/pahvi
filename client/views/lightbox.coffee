@@ -25,7 +25,7 @@ class views.LightBox extends Backbone.View
 
   className: "lightbox"
 
-  constructor: ({@views}) ->
+  constructor: ({@views, @alwaysOnTop}) ->
     super
     @$el = $ @el
 
@@ -42,7 +42,7 @@ class views.LightBox extends Backbone.View
     "click .cancel": "_onCancelButtonClick"
 
   _onBackgroundClick: (e) ->
-    if e.target is @el
+    if e.target is @el and not @alwaysOnTop
       @close false
 
   _onOkButtonClick: (e) ->
