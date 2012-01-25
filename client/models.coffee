@@ -2,6 +2,7 @@
 
 models = NS "Pahvi.models"
 views = NS "Pahvi.views"
+helpers = NS "Pahvi.helpers"
 
 
 class models.Boxes extends Backbone.Collection
@@ -54,11 +55,12 @@ class models.Boxes extends Backbone.Collection
 
     {Model} = @typeMapping[type]
 
-    if not options?.id
-      options.id = Model::defaults.id
+    if not options?.name
+      options.name = Model::defaults.name
 
-    options.id = @makeUnique options.id
+    options.name = @makeUniqueName options.name
 
+    options.id = helpers.generateGUID()
     boxModel = new Model options
     @add boxModel
 
@@ -71,16 +73,16 @@ class LocalStore extends Backbone.Model
   constructor: ->
     super
 
-    if localStorage[@get("id")]?
+    if localStorage[@id]?
       @attributes = JSON.parse localStorage[@get("id")]
 
     @bind "change", => @save()
 
   save: ->
-    localStorage[@get("id")] = JSON.stringify @attributes
+    localStorage[@id] = JSON.stringify @attributes
 
   destroy: ->
-    delete localStorage[@get("id")]
+    delete localStorage[@id]
     @trigger "destroy", this
 
 
@@ -109,7 +111,7 @@ class models.TextBoxModel extends BaseBoxModel
   ]
 
   defaults:
-    id: "Text Box"
+    name: "Text Box"
     top: "100px"
     left: "100px"
     zIndex: 100
@@ -123,12 +125,13 @@ class models.PlainBoxModel extends BaseBoxModel
   type: "plain"
 
   configs: [
+    "NameEditor",
     "BackgroundColor",
     "Border"
   ]
 
   defaults:
-    id: "Plain Box"
+    name: "Plain Box"
     top: "100px"
     left: "100px"
     zIndex: 100
@@ -144,7 +147,7 @@ class models.ImageBox extends BaseBoxModel
   ]
 
   defaults:
-    id: "Image Box"
+    name: "Image Box"
     top: "100px"
     left: "100px"
     zIndex: 100
