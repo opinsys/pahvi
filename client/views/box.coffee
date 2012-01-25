@@ -55,42 +55,37 @@ class views.BaseBox extends Backbone.View
   events:
     "click button.up": "up"
     "click button.down": "down"
-    "click a": "onLinkClick"
+    "click a": "_onLinkClick"
 
     "click": "activate"
-    "mouseenter": "onMouseEnter"
-    "mouseleave": "onMouseLeave"
+    "mouseenter": "_onMouseEnter"
+    "mouseleave": "_onMouseLeave"
 
-    "click .delete": "delete"
+    "click .delete": "_onDeleteButtonClick"
     "dragstart": "activate"
-    "resizestop": "onResizeStop"
-    "dragstop": "onDragStop"
+    "resizestop": "_onResizeStop"
+    "dragstop": "_onDragStop"
 
-  onLinkClick: (e) ->
+  _onLinkClick: (e) ->
     if @settings.get("mode") is "edit"
       console.log "Preventing link opening in edit mode. Link was #{ $(e.target).attr "href" }"
       e.preventDefault()
 
-  onMouseEnter: (e) ->
-    @settings.set hoveredBox: @model.id
+  _onMouseEnter: (e) -> @settings.set hoveredBox: @model.id
 
-  onMouseLeave: (e) ->
-    @settings.set hoveredBox: null
+  _onMouseLeave: (e) -> @settings.set hoveredBox: null
 
-  onRotateStop: (e, ui) ->
-    @model.set rotate: ui.angle.rad
+  _onDeleteButtonClick: -> @model.destroy()
 
-  activate: ->
-    @settings.set activeBox: @model.id
+  _onRotateStop: (e, ui) -> @model.set rotate: ui.angle.rad
 
-  deactivate: ->
-    @settings.set activeBox: null
 
-  isActive: ->
-    @settings.get("activeBox") is @model.id
+  activate: -> @settings.set activeBox: @model.id
 
-  delete: ->
-    @model.destroy()
+  deactivate: -> @settings.set activeBox: null
+
+  isActive: -> @settings.get("activeBox") is @model.id
+
 
   onOffClick: (e) ->
     return unless @isActive()
@@ -100,19 +95,18 @@ class views.BaseBox extends Backbone.View
     if @settings.get("mode") is "presentation"
       helpers.zoomOut()
 
-
   up: ->
     @model.trigger "pushup", @model
 
   down: ->
     @model.trigger "pushdown", @model
 
-  onResizeStop: ->
+  _onResizeStop: ->
     @model.set
       width: @$el.css "width"
       height: @$el.css "height"
 
-  onDragStop: ->
+  _onDragStop: ->
     @model.set
       left: @$el.css "left"
       top: @$el.css "top"
@@ -145,7 +139,7 @@ class views.BaseBox extends Backbone.View
         skewable: false
         scalable: false
         rotatable: true
-        rotateStop: => @onRotateStop.apply this, arguments
+        rotateStop: => @_onRotateStop.apply this, arguments
 
     if @settings.get("mode") is "presentation"
       "pass"
@@ -200,8 +194,11 @@ class views.TextBox extends views.BaseBox
 
 
   events:
-    "click .edit": "startEdit"
-    "dblclick": "startEdit"
+    "click .edit": "_onEditButtonClick"
+    "dblclick": "_onDoubleClick"
+
+  _onEditButtonClick: -> @startEdit()
+  _onDoubleClick: -> @startEdit()
 
 
   # Find maximun font-size that fits in this widget
@@ -247,7 +244,7 @@ class views.TextBox extends views.BaseBox
     @model.set fontSize: @$el.css "font-size"
 
 
-  onResizeStop: ->
+  _onResizeStop: ->
     super
     @fitFontSize()
 
