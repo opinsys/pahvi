@@ -80,14 +80,13 @@ class models.Boxes extends Backbone.Collection
 
     operations = for attribute, value of changedAttributes
       if @_syncAttributes[attribute] is value
-        log "SEND CHANGE: We received this change. No need to resend it", attribute, value
+        # We received this change. No need to resend it
         delete @_syncAttributes[attribute]
         continue
 
-      log "SEND CHANGE: ", attribute, value
+      log "SEND CHANGE: ", attribute, ":", value
       { p: ["boxes", box.id, attribute ],  oi: value }
 
-    console.log "sending", JSON.stringify operations
     @_syncDoc.submitOp operations
 
 
@@ -98,6 +97,7 @@ class models.Boxes extends Backbone.Collection
       return
 
     log "SEND ADD #{ box.get "name" }: #{ JSON.stringify box.toJSON() }"
+
     @_syncDoc.submitOp [
       p: ["boxes", box.id]
       oi: box.toJSON()
@@ -166,8 +166,6 @@ class models.Boxes extends Backbone.Collection
 
     if @_syncDoc.snapshot.boxes[boxId]
       log "ERROR: Box exists after deletion! #{ boxId }"
-    else
-      log "DELETED box #{ boxId }"
 
 
   _receiveBoxChange: (op) ->
@@ -185,7 +183,6 @@ class models.Boxes extends Backbone.Collection
 
     @_syncAttributes[attrName] = attrValue
 
-    # Just update all attributes from sharejs snapshot
     box.set @_syncAttributes
 
 
