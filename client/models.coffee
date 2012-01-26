@@ -52,8 +52,13 @@ class models.Boxes extends Backbone.Collection
 
 
 
-
   createBox: (type, options={}) ->
+    if not options.id
+      options.id = helpers.generateGUID()
+
+    if @get options.id
+      return log "Box id #{ options.id } already exists! Not creating new!"
+
     if not @typeMapping[type]
       return alert "Unkown type #{ type }!"
 
@@ -63,19 +68,6 @@ class models.Boxes extends Backbone.Collection
       options.name = Model::defaults.name
 
     options.name = @makeUniqueName options.name
-
-    options.id = helpers.generateGUID()
-
-    proposedId = options.id
-    i = 0
-
-    loop
-      existing = @find (m) ->
-        m.id is options.id
-
-      break if not existing
-      options.id = "#{ proposedId } #{ ++i }."
-
 
     @add new Model options
 
