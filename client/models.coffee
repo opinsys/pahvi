@@ -107,6 +107,21 @@ class BaseBoxModel extends Backbone.Model
     super
     @set type: @type
 
+    # Convert change events to sync events
+    @bind "change", =>
+      # Skip sync if attribustes the attributes are exactly the same we just
+      # set. This will prevent inifite update loops.
+      if _.isEqual @changedAttributes(), @_syncedAttributes
+        console.log "SYNC set skip for #{ @get "name" }"
+        @_syncedAttributes = null
+        return
+
+      @trigger "sync", this
+
+  syncSet: (attributes) ->
+    @_syncedAttributes = attributes
+    @set attributes
+
   destroy: (options) ->
     @trigger "destroy", this, this.collection, options
 
