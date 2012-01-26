@@ -5,37 +5,99 @@ views = NS "Pahvi.views"
 helpers = NS "Pahvi.helpers"
 
 
+log = (msg...) ->
+  msg.unshift "ShareJS:"
+  console.log.apply console, msg
+
+
 class models.Boxes extends Backbone.Collection
+
 
   constructor: (models, opts) ->
     {@typeMapping} = opts
     {@id} = opts
     super
 
-    @bind "change", (box) =>
-      alert "change #{ box.get "name" }: #{ JSON.stringify box.changedAttributes() }"
+    @bind "sync", (box) =>
+      @_syncToShareJs box.id, box.changedAttributes()
 
     @bind "add", (box) =>
-      alert "add #{ box.get "name" }"
+      @_addNewBoxToShareJs box.toJSON()
 
     @bind "destroy", (box) =>
-      alert "destroy #{ box.get "name" }"
-
+      @_removeBoxFromShareJs box.id
 
 
   open: (cb=->) ->
-    sharejs.open @id, (err, doc) =>
-      @doc = doc
+    sharejs.open @id, "json", (err, doc) =>
+      return cb err if err
+      @_syncDoc = doc
 
-      if @doc.created
-        doc.submitOp [
+
+      if @_syncDoc.created
+        console.log "NEW PAHVI"
+        @_syncDoc.submitOp [
           p: []
           oi:
             boxes: {}
             cardboardProperties: {}
         ]
 
+      @_syncDoc.on "remoteop", (op) => @_onShareJsOperation op
       cb()
+
+
+  _onShareJsOperation: (operations) ->
+    console.log "GOT ShareJS op: #{ JSON.stringify operations }", @_syncDoc.snapshot
+    for op in operations
+      # Update to boxes
+      if op.p[0] is "boxes"
+        boxId = op.p[1]
+
+        # Update to specific attribute
+        if attr = op.p[2]
+          @_syncFromShareJs boxId, attr
+        else
+          boxData = op.oi
+          @createBox boxData.type, boxData
+
+      else
+        log "Unknown Share js operation #{ op.p[0] }"
+
+
+  _syncFromShareJs: (boxId, attr) ->
+    box = @get boxId
+
+    if not box
+      return log "Could not find box to update! #{ boxId }"
+
+    log "Updating #{ attr } on #{ box.id }"
+    box.syncSet @_syncDoc.snapshot.boxes[box.id]
+
+
+
+  _syncToShareJs: (boxId, changedAttributes) ->
+    console.log "CHANGED #{ boxId }: #{ JSON.stringify changedAttributes }"
+
+    operations = for attribute, value of changedAttributes
+      {
+        p: ["boxes", boxId, attribute ]
+        oi: value
+      }
+
+    @_syncDoc.submitOp operations
+
+
+  _addNewBoxToShareJs: (attributes) ->
+    console.log "ADD #{ JSON.stringify attributes }"
+    @_syncDoc.submitOp [
+      p: ["boxes", attributes.id]
+      oi: attributes
+    ]
+
+
+  _removeBoxFromShareJs: (boxId) ->
+    console.log "REMOVE #{ boxId }"
 
 
   comparator: (box) ->
