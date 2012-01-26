@@ -6,8 +6,18 @@ log = (msg...) ->
 class Backbone.SharedCollection extends Backbone.Collection
 
   constructor: (models, opts) ->
-    {@sharejsId} = opts
+    @sharejsId = opts.sharejsId
+    @modelTypes = opts.modelTypes
     super
+
+  _initModel: (json) ->
+    Model = @modelTypes[json.type]
+
+    if not Model
+      log "DEBUG: no custom model found for #{ json.type }"
+      Model = Backbone.Model
+
+    @add new Model json
 
 
   open: (cb=->) ->
@@ -50,7 +60,7 @@ class Backbone.SharedCollection extends Backbone.Collection
 
   _loadModelsFromSyncDoc: ->
     for id, modelData of @_syncDoc.snapshot.models
-      model = @createModel modelData.type, modelData
+      @_initModel modelData.type, modelData
 
 
   _bindSendOperations: ->
@@ -144,7 +154,7 @@ class Backbone.SharedCollection extends Backbone.Collection
     log "RECEIVE ADD #{ op.oi.name }: #{ JSON.stringify op.oi }"
 
     @_syncAdded = op.oi.id
-    @createModel op.oi.type, op.oi
+    @_initModel op.oi
 
 
   _receiveModelDestroy: (op) ->
