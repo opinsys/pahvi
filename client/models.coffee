@@ -71,7 +71,7 @@ class models.Boxes extends Backbone.Collection
       @_sendBoxAdd box
 
     @bind "destroy", (box) =>
-      @_sendBoxRemove box
+      @_sendBoxDestroy box
 
 
   _sendBoxChange: (box) ->
@@ -104,7 +104,7 @@ class models.Boxes extends Backbone.Collection
     ]
 
 
-  _sendBoxRemove: (box) ->
+  _sendBoxDestroy: (box) ->
 
     if @_syncRemoved is box.id
       # We received this remove. No need to send it again
@@ -130,12 +130,12 @@ class models.Boxes extends Backbone.Collection
 
       # We have delete object
       if op.od
-        return @_receiveBoxRemove op
+        return @_receiveBoxDestroy op
 
     # If we have a third item in path it means that this is an attribute
     # update to existing box.
     if op.p[2]
-      return @_receiveBoxUpdate op
+      return @_receiveBoxChange op
 
 
     log "Unkown box operation #{ JSON.stringify op }"
@@ -149,7 +149,7 @@ class models.Boxes extends Backbone.Collection
     @createBox op.oi.type, op.oi
 
 
-  _receiveBoxRemove: (op) ->
+  _receiveBoxDestroy: (op) ->
     boxId = op.p[1]
 
     box = @get boxId
@@ -170,7 +170,7 @@ class models.Boxes extends Backbone.Collection
       log "DELETED box #{ boxId }"
 
 
-  _receiveBoxUpdate: (op) ->
+  _receiveBoxChange: (op) ->
     boxId = op.p[1]
     attrName = op.p[2]
     attrValue = op.oi
