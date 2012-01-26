@@ -87,7 +87,7 @@ class models.Boxes extends Backbone.Collection
       log "SEND CHANGE: ", attribute, ":", value
       { p: ["boxes", box.id, attribute ],  oi: value }
 
-    @_syncDoc.submitOp operations
+    @_syncDoc.submitOp operations if operations.length isnt 0
 
 
   _sendBoxAdd: (box) ->
