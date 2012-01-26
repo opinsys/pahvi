@@ -60,7 +60,7 @@ class Backbone.SharedCollection extends Backbone.Collection
 
   _loadModelsFromSyncDoc: ->
     for id, modelData of @_syncDoc.snapshot.models
-      @_initModel modelData.type, modelData
+      @_initModel modelData
 
 
   _bindSendOperations: ->
