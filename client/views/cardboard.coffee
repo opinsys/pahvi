@@ -11,10 +11,6 @@ class views.Cardboard extends Backbone.View
     super
     @$el = $ @el
 
-    # Deselect boxes when changing mode
-    @settings.bind "change:mode", =>
-      @settings.set activeBox: null
-
 
     @collection.bind "add", (boxModel) =>
 
