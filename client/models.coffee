@@ -82,8 +82,13 @@ class models.Boxes extends Backbone.Collection
         delete @_syncAttributes[attribute]
         continue
 
-      log "SEND CHANGE: ", attribute, ":", value
+      log "SEND CHANGE: #{ box.get "name" }: #{ attribute }: #{ value }"
       { p: ["boxes", box.id, attribute ],  oi: value }
+
+
+    if not @_syncDoc.snapshot.boxes[box.id]
+      log "ERROR: snapshot has no this box"
+
 
     @_syncDoc.submitOp operations if operations.length isnt 0
 
@@ -95,6 +100,7 @@ class models.Boxes extends Backbone.Collection
       return
 
     log "SEND ADD #{ box.get "name" }: #{ JSON.stringify box.toJSON() }"
+
 
     @_syncDoc.submitOp [
       p: ["boxes", box.id]
