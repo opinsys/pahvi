@@ -98,7 +98,8 @@ $ ->
 
   sidemenu.render()
 
-  boxes.loadBoxes sharejs, ->
+  boxes.open (err) ->
+    throw err if err
     router = new Workspace
       settings: settings
       collection: boxes
