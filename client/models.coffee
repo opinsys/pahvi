@@ -75,10 +75,8 @@ class models.Boxes extends Backbone.Collection
 
 
   _sendBoxChange: (box) ->
-    changedAttributes = box.changedAttributes()
 
-
-    operations = for attribute, value of changedAttributes
+    operations = for attribute, value of box.changedAttributes()
       if @_syncAttributes[attribute] is value
         # We received this change. No need to resend it
         delete @_syncAttributes[attribute]
