@@ -28,14 +28,14 @@ class Workspace extends Backbone.Router
 
     @collection.bind "change:name", (box) =>
       if box.id is  @settings.get "activeBox"
-        @navigate "#{ @settings.get "mode" }/#{ box.get "name" }"
+        @navigateToBox box
 
     @settings.bind "change:activeBox", =>
       if boxId = @settings.get "activeBox"
         box = @collection.get boxId
-        @navigate "#{ @settings.get "mode" }/#{ box.get "name" }"
+        @navigateToBox box
       else
-        @navigate "#{ @settings.get "mode" }"
+        @navigate @settings.get "mode"
 
   routes:
     "": "welcome"
@@ -49,9 +49,12 @@ class Workspace extends Backbone.Router
   welcome: ->
     views.showMessage "Welcome to Pahvi!"
 
+  navigateToBox: (box, trigger) ->
+    @navigate "#{ @settings.get "mode" }/#{ escape box.get "name" }", trigger
 
   for mode in ["presentation", "edit"] then do (mode) ->
     Workspace::[mode] = (boxName) ->
+
       @settings.set mode: mode
 
       if boxName
@@ -59,9 +62,12 @@ class Workspace extends Backbone.Router
 
       if box
         @settings.set activeBox: box.id
+        @navigateToBox box
       else
-        @settings.set activeBox: null
-        helpers.zoomOut()
+        @navigate @settings.get "mode"
+        if @settings.get("mode") is "presentation"
+          @settings.set activeBox: null
+          helpers.zoomOut()
 
 $ ->
 
@@ -100,10 +106,10 @@ $ ->
 
   boxes.open (err) ->
     throw err if err
+    settings.set activeBox: null
     router = new Workspace
       settings: settings
       collection: boxes
     Backbone.history.start()
-    settings.set activeBox: null
 
 
