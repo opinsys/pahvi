@@ -7,11 +7,9 @@ helpers = NS "Pahvi.helpers"
 
 class models.Boxes extends Backbone.Collection
 
-  constructor: (opts) ->
+  constructor: (models, opts) ->
     {@typeMapping} = opts
     {@id} = opts
-    delete opts.typeMapping
-    delete opts.id
     super
 
 

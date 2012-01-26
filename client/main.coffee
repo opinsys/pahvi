@@ -69,7 +69,7 @@ $ ->
   settings = new models.Settings
     id: "settings"
 
-  boxes = new models.Boxes
+  boxes = new models.Boxes [],
     id: window.location.pathname[1..-1] or "_default"
     typeMapping: typeMapping
 
