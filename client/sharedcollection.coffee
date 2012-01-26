@@ -21,7 +21,7 @@ class Backbone.SharedCollection extends Backbone.Collection
       if @_syncDoc.created
         @_initSyncDoc()
       else
-        @_loadBoxesFromSyncDoc()
+        @_loadModelsFromSyncDoc()
 
       @_bindSendOperations()
 
@@ -31,10 +31,10 @@ class Backbone.SharedCollection extends Backbone.Collection
       # And also bind receive operations:
       @_syncDoc.on "remoteop", (operations) =>
         for op in operations
-          # If first part in operation path is "boxes" this operation is a
-          # change to some of the boxes
-          if op.p[0] is "boxes"
-            @_receiveBoxOperation op
+          # If first part in operation path is "models" this operation is a
+          # change to some of the models
+          if op.p[0] is "models"
+            @_receiveModelOperation op
           else
             log "ERROR: Unknown Share js operation #{ JSON.stringify op }"
 
@@ -44,144 +44,144 @@ class Backbone.SharedCollection extends Backbone.Collection
     @_syncDoc.submitOp [
       p: []
       oi:
-        boxes: {}
-        cardboardProperties: {}
+        models: {}
+        collectionProperties: {}
     ]
 
-  _loadBoxesFromSyncDoc: ->
-    for id, boxData of @_syncDoc.snapshot.boxes
-      box = @createBox boxData.type, boxData
+  _loadModelsFromSyncDoc: ->
+    for id, modelData of @_syncDoc.snapshot.models
+      model = @createModel modelData.type, modelData
 
 
   _bindSendOperations: ->
 
-    @bind "change", (box) =>
-      if box._syncOk
-        @_sendBoxChange box
+    @bind "change", (model) =>
+      if model._syncOk
+        @_sendModelChange model
       else
-        log "Box #{ box.get "name" } is not in sync machinery yet. Skipping change event"
+        log "Model #{ model.get "name" } is not in sync machinery yet. Skipping change event"
 
-    @bind "add", (box) =>
-      @_sendBoxAdd box
+    @bind "add", (model) =>
+      @_sendModelAdd model
 
-    @bind "destroy", (box) =>
-      @_sendBoxDestroy box
+    @bind "destroy", (model) =>
+      @_sendModelDestroy model
 
 
-  _sendBoxChange: (box) ->
+  _sendModelChange: (model) ->
 
-    operations = for attribute, value of box.changedAttributes()
+    operations = for attribute, value of model.changedAttributes()
       if @_syncAttributes[attribute] is value
         # We received this change. No need to resend it
         delete @_syncAttributes[attribute]
         continue
 
-      log "SEND CHANGE: #{ box.get "name" }: #{ attribute }: #{ value }"
-      { p: ["boxes", box.id, attribute ],  oi: value }
+      log "SEND CHANGE: #{ model.get "name" }: #{ attribute }: #{ value }"
+      { p: ["models", model.id, attribute ],  oi: value }
 
 
-    if not @_syncDoc.snapshot.boxes[box.id]
-      log "ERROR: snapshot has no this box"
+    if not @_syncDoc.snapshot.models[model.id]
+      log "ERROR: snapshot has no this model"
 
 
     @_syncDoc.submitOp operations if operations.length isnt 0
 
 
-  _sendBoxAdd: (box) ->
-    if @_syncAdded is box.id
+  _sendModelAdd: (model) ->
+    if @_syncAdded is model.id
       # We received this add. No need to resend it
       @_syncAdded = null
       return
 
-    log "SEND ADD #{ box.get "name" }: #{ JSON.stringify box.toJSON() }"
+    log "SEND ADD #{ model.get "name" }: #{ JSON.stringify model.toJSON() }"
 
 
     @_syncDoc.submitOp [
-      p: ["boxes", box.id]
-      oi: box.toJSON()
+      p: ["models", model.id]
+      oi: model.toJSON()
     ]
 
 
-  _sendBoxDestroy: (box) ->
+  _sendModelDestroy: (model) ->
 
-    if @_syncRemoved is box.id
+    if @_syncRemoved is model.id
       # We received this remove. No need to send it again
       @_syncRemoved = null
       return
 
-    log "SEND REMOVE #{ box.get "name" }"
+    log "SEND REMOVE #{ model.get "name" }"
     @_syncDoc.submitOp [
-      p: ["boxes", box.id]
+      p: ["models", model.id]
       od: true
     ]
 
 
 
-  _receiveBoxOperation: (op) ->
+  _receiveModelOperation: (op) ->
 
-    # If path has form of [ "boxes", boxId ] it must be add or remove 
+    # If path has form of [ "models", modelId ] it must be add or remove 
     if op.p.length is 2
 
       # We have insert object
       if op.oi
-        return @_receiveBoxAdd op
+        return @_receiveModelAdd op
 
       # We have delete object
       if op.od
-        return @_receiveBoxDestroy op
+        return @_receiveModelDestroy op
 
     # If we have a third item in path it means that this is an attribute
-    # update to existing box.
+    # update to existing model.
     if op.p[2]
-      return @_receiveBoxChange op
+      return @_receiveModelChange op
 
 
-    log "Unkown box operation #{ JSON.stringify op }"
+    log "Unkown model operation #{ JSON.stringify op }"
 
 
-  _receiveBoxAdd: (op) ->
+  _receiveModelAdd: (op) ->
 
     log "RECEIVE ADD #{ op.oi.name }: #{ JSON.stringify op.oi }"
 
     @_syncAdded = op.oi.id
-    @createBox op.oi.type, op.oi
+    @createModel op.oi.type, op.oi
 
 
-  _receiveBoxDestroy: (op) ->
-    boxId = op.p[1]
+  _receiveModelDestroy: (op) ->
+    modelId = op.p[1]
 
-    box = @get boxId
-    if not box
-      log "ERROR: Remote asked to remove non existing box #{ boxId }"
+    model = @get modelId
+    if not model
+      log "ERROR: Remote asked to remove non existing model #{ modelId }"
       return
 
-    log "RECEIVE REMOVE #{ box.get "name" }: #{ JSON.stringify boxId }"
+    log "RECEIVE REMOVE #{ model.get "name" }: #{ JSON.stringify modelId }"
 
     # Prevent resending this remove
-    @_syncRemoved = box.id
+    @_syncRemoved = model.id
 
-    box.destroy()
+    model.destroy()
 
-    if @_syncDoc.snapshot.boxes[boxId]
-      log "ERROR: Box exists after deletion! #{ boxId }"
+    if @_syncDoc.snapshot.models[modelId]
+      log "ERROR: Model exists after deletion! #{ modelId }"
 
 
-  _receiveBoxChange: (op) ->
-    boxId = op.p[1]
+  _receiveModelChange: (op) ->
+    modelId = op.p[1]
     attrName = op.p[2]
     attrValue = op.oi
 
 
-    box = @get boxId
-    if not box
-      log "ERROR: Remote asked to update non existing box: #{ box.get "name" } #{ boxId }"
+    model = @get modelId
+    if not model
+      log "ERROR: Remote asked to update non existing model: #{ model.get "name" } #{ modelId }"
       return
 
-    log "RECEIVE CHANGE #{ box.get "name" }: #{ attrName }: #{ attrValue }"
+    log "RECEIVE CHANGE #{ model.get "name" }: #{ attrName }: #{ attrValue }"
 
     @_syncAttributes[attrName] = attrValue
 
-    box.set @_syncAttributes
+    model.set @_syncAttributes
 
 
   add: (models) ->
