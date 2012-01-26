@@ -248,6 +248,8 @@ class configs.TextEditor extends BaseConfig
         {'name': 'Italic', 'title': 'Emphasis', 'css': 'wym_tools_emphasis'},
         {'name': 'CreateLink', 'title': 'Link', 'css': 'wym_tools_link'},
         {'name': 'Unlink', 'title': 'Unlink', 'css': 'wym_tools_unlink'},
+        {'name': 'InsertOrderedList', 'title': 'Ordered_List', 'css': 'wym_tools_ordered_list'},
+        {'name': 'InsertUnorderedList', 'title': 'Unordered_List', 'css': 'wym_tools_unordered_list'},
         {'name': 'ToggleHtml', 'title': 'HTML', 'css': 'wym_tools_html'},
       ]
 
