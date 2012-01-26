@@ -238,7 +238,6 @@ class views.TextBox extends views.BaseBox
         # Font can be larger. Take bigger half
         return recurse size, max
 
-    @model.set fontSize: @$el.css "font-size"
 
 
   _onResizeStop: ->
