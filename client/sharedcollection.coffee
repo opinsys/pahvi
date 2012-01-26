@@ -3,7 +3,13 @@ log = (msg...) ->
   msg.unshift "SharedCollection:"
   console?.log.apply console, msg
 
+S4 = -> (((1 + Math.random()) * 65536) | 0).toString(16).substring(1)
+
+
 class Backbone.SharedCollection extends Backbone.Collection
+
+  @generateGUID = ->
+    S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4()
 
   constructor: (models, opts) ->
     @sharejsId = opts.sharejsId
@@ -16,6 +22,10 @@ class Backbone.SharedCollection extends Backbone.Collection
     if not Model
       log "DEBUG: no custom model found for #{ json.type }"
       Model = Backbone.Model
+
+    if not json.id
+      log "DEBUG: User did not give an id. generating one"
+      json.id Backbone.SharedCollection.generateGUID
 
     @add new Model json
 
