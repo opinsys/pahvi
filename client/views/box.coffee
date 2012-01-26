@@ -208,10 +208,6 @@ class views.TextBox extends views.BaseBox
     maxWidth = parseInt @$el.width()
     maxHeight = parseInt @$el.height()
 
-    # Add some safe margins
-    maxWidth -= 20
-    maxHeight -= 50
-
     prev = null
     do recurse = (min=6, max=1000) =>
 
