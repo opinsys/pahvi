@@ -42,6 +42,9 @@ class models.Boxes extends Backbone.Collection
             boxes: {}
             cardboardProperties: {}
         ]
+      else
+        for id, boxData of @_syncDoc.snapshot.boxes
+          @createBox boxData.type, boxData
 
       @_syncDoc.on "remoteop", (op) => @_onShareJsOperation op
       cb()
