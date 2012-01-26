@@ -60,12 +60,18 @@ class models.Boxes extends Backbone.Collection
         # Update to specific attribute
         if attr = op.p[2]
           @_syncFromShareJs boxId, attr
-        else
+        else if op.oi
           boxData = op.oi
           @createBox boxData.type, boxData
+        else if op.od is null
+          log "NEED to delete box #{ boxId }"
+          @get(boxId)?.destroy()
+
+        else
+          log "Unkown box operation #{ JSON.stringify op }"
 
       else
-        log "Unknown Share js operation #{ op.p[0] }"
+        log "Unknown Share js operation #{ JSON.stringify op }"
 
 
   _syncFromShareJs: (boxId, attr) ->
@@ -101,6 +107,11 @@ class models.Boxes extends Backbone.Collection
 
   _removeBoxFromShareJs: (boxId) ->
     console.log "REMOVE #{ boxId }"
+    @_syncDoc.submitOp [
+      p: ["boxes", boxId]
+      od: null
+    ]
+
 
 
   comparator: (box) ->
