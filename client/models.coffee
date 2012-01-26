@@ -87,7 +87,7 @@ class models.Boxes extends Backbone.Collection
       return
 
     # Just got operation delete for this box
-    if deleteOb is null
+    if deleteOb
       log "NEED to delete box #{ boxId }"
       box.destroy()
       if @_syncDoc.snapshot.boxes[boxId]
@@ -121,7 +121,7 @@ class models.Boxes extends Backbone.Collection
     console.log "REMOVE #{ boxId }"
     @_syncDoc.submitOp [
       p: ["boxes", boxId]
-      od: null
+      od: true
     ]
 
 
