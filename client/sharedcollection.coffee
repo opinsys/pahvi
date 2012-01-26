@@ -39,8 +39,10 @@ class Backbone.SharedCollection extends Backbone.Collection
       @_syncDoc = doc
 
       if @_syncDoc.created
+        log "DEBUG: Creating new collection #{ @sharejsId }"
         @_initSyncDoc()
       else
+        log "DEBUG: opening existing collection #{ @sharejsId }"
         @_loadModelsFromSyncDoc()
 
       @_bindSendOperations()
@@ -60,7 +62,6 @@ class Backbone.SharedCollection extends Backbone.Collection
 
 
   _initSyncDoc: ->
-    console.log "NEW PAHVI"
     @_syncDoc.submitOp [
       p: []
       oi:
