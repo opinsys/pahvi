@@ -205,6 +205,9 @@ class Backbone.SharedCollection extends Backbone.Collection
     model.set @_syncAttributes
 
 
+  # Collection#add can trigger change events. We must flag models so that the
+  # changes won't get sent to the sharejs document before it's added to it
+  # TODO: can we add models to the sharejs document here?
   add: (models) ->
     super
 
