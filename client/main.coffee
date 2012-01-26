@@ -18,6 +18,13 @@ for metaClassName, namespace of typeSources
     typeMapping[metaClass.prototype.type][metaClassName] = metaClass
 
 
+
+sharedCollectionTypeMap = {}
+for __, Model of models when Model.prototype?.type
+  sharedCollectionTypeMap[Model.prototype.type] = Model
+
+
+
 class Workspace extends Backbone.Router
 
   constructor: ({@settings, @collection}) ->
@@ -78,6 +85,7 @@ $ ->
   boxes = new models.Boxes [],
     sharejsId: window.location.pathname[1..-1] or "_default"
     typeMapping: typeMapping
+    modelTypes: sharedCollectionTypeMap
 
 
 
