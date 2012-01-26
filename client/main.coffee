@@ -76,7 +76,7 @@ $ ->
     id: "settings"
 
   boxes = new models.Boxes [],
-    id: window.location.pathname[1..-1] or "_default"
+    sharejsId: window.location.pathname[1..-1] or "_default"
     typeMapping: typeMapping
 
 
