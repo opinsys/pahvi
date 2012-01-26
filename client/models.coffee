@@ -198,6 +198,8 @@ class models.TextBoxModel extends BaseBoxModel
     name: "Text Box"
     top: "100px"
     left: "100px"
+    width: "200px"
+    height: "200px"
     zIndex: 100
     text: "<p>TextBox sample content</p>"
     "backgroundColor": "white"
@@ -218,6 +220,8 @@ class models.PlainBoxModel extends BaseBoxModel
     name: "Plain Box"
     top: "100px"
     left: "100px"
+    width: "200px"
+    height: "200px"
     zIndex: 100
     "backgroundColor": "white"
 
@@ -235,6 +239,8 @@ class models.ImageBox extends BaseBoxModel
     name: "Image Box"
     top: "100px"
     left: "100px"
+    width: "200px"
+    height: "200px"
     zIndex: 100
 
 

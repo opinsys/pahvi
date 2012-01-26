@@ -120,6 +120,7 @@ class views.BaseBox extends Backbone.View
 
     @$el.html @template @model.toJSON()
 
+
     @$el.css
       left: @model.get "left"
       top: @model.get "top"
