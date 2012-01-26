@@ -54,14 +54,14 @@ class models.Boxes extends Backbone.Collection
           if op.p[0] is "boxes"
             @_receiveBoxOperation op
           else
-            log "Unknown Share js operation #{ JSON.stringify op }"
+            log "ERROR: Unknown Share js operation #{ JSON.stringify op }"
 
 
 
   _sendChange: (box) ->
     changedAttributes = box.changedAttributes()
 
-    log "Sending #{ box.id }: #{ JSON.stringify changedAttributes }"
+    log "SEND CHANGE #{ box.get "name" }: #{ JSON.stringify changedAttributes }"
 
     operations = for attribute, value of changedAttributes
       {
@@ -73,7 +73,12 @@ class models.Boxes extends Backbone.Collection
 
 
   _sendAdd: (box) ->
-    console.log "Sending add #{ JSON.stringify box.toJSON() }"
+    if @_syncAdd is box.id
+      # We received this add. No need to resend it
+      @_syncAdd = null
+      return
+
+    log "SEND ADD #{ box.get "name" }: #{ JSON.stringify box.toJSON() }"
     @_syncDoc.submitOp [
       p: ["boxes", box.id]
       oi: box.toJSON()
@@ -81,7 +86,13 @@ class models.Boxes extends Backbone.Collection
 
 
   _sendRemove: (box) ->
-    console.log "Sending remove #{ box.id }"
+
+    if @_syncRemoved is box.id
+      # We received this remove. No need to send it again
+      @_syncRemoved = null
+      return
+
+    log "SEND REMOVE #{ box.get "name" }"
     @_syncDoc.submitOp [
       p: ["boxes", box.id]
       od: true
@@ -112,7 +123,10 @@ class models.Boxes extends Backbone.Collection
 
 
   _receiveBoxAdd: (op) ->
-    log "Adding new box with attributes #{ op.oi }"
+
+    log "RECEIVE ADD #{ op.oi.name }: #{ JSON.stringify op.oi }"
+
+    @_syncAdd = op.oi.id
     @createBox op.oi.type, op.oi
 
 
@@ -123,6 +137,11 @@ class models.Boxes extends Backbone.Collection
     if not box
       log "ERROR: Remote asked to remove non existing box #{ boxId }"
       return
+
+    log "RECEIVE REMOVE #{ box.get "name" }: #{ JSON.stringify boxId }"
+
+    # Prevent resending this remove
+    @_syncRemoved = box.id
 
     box.destroy()
 
@@ -136,10 +155,10 @@ class models.Boxes extends Backbone.Collection
     boxId = op.p[1]
     box = @get boxId
     if not box
-      log "ERROR: Remote asked to update non existing box #{ boxId }"
+      log "ERROR: Remote asked to update non existing box: #{ box.get "name" } #{ boxId }"
       return
 
-    log "Remote update #{ op.p[2] }: #{ op.oi }"
+    log "RECEIVE CHANGE #{ box.get "name" }: #{ op.p[2] }: #{ op.oi }"
 
     # Just update all attributes from sharejs snapshot
     box.syncSet @_syncDoc.snapshot.boxes[box.id]
@@ -167,7 +186,7 @@ class models.Boxes extends Backbone.Collection
       options.id = helpers.generateGUID()
 
     if @get options.id
-      return log "Box id #{ options.id } already exists! Not creating new!"
+      return console.log  "ERROR: Box id #{ options.id } already exists! Not creating new!"
 
     if not @typeMapping[type]
       return alert "Unkown type #{ type }!"
