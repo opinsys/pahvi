@@ -19,13 +19,13 @@ class models.Boxes extends Backbone.Collection
     super
 
     @bind "sync", (box) =>
-      @_syncToShareJs box.id, box.changedAttributes()
+      @_sendChange box
 
     @bind "add", (box) =>
-      @_addNewBoxToShareJs box.toJSON()
+      @_sendAdd box
 
     @bind "destroy", (box) =>
-      @_removeBoxFromShareJs box.id
+      @_sendRemove box
 
 
   open: (cb=->) ->
@@ -45,87 +45,109 @@ class models.Boxes extends Backbone.Collection
         for id, boxData of @_syncDoc.snapshot.boxes
           @createBox boxData.type, boxData
 
-      @_syncDoc.on "remoteop", (op) => @_onShareJsOperation op
       cb()
 
+      @_syncDoc.on "remoteop", (operations) =>
+        for op in operations
+          # If first part in operation path is "boxes" this operation is a
+          # change to some of the boxes
+          if op.p[0] is "boxes"
+            @_receiveBoxOperation op
+          else
+            log "Unknown Share js operation #{ JSON.stringify op }"
 
-  _onShareJsOperation: (operations) ->
-    for op in operations
-      # If first part in operation path is "boxes" this operation is a box
-      # change
-      if op.p[0] is "boxes"
-        @_applyBoxOperation op
-      else
-        log "Unknown Share js operation #{ JSON.stringify op }"
 
 
-  _applyBoxOperation: (op) ->
+  _sendChange: (box) ->
+    changedAttributes = box.changedAttributes()
 
-    path = op.p
-    insertOb = op.oi
-    deleteOb = op.od
-
-    # If path has form of [ "boxes", boxId ] it means new box insertion
-    if path.length is 2 and insertOb
-      log "ADDing new box with attributes #{ insertOb }"
-      @createBox insertOb.type, insertOb
-      return
-
-    # Second item in path must always be the id of the box getting modified
-    boxId = path[1]
-    box = @get boxId
-    if not box
-      log "ERROR: Got update for non existing box #{ boxId }"
-      return
-
-    # If we have a third item in path it means that this is an attribute
-    # update to existing box.
-    if path[2]
-      log "Remote update #{ path[2] }: #{ insertOb }"
-      # Just update all attributes from sharejs snapshot
-      box.syncSet @_syncDoc.snapshot.boxes[box.id]
-      return
-
-    # Just got operation delete for this box
-    if deleteOb
-      log "NEED to delete box #{ boxId }"
-      box.destroy()
-      if @_syncDoc.snapshot.boxes[boxId]
-        log "ERROR: Box exists after deletion! #{ boxId }"
-
-      return
-
-    log "Unkown box operation #{ JSON.stringify op }"
-
-  _syncToShareJs: (boxId, changedAttributes) ->
-    log "Sending #{ boxId }: #{ JSON.stringify changedAttributes }"
+    log "Sending #{ box.id }: #{ JSON.stringify changedAttributes }"
 
     operations = for attribute, value of changedAttributes
       {
-        p: ["boxes", boxId, attribute ]
+        p: ["boxes", box.id, attribute ]
         oi: value
       }
 
     @_syncDoc.submitOp operations
 
 
-  _addNewBoxToShareJs: (attributes) ->
-    console.log "ADD #{ JSON.stringify attributes }"
+  _sendAdd: (box) ->
+    console.log "Sending add #{ JSON.stringify box.toJSON() }"
     @_syncDoc.submitOp [
-      p: ["boxes", attributes.id]
-      oi: attributes
+      p: ["boxes", box.id]
+      oi: box.toJSON()
     ]
 
 
-  _removeBoxFromShareJs: (boxId) ->
-    console.log "REMOVE #{ boxId }"
+  _sendRemove: (box) ->
+    console.log "Sending remove #{ box.id }"
     @_syncDoc.submitOp [
-      p: ["boxes", boxId]
+      p: ["boxes", box.id]
       od: true
     ]
 
 
 
+  _receiveBoxOperation: (op) ->
+
+    # If path has form of [ "boxes", boxId ] it must be add or remove 
+    if op.p.length is 2
+
+      # We have insert object
+      if op.oi
+        return @_receiveBoxAdd op
+
+      # We have delete object
+      if op.od
+        return @_receiveBoxRemove op
+
+    # If we have a third item in path it means that this is an attribute
+    # update to existing box.
+    if op.p[2]
+      return @_receiveBoxUpdate op
+
+
+    log "Unkown box operation #{ JSON.stringify op }"
+
+
+  _receiveBoxAdd: (op) ->
+    log "Adding new box with attributes #{ op.oi }"
+    @createBox op.oi.type, op.oi
+
+
+  _receiveBoxRemove: (op) ->
+    boxId = op.p[1]
+
+    box = @get boxId
+    if not box
+      log "ERROR: Remote asked to remove non existing box #{ boxId }"
+      return
+
+    box.destroy()
+
+    if @_syncDoc.snapshot.boxes[boxId]
+      log "ERROR: Box exists after deletion! #{ boxId }"
+    else
+      log "DELETED box #{ boxId }"
+
+
+  _receiveBoxUpdate: (op) ->
+    boxId = op.p[1]
+    box = @get boxId
+    if not box
+      log "ERROR: Remote asked to update non existing box #{ boxId }"
+      return
+
+    log "Remote update #{ op.p[2] }: #{ op.oi }"
+
+    # Just update all attributes from sharejs snapshot
+    box.syncSet @_syncDoc.snapshot.boxes[box.id]
+
+
+
+
+  # Keep boxes sorted by they layer position
   comparator: (box) ->
     -1 * parseInt box.get "zIndex"
 
