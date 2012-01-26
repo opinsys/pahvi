@@ -60,12 +60,16 @@ class models.Boxes extends Backbone.Collection
 
   _loadBoxesFromSyncDoc: ->
     for id, boxData of @_syncDoc.snapshot.boxes
-      @createBox boxData.type, boxData
+      box = @createBox boxData.type, boxData
+
 
   _bindSendOperations: ->
 
     @bind "change", (box) =>
-      @_sendBoxChange box
+      if box._syncOk
+        @_sendBoxChange box
+      else
+        log "Box #{ box.get "name" } is not in sync machinery yet. Skipping change event"
 
     @bind "add", (box) =>
       @_sendBoxAdd box
@@ -224,7 +228,12 @@ class models.Boxes extends Backbone.Collection
 
     options.name = @makeUniqueName options.name
 
-    @add new Model options
+    box = new Model options
+    @add box
+    box._syncOk = true
+    return box
+
+
 
 
   makeUniqueName: (proposedName) ->
