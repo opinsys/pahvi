@@ -18,7 +18,7 @@ class models.Boxes extends Backbone.Collection
     {@id} = opts
     super
 
-    @bind "sync", (box) =>
+    @bind "change", (box) =>
       @_sendChange box
 
     @bind "add", (box) =>
@@ -27,6 +27,7 @@ class models.Boxes extends Backbone.Collection
     @bind "destroy", (box) =>
       @_sendRemove box
 
+    @_syncAttributes = {}
 
   open: (cb=->) ->
     sharejs.open @id, "json", (err, doc) =>
@@ -61,21 +62,24 @@ class models.Boxes extends Backbone.Collection
   _sendChange: (box) ->
     changedAttributes = box.changedAttributes()
 
-    log "SEND CHANGE #{ box.get "name" }: #{ JSON.stringify changedAttributes }"
 
     operations = for attribute, value of changedAttributes
-      {
-        p: ["boxes", box.id, attribute ]
-        oi: value
-      }
+
+      if @_syncAttributes[attribute] is value
+        log "SEND CHANGE: We received this change. No need to resend it", attribute, value
+        delete @_syncAttributes[attribute]
+        continue
+
+      log "SEND CHANGE #{ box.get "name" }: #{ attribute }: #{ value }"
+      { p: ["boxes", box.id, attribute ],  oi: value }
 
     @_syncDoc.submitOp operations
 
 
   _sendAdd: (box) ->
-    if @_syncAdd is box.id
+    if @_syncAdded is box.id
       # We received this add. No need to resend it
-      @_syncAdd = null
+      @_syncAdded = null
       return
 
     log "SEND ADD #{ box.get "name" }: #{ JSON.stringify box.toJSON() }"
@@ -126,7 +130,7 @@ class models.Boxes extends Backbone.Collection
 
     log "RECEIVE ADD #{ op.oi.name }: #{ JSON.stringify op.oi }"
 
-    @_syncAdd = op.oi.id
+    @_syncAdded = op.oi.id
     @createBox op.oi.type, op.oi
 
 
@@ -153,15 +157,21 @@ class models.Boxes extends Backbone.Collection
 
   _receiveBoxUpdate: (op) ->
     boxId = op.p[1]
+    attrName = op.p[2]
+    attrValue = op.oi
+
+
     box = @get boxId
     if not box
       log "ERROR: Remote asked to update non existing box: #{ box.get "name" } #{ boxId }"
       return
 
-    log "RECEIVE CHANGE #{ box.get "name" }: #{ op.p[2] }: #{ op.oi }"
+    log "RECEIVE CHANGE #{ box.get "name" }: #{ attrName }: #{ attrValue }"
+
+    @_syncAttributes[attrName] = attrValue
 
     # Just update all attributes from sharejs snapshot
-    box.syncSet @_syncDoc.snapshot.boxes[box.id]
+    box.set @_syncAttributes
 
 
 
@@ -233,11 +243,10 @@ class BaseBoxModel extends Backbone.Model
       # Skip sync if attribustes the attributes are exactly the same we just
       # set. This will prevent inifite update loops.
       if _.isEqual @changedAttributes(), @_syncedAttributes
-        console.log "SYNC set skip for #{ @get "name" }"
         @_syncedAttributes = null
         return
 
-      @trigger "sync", this
+      @trigger "syncset", this
 
   syncSet: (attributes) ->
     @_syncedAttributes = attributes
