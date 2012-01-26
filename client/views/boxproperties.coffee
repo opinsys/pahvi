@@ -234,8 +234,8 @@ class configs.TextEditor extends BaseConfig
       skinPath: "/vendor/wymeditor/skins/compact/"
       preInit: (wyn) => @wyn = wyn
       postInit: (wyn) => @_onEditorCreated wyn
-        
-        
+
+
       logoHtml: ''
       containersItems: [
         {'name': 'H1', 'title': 'Heading_1', 'css': 'wym_containers_h1'}
@@ -251,7 +251,7 @@ class configs.TextEditor extends BaseConfig
         {'name': 'ToggleHtml', 'title': 'HTML', 'css': 'wym_tools_html'},
       ]
 
-    
+
 
 
 class configs.FontSize extends BaseConfig
