@@ -16,38 +16,29 @@ class models.Boxes extends Backbone.Collection
   constructor: (models, opts) ->
     {@typeMapping} = opts
     {@id} = opts
+    @_syncAttributes = {}
     super
 
-    @bind "change", (box) =>
-      @_sendChange box
 
-    @bind "add", (box) =>
-      @_sendAdd box
-
-    @bind "destroy", (box) =>
-      @_sendRemove box
-
-    @_syncAttributes = {}
 
   open: (cb=->) ->
+
+
     sharejs.open @id, "json", (err, doc) =>
       return cb err if err
       @_syncDoc = doc
 
       if @_syncDoc.created
-        console.log "NEW PAHVI"
-        @_syncDoc.submitOp [
-          p: []
-          oi:
-            boxes: {}
-            cardboardProperties: {}
-        ]
+        @_initSyncDoc()
       else
-        for id, boxData of @_syncDoc.snapshot.boxes
-          @createBox boxData.type, boxData
+        @_loadBoxesFromSyncDoc()
+
+      @_bindSendOperations()
+
 
       cb()
 
+      # And also bind receive operations:
       @_syncDoc.on "remoteop", (operations) =>
         for op in operations
           # If first part in operation path is "boxes" this operation is a
@@ -58,25 +49,49 @@ class models.Boxes extends Backbone.Collection
             log "ERROR: Unknown Share js operation #{ JSON.stringify op }"
 
 
+  _initSyncDoc: ->
+    console.log "NEW PAHVI"
+    @_syncDoc.submitOp [
+      p: []
+      oi:
+        boxes: {}
+        cardboardProperties: {}
+    ]
 
-  _sendChange: (box) ->
+  _loadBoxesFromSyncDoc: ->
+    for id, boxData of @_syncDoc.snapshot.boxes
+      @createBox boxData.type, boxData
+
+  _bindSendOperations: ->
+
+    @bind "change", (box) =>
+      @_sendBoxChange box
+
+    @bind "add", (box) =>
+      @_sendBoxAdd box
+
+    @bind "destroy", (box) =>
+      @_sendBoxRemove box
+
+
+  _sendBoxChange: (box) ->
     changedAttributes = box.changedAttributes()
 
 
     operations = for attribute, value of changedAttributes
-
       if @_syncAttributes[attribute] is value
         log "SEND CHANGE: We received this change. No need to resend it", attribute, value
         delete @_syncAttributes[attribute]
         continue
 
-      log "SEND CHANGE #{ box.get "name" }: #{ attribute }: #{ value }"
+      log "SEND CHANGE: ", attribute, value
       { p: ["boxes", box.id, attribute ],  oi: value }
 
+    console.log "sending", JSON.stringify operations
     @_syncDoc.submitOp operations
 
 
-  _sendAdd: (box) ->
+  _sendBoxAdd: (box) ->
     if @_syncAdded is box.id
       # We received this add. No need to resend it
       @_syncAdded = null
@@ -89,7 +104,7 @@ class models.Boxes extends Backbone.Collection
     ]
 
 
-  _sendRemove: (box) ->
+  _sendBoxRemove: (box) ->
 
     if @_syncRemoved is box.id
       # We received this remove. No need to send it again
