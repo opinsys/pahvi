@@ -83,7 +83,7 @@ $ ->
     id: "settings"
 
   boxes = new models.Boxes [],
-    sharejsId: window.location.pathname[1..-1] or "_default"
+    collectionId: "boxes"
     typeMapping: typeMapping
     modelTypes: sharedCollectionTypeMap
 
@@ -112,12 +112,18 @@ $ ->
 
   sidemenu.render()
 
-  boxes.open (err) ->
+  sharejsId = window.location.pathname[1..-1] or "_default"
+
+  sharejs.open sharejsId, "json", (err, doc) =>
     throw err if err
-    settings.set activeBox: null
-    router = new Workspace
-      settings: settings
-      collection: boxes
-    Backbone.history.start()
+
+    boxes.connect doc, ->
+
+      settings.set activeBox: null
+
+      router = new Workspace
+        settings: settings
+        collection: boxes
+      Backbone.history.start()
 
 
