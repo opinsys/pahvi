@@ -27,7 +27,7 @@ class Backbone.SharedCollection extends Backbone.Collection
 
     if not json.id
       log "DEBUG: User did not give an id. generating one"
-      json.id SharedCollection.generateGUID
+      json.id = SharedCollection.generateGUID
 
     @add new Model json
 
