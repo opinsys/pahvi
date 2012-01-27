@@ -31,12 +31,17 @@ class Backbone.SharedCollection extends Backbone.Collection
 
     @add new Model json
 
+  _setConnected: ->
+    return if @connected
+    @connected = true
+    @trigger "connect", this
 
-  connect: (doc, cb=->) ->
-    @_syncDoc = doc
+  connect: (sharejsDoc, cb=->) ->
+    @_syncDoc = sharejsDoc
     @_syncAttributes = {}
 
-    if @_syncDoc.created
+
+    if @_syncDoc.created and not @_syncDoc._bb_collection_inited
       @_initSyncDoc cb
     else
       @_loadModelsFromSyncDoc cb
@@ -61,20 +66,26 @@ class Backbone.SharedCollection extends Backbone.Collection
     @_syncDoc.submitOp [
       p: []
       oi: ob
-    ], cb
+    ], =>
+      @_syncDoc._bb_collection_inited = true
+      @_setConnected()
+      cb()
 
   _loadModelsFromSyncDoc: (cb) ->
 
     if modelMap = @_syncDoc.snapshot[@collectionId]
-      for id, modelData of modelMap
-        @_initModel modelData
+      @_setConnected()
+      for id, json of modelMap
+        @_initModel json
       cb()
     else
       log "Creating collection #{ @collectionId }"
       @_syncDoc.submitOp [
         p: [@collectionId]
         oi: {}
-      ], cb
+      ], =>
+        @_setConnected()
+        cb()
 
 
 
@@ -210,10 +221,17 @@ class Backbone.SharedCollection extends Backbone.Collection
 
   # Collection#add can trigger change events. We must flag models so that the
   # changes won't get sent to the sharejs document before it's added to it
-  # TODO: can we add models to the sharejs document here?
   add: (models) ->
+    if models.length is 0
+      return
+
+    # TODO: Should we just queue adds and add them when connected?
+    if not @connected
+      throw new Error "SharedCollection must be connected to ShareJS document before models can be added to it!"
+
     super
 
+    # TODO: can we add models to the sharejs document here?
     if _.isArray models
       for m in models
         m._syncOk = true
