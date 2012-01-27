@@ -22,7 +22,7 @@ class Backbone.SharedCollection extends Backbone.Collection
     Model = @modelTypes[json.type]
 
     if not Model
-      log "DEBUG: no custom model found for #{ json.type }"
+      log "DEBUG: no custom model found for type '#{ json.type }' id: #{ json.id }"
       Model = Backbone.Model
 
     if not json.id
@@ -47,12 +47,11 @@ class Backbone.SharedCollection extends Backbone.Collection
     # And also bind receive operations:
     @_syncDoc.on "remoteop", (operations) =>
       for op in operations
+
         # If first part in operation path is @collectionId this operation is a
-        # change to some of the models
+        # change to some of our models
         if op.p[0] is @collectionId
           @_receiveModelOperation op
-        else
-          log "ERROR: Unknown Share js operation #{ JSON.stringify op }"
 
 
   _initSyncDoc: (cb) ->
@@ -85,7 +84,7 @@ class Backbone.SharedCollection extends Backbone.Collection
       if model._syncOk
         @_sendModelChange model
       else
-        log "Model #{ model.get "name" } is not in sync machinery yet. Skipping change event"
+        log "Model '#{ model.id }' is not in sync machinery yet. Skipping change event"
 
     @bind "add", (model) =>
       @_sendModelAdd model
@@ -102,12 +101,12 @@ class Backbone.SharedCollection extends Backbone.Collection
         delete @_syncAttributes[attribute]
         continue
 
-      log "SEND CHANGE: #{ model.get "name" }: #{ attribute }: #{ value }"
+      log "SEND CHANGE: #{ model.id }: #{ attribute }: #{ value }"
       { p: [@collectionId , model.id, attribute ],  oi: value }
 
 
     if not @_syncDoc.snapshot[@collectionId][model.id]
-      log "ERROR: snapshot has no this model"
+      log "ERROR: snapshot has no this model #{ model.id }"
 
 
     @_syncDoc.submitOp operations if operations.length isnt 0
@@ -119,8 +118,7 @@ class Backbone.SharedCollection extends Backbone.Collection
       @_syncAdded = null
       return
 
-    log "SEND ADD #{ model.get "name" }: #{ JSON.stringify model.toJSON() }"
-
+    log "SEND ADD #{ model.id }: #{ JSON.stringify model.toJSON() }"
 
     @_syncDoc.submitOp [
       p: [@collectionId , model.id]
@@ -135,7 +133,7 @@ class Backbone.SharedCollection extends Backbone.Collection
       @_syncRemoved = null
       return
 
-    log "SEND REMOVE #{ model.get "name" }"
+    log "SEND REMOVE #{ model.id }"
     @_syncDoc.submitOp [
       p: [@collectionId , model.id]
       od: true
@@ -167,7 +165,7 @@ class Backbone.SharedCollection extends Backbone.Collection
 
   _receiveModelAdd: (op) ->
 
-    log "RECEIVE ADD #{ op.oi.name }: #{ JSON.stringify op.oi }"
+    log "RECEIVE ADD #{ op.oi.id }: #{ JSON.stringify op.oi }"
 
     @_syncAdded = op.oi.id
     @_initModel op.oi
@@ -181,7 +179,7 @@ class Backbone.SharedCollection extends Backbone.Collection
       log "ERROR: Remote asked to remove non existing model #{ modelId }"
       return
 
-    log "RECEIVE REMOVE #{ model.get "name" }: #{ JSON.stringify modelId }"
+    log "RECEIVE REMOVE #{ model.id }: #{ JSON.stringify modelId }"
 
     # Prevent resending this remove
     @_syncRemoved = model.id
@@ -200,10 +198,10 @@ class Backbone.SharedCollection extends Backbone.Collection
 
     model = @get modelId
     if not model
-      log "ERROR: Remote asked to update non existing model: #{ model.get "name" } #{ modelId }"
+      log "ERROR: Remote asked to update non existing model: #{ model.id } #{ modelId }"
       return
 
-    log "RECEIVE CHANGE #{ model.get "name" }: #{ attrName }: #{ attrValue }"
+    log "RECEIVE CHANGE #{ model.id }: #{ attrName }: #{ attrValue }"
 
     @_syncAttributes[attrName] = attrValue
 
