@@ -224,14 +224,8 @@ class views.TextBox extends views.BaseBox
 
       @text.css "font-size", "#{ size }px"
 
-      # http://stackoverflow.com/questions/118241/calculate-text-width-with-javascript
-      @text.attr "id", "fontSizeTest"
-      currentWidth = parseInt @text.width()
-      currentHeight = parseInt @text.height()
-      @text.removeAttr "id"
-
       # Check widget boundaries
-      if currentWidth >= maxWidth or currentHeight >= maxHeight
+      if maxHeight <= parseInt @text.height()
         # Font overflown. Take smaller half
         return recurse min, size
       else
