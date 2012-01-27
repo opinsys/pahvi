@@ -12,8 +12,10 @@ class Backbone.SharedCollection extends Backbone.Collection
     S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4()
 
   constructor: (models, opts) ->
-    @sharejsId = opts.sharejsId
-    @modelTypes = opts.modelTypes
+    @modelTypes = opts.modelTypes or {}
+    if not @collectionId = opts.collectionId
+      throw new Error "SharedCollection needs a collectionId in options!"
+
     super
 
   _initModel: (json) ->
@@ -25,53 +27,56 @@ class Backbone.SharedCollection extends Backbone.Collection
 
     if not json.id
       log "DEBUG: User did not give an id. generating one"
-      json.id Backbone.SharedCollection.generateGUID
+      json.id SharedCollection.generateGUID
 
     @add new Model json
 
 
-  open: (cb=->) ->
-
+  connect: (doc, cb=->) ->
+    @_syncDoc = doc
     @_syncAttributes = {}
 
-    sharejs.open @sharejsId, "json", (err, doc) =>
-      return cb err if err
-      @_syncDoc = doc
+    if @_syncDoc.created
+      @_initSyncDoc cb
+    else
+      @_loadModelsFromSyncDoc cb
 
-      if @_syncDoc.created
-        log "DEBUG: Creating new collection #{ @sharejsId }"
-        @_initSyncDoc()
-      else
-        log "DEBUG: opening existing collection #{ @sharejsId }"
-        @_loadModelsFromSyncDoc()
-
-      @_bindSendOperations()
+    @_bindSendOperations()
 
 
-      cb null, @_syncDoc.created
-
-      # And also bind receive operations:
-      @_syncDoc.on "remoteop", (operations) =>
-        for op in operations
-          # If first part in operation path is "models" this operation is a
-          # change to some of the models
-          if op.p[0] is "models"
-            @_receiveModelOperation op
-          else
-            log "ERROR: Unknown Share js operation #{ JSON.stringify op }"
+    # And also bind receive operations:
+    @_syncDoc.on "remoteop", (operations) =>
+      for op in operations
+        # If first part in operation path is @collectionId this operation is a
+        # change to some of the models
+        if op.p[0] is @collectionId
+          @_receiveModelOperation op
+        else
+          log "ERROR: Unknown Share js operation #{ JSON.stringify op }"
 
 
-  _initSyncDoc: ->
+  _initSyncDoc: (cb) ->
+    log "Creating new sync doc with #{ @collectionId }"
+    ob = {}
+    ob[@collectionId] = {}
     @_syncDoc.submitOp [
       p: []
-      oi:
-        models: {}
-        collectionProperties: {}
-    ]
+      oi: ob
+    ], cb
 
-  _loadModelsFromSyncDoc: ->
-    for id, modelData of @_syncDoc.snapshot.models
-      @_initModel modelData
+  _loadModelsFromSyncDoc: (cb) ->
+
+    if modelMap = @_syncDoc.snapshot[@collectionId]
+      for id, modelData of modelMap
+        @_initModel modelData
+      cb()
+    else
+      log "Creating collection #{ @collectionId }"
+      @_syncDoc.submitOp [
+        p: [@collectionId]
+        oi: {}
+      ], cb
+
 
 
   _bindSendOperations: ->
@@ -98,10 +103,10 @@ class Backbone.SharedCollection extends Backbone.Collection
         continue
 
       log "SEND CHANGE: #{ model.get "name" }: #{ attribute }: #{ value }"
-      { p: ["models", model.id, attribute ],  oi: value }
+      { p: [@collectionId , model.id, attribute ],  oi: value }
 
 
-    if not @_syncDoc.snapshot.models[model.id]
+    if not @_syncDoc.snapshot[@collectionId][model.id]
       log "ERROR: snapshot has no this model"
 
 
@@ -118,7 +123,7 @@ class Backbone.SharedCollection extends Backbone.Collection
 
 
     @_syncDoc.submitOp [
-      p: ["models", model.id]
+      p: [@collectionId , model.id]
       oi: model.toJSON()
     ]
 
@@ -132,7 +137,7 @@ class Backbone.SharedCollection extends Backbone.Collection
 
     log "SEND REMOVE #{ model.get "name" }"
     @_syncDoc.submitOp [
-      p: ["models", model.id]
+      p: [@collectionId , model.id]
       od: true
     ]
 
@@ -140,7 +145,7 @@ class Backbone.SharedCollection extends Backbone.Collection
 
   _receiveModelOperation: (op) ->
 
-    # If path has form of [ "models", modelId ] it must be add or remove 
+    # If path has form of [ @collectionId , modelId ] it must be add or remove 
     if op.p.length is 2
 
       # We have insert object
@@ -183,7 +188,7 @@ class Backbone.SharedCollection extends Backbone.Collection
 
     model.destroy()
 
-    if @_syncDoc.snapshot.models[modelId]
+    if @_syncDoc.snapshot[@collectionId][modelId]
       log "ERROR: Model exists after deletion! #{ modelId }"
 
 
