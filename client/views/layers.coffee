@@ -12,23 +12,19 @@ class views.Layers extends Backbone.View
     source  = $("#layersTemplate").html()
     @template = Handlebars.compile source
 
-    @collection.bind "add", =>
-      @updateZIndexes @collection.map (box) -> box.id
-      @render()
-
+    @collection.bind "add", => @render()
     @collection.bind "destroy", (box) => @render()
     @collection.bind "change:name", (box) => @render()
+    @collection.bind "change:zIndex", (box) => @render()
 
     @collection.bind "pushdown", (box) => @move box, -1
     @collection.bind "pushup", (box) => @move box, 1
-
 
     @settings.bind "change:activeBox", =>
       @addUniqueClass @settings.get("activeBox"), "selected"
 
     @settings.bind "change:hoveredBox", =>
       @addUniqueClass @settings.get("hoveredBox"), "hovering"
-
 
 
 
@@ -78,7 +74,7 @@ class views.Layers extends Backbone.View
     orderedIds[currentIndex] = tmp if tmp
 
     orderedIds.reverse()
-    @updateZIndexes orderedIds
+    @collection.updateZIndexes orderedIds
 
 
   updateFromSortable: ->
@@ -86,19 +82,13 @@ class views.Layers extends Backbone.View
       $(e).data("id")
 
     orderedIds.reverse()
-    @updateZIndexes orderedIds
+    @collection.updateZIndexes orderedIds
 
 
-  updateZIndexes: (orderedIds) ->
-
-    for id, index in orderedIds
-      if model = @collection.get id
-        model.set zIndex: index + 100
-
-    @collection.sort()
 
 
   render: ->
+
     $(@el).html @template
       boxes: @collection.filter( (m) -> m.id ).map (m) ->
         id: m.id

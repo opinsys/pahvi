@@ -13,6 +13,9 @@ class models.Boxes extends Backbone.SharedCollection
     {@typeMapping} = opts
     super
 
+    @bind "change:zIndex", (box) => @sort()
+
+
   # Keep boxes sorted by they layer position
   comparator: (box) ->
     -1 * parseInt box.get "zIndex"
@@ -26,6 +29,22 @@ class models.Boxes extends Backbone.SharedCollection
   isUnique: (attr, value) ->
     not @find (box) -> box.get(attr) is value
 
+  updateZIndexes: (orderedIds) ->
+
+    @disableSort = true
+
+    for id, index in orderedIds
+      if model = @get id
+        model.set zIndex: index + 100
+
+    @disableSort = false
+
+    @sort()
+
+
+  sort: ->
+    if not @disableSort
+      super
 
 
   createBox: (type, options={}) ->
