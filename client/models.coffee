@@ -45,6 +45,9 @@ class models.Boxes extends Backbone.SharedCollection
 
     options.name = @makeUniqueName options.name
 
+    if @size() isnt 0
+      options.zIndex = @max( (box) -> box.get("zIndex") ).get("zIndex") + 1
+
     @add new Model options
 
 
