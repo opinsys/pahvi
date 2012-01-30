@@ -65,6 +65,9 @@ Build
 
     npm install
 
+## Configuring
+
+Move config.json-example to config.json and edit if necessary.
 
 ## Running the app
 

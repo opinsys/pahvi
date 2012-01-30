@@ -8,6 +8,21 @@ sharejs = require("share").server
 rootDir = __dirname + "/../"
 clientTmplDir = rootDir + "/views/client/"
 
+
+defaults =
+  port: 8080
+  databaseType: "none"
+
+try
+  config = JSON.parse fs.readFileSync rootDir + "config.json"
+catch e
+  config = {}
+  console.error "Could no load config.json. Using defaults."
+
+for k, v of defaults
+  config[k] ?= v
+
+
 app = express.createServer()
 
 
@@ -20,7 +35,7 @@ css.bind app
 js.bind app
 sharejs.attach app,
   db:
-    type: 'memory'
+    type: config.databaseType
 
 
 app.configure "development", ->
@@ -115,5 +130,5 @@ app.get "/*", (req, res) ->
   res.render "index"
 
 
-app.listen 8080, ->
-  console.log "Now listening on port 8080"
+app.listen config.port, ->
+  console.log "Now listening on port #{ config.port }"
