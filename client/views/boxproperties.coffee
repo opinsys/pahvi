@@ -111,7 +111,6 @@ class configs.BackgroundColor extends BaseConfig
         current: color[1] is @model.get @colorProperty
 
     $("button.color").tooltip
-      effect: "fade",
       position: "center left"
 
 
