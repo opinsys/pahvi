@@ -1,0 +1,3 @@
+[submodule "client/vendor/backbone.sharedcollection"]
+	path = client/vendor/backbone.sharedcollection
+	url = git@github.com:epeli/backbone.sharedcollection.git

@@ -107,7 +107,7 @@ app.configure ->
   js.addFile rootDir + "/public/vendor/wymeditor/jquery.wymeditor.js"
 
   js.addFile rootDir + "/client/helpers.coffee"
-  js.addFile rootDir + "/client/sharedcollection.coffee"
+  js.addFile rootDir + "/client/vendor/backbone.sharedcollection/src/backbone.sharedcollection.coffee"
   js.addFile rootDir + "/client/models.coffee"
 
   js.addFile rootDir + "/client/views/box.coffee"
