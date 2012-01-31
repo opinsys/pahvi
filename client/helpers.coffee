@@ -13,6 +13,9 @@ window.NS = (nsString) ->
 
 helpers = NS "Pahvi.helpers"
 
+
+localStorage.debugSharedCollection = true
+
 # Do not die if we have no logging function. Eg. FF without Firebug.
 if not window.console?.log?
   window.console =
