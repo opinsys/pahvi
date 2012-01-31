@@ -89,13 +89,17 @@ class views.Layers extends Backbone.View
 
   render: ->
 
-    $(@el).html @template
-      boxes: @collection.filter( (m) -> m.id ).map (m) ->
-        id: m.id
-        name: m.get "name"
-        type: m.get "type"
-        zIndex: m.get "zIndex"
+    boxes = @collection.filter( (m) -> m.id ).map (m) ->
+      id: m.id
+      name: m.get "name"
+      type: m.type
+      zIndex: m.get "zIndex"
 
+     # Make sure that the order is correct
+    boxes.sort (a, b) -> b.zIndex - a.zIndex
+    # (console.log b.name, b.zIndex) for b in boxes
+
+    @$el.html @template boxes: boxes
     @sortable = @$("ul").sortable()
     @items = @$(".layersSortable li")
 
