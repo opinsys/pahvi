@@ -4,6 +4,7 @@ pahviyellow = #fffdf1
 pahvicream = #f5f4f0
 pahvigray = #363636
 pahvilightgray = #f3f3f3
+pahvibrown = rgb(130,70,50)
 pahvigreen = #339900
 pahvilightgreen = #d6f3c7
 pahvired = #FF530D
@@ -76,6 +77,7 @@ button:hover
   button
     background-color pahvicream
     border none
+    box-shadow 0 -1px 2px pahvigray
     font-size 0.7em
     height 60px
     margin 0
@@ -104,7 +106,7 @@ button:hover
         background-color pahvired !important
         
   header
-    background url("/img/header-bg.jpg") repeat 0 0 scroll
+    background url("/img/pahvi-bg.jpg") repeat 0 0 scroll
     height 65px
     padding 0.5em 0 0.25em
     position relative
@@ -114,9 +116,9 @@ button:hover
       text-align center
       width 150px
     h1,h2,h3
-      color pahviyellow
+      color pahvibrown
       line-height 1
-      text-shadow  0 2px 3px pahvigray
+      text-shadow  0 3px 4px pahviyellow, 0 -1px 2px pahvigray
       text-transform uppercase
     h2,h3
       font-size 0.8em
@@ -196,8 +198,8 @@ button:hover
       .box
         padding .25em
         border 1px solid black
-        min-height 100px
-        min-width 100px
+        min-height 30px
+        min-width 60px
         &.hovering
           box-shadow 0 3px 10px blue, 0 -3px 10px blue
         &.selected
@@ -245,6 +247,7 @@ button:hover
           line-height 1.75
           margin-left 1em
         .down, .up
+          box-shadow none
           height 25px
           padding 0
           right -15px
