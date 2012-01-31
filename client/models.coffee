@@ -105,15 +105,6 @@ class models.Settings extends Backbone.Model
 
 class BaseBoxModel extends Backbone.Model
 
-  constructor: ->
-    super
-    @set type: @type
-
-
-  destroy: (options) ->
-    @trigger "destroy", this, this.collection, options
-
-
 
 class models.TextBoxModel extends BaseBoxModel
 
