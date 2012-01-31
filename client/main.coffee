@@ -19,9 +19,6 @@ for metaClassName, namespace of typeSources
 
 
 
-sharedCollectionTypeMap = {}
-for __, Model of models when Model.prototype?.type
-  sharedCollectionTypeMap[Model.prototype.type] = Model
 
 
 
@@ -82,10 +79,11 @@ $ ->
   settings = new models.Settings
     id: "settings"
 
+
   boxes = new models.Boxes [],
     collectionId: "boxes"
     typeMapping: typeMapping
-    modelTypes: sharedCollectionTypeMap
+    modelClasses: (Model for __, Model of models when Model::?.type)
 
 
 
@@ -117,13 +115,16 @@ $ ->
   sharejs.open sharejsId, "json", (err, doc) =>
     throw err if err
 
-    boxes.connect doc, ->
+    boxes.fetch
+      sharejsDoc: doc
+      succes: ->
+        settings.set activeBox: null
 
-      settings.set activeBox: null
-
-      router = new Workspace
-        settings: settings
-        collection: boxes
-      Backbone.history.start()
+        router = new Workspace
+          settings: settings
+          collection: boxes
+        Backbone.history.start()
+      error: ->
+        alert "Failed to connect"
 
 
