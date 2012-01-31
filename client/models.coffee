@@ -48,8 +48,6 @@ class models.Boxes extends Backbone.SharedCollection
 
 
   createBox: (type, options={}) ->
-    if not options.id
-      options.id = helpers.generateGUID()
 
     if @get options.id
       return console.log  "ERROR: Box id #{ options.id } already exists! Not creating new!"
