@@ -166,5 +166,6 @@ class models.ImageBox extends BaseBoxModel
     width: "200px"
     height: "200px"
     zIndex: 100
+    imgSrc: "/img/noimage.png"
 
 
