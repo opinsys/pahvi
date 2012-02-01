@@ -18,6 +18,8 @@ class views.BaseBox extends Backbone.View
 
   type: null
 
+  loadAssets: (cb) -> cb()
+
   constructor: ({@settings}) ->
     @events = _.extend {}, views.BaseBox::events, @events
     super

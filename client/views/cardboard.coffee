@@ -20,9 +20,9 @@ class views.Cardboard extends Backbone.View
         settings: @settings
         model: boxModel
 
-      @$el.append boxView.el
-
-      boxView.render()
+      boxView.loadAssets =>
+        @$el.append boxView.el
+        boxView.render()
 
       @settings.set activeBox: boxModel.id
 
