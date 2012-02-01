@@ -178,8 +178,47 @@ class views.ImageBox extends views.BaseBox
     source  = $("#imageboxTemplate").html()
     @template = Handlebars.compile source
 
+    @$el.bind "resize", => @updateImageSize()
+
+    @model.bind "change:imgSrc", =>
+      @currentImageSize = null
+      img = new Image
+      img.onload = =>
+        @currentImageSize =
+          width: img.width
+          height: img.height
+        @updateImageSize()
+      img.src = @model.get "imgSrc"
+
+    @model.trigger "change:imgSrc"
+
+  updateImageSize: ->
+    return if not @currentImageSize
+
+    srcWidth = @currentImageSize.width
+    srcHeight = @currentImageSize.height
+
+    maxWidth = @$el.width()
+    maxHeight = @$el.height()
+
+    ratio = Math.min [maxWidth / srcWidth,
+      maxHeight / srcHeight ]...
+
+    width = srcWidth * ratio
+    height = srcHeight * ratio
+
+    @$("img").css
+      width: width  + "px"
+      height: height  + "px"
 
 
+  _onResizeStop: ->
+    @updateImageSize()
+    super
+
+  render: ->
+    super
+    @updateImageSize()
 
 class views.TextBox extends views.BaseBox
 
