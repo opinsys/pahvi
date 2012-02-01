@@ -50,42 +50,53 @@ class views.Cardboard extends Backbone.View
     else if file = e.originalEvent?.dataTransfer?.files?[0]
       @imageBoxFromFile file, options
 
-  allowedTypes =
-    "image/jpeg": true
-    "image/png": true
 
   imageBoxFromFile: (file, options) ->
     if not allowedTypes[file.type]
       console.log "Unkown file type '#{ file.type }'. Ignoring this file drop."
       return
 
-    if file.size > 2746288
-      # TODO: blocking confirm dialog is bad...
-      if not confirm "This image is huge. It might crash your browser. Ok?"
-        return
-
     options.imgSrc = "/img/loadingimage.png"
-
     box = @collection.createBox "image", options
 
-    reader = new FileReader()
-    reader.onload = =>
-      box.set imgSrc: reader.result, { local: true }
-      @uploadImage file, box
-    reader.readAsDataURL file
+    # Small image. Show it immediately in browser
+    if file.size < 1400000
+      reader = new FileReader()
+      reader.onload = =>
+        box.set imgSrc: reader.result, { local: true }
+        @uploadImage
+          file: file
+          box: box
+          delayDisplay: true
 
-  uploadImage: (file, box, cb=->) ->
+      reader.readAsDataURL file
+    else
+      # Huge images can chrash the browser. Send it first to server
+      console.log "Big image! #{ file.size }"
+      @uploadImage
+        file: file
+        box: box
+        delayDisplay: false
+
+  uploadImage: ({ file, box, delayDisplay }) ->
     fd = new FormData
     fd.append "imagedata", file
     xhr = new XMLHttpRequest
+
+    xhr.upload.onprogress = (e) =>
+      console.log "Uploading image: #{ e.loaded } / #{ e.totalSize }"
+
     xhr.onreadystatechange = (e) =>
       if xhr.readyState is xhr.DONE
         res = JSON.parse xhr.response
         if res.error
           alert "Error while saving image: #{ res.error }"
         else
-          helpers.loadImage res.url, (err) ->
-            throw err if err
+          if delayDisplay
+            helpers.loadImage res.url, (err) ->
+              throw err if err
+              box.set imgSrc: res.url
+          else
             box.set imgSrc: res.url
 
     xhr.open "POST", "/upload"
