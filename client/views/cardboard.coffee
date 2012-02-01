@@ -50,7 +50,15 @@ class views.Cardboard extends Backbone.View
     else if file = e.originalEvent?.dataTransfer?.files?[0]
       @imageBoxFromFile file, options
 
+  allowedTypes =
+    "image/jpeg": true
+    "image/png": true
+
   imageBoxFromFile: (file, options) ->
+    if not allowedTypes[file.type]
+      console.log "Unkown file type '#{ file.type }'. Ignoring this file drop."
+      return
+
     options.imgSrc = "/img/loadingimage.png"
 
     box = @collection.createBox "image", options
