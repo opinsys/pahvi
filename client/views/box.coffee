@@ -222,10 +222,17 @@ class views.TextBox extends views.BaseBox
 
       prev = size
 
+      # Apply current size
       @text.css "font-size", "#{ size }px"
 
+      # This id convents all elements to inline element for measurement
+      @text.attr "id", "fitFontSize"
+      currentWidth = parseInt @text.width()
+      currentHeight = parseInt @text.height()
+      @text.removeAttr "id"
+
       # Check widget boundaries
-      if maxHeight <= parseInt @text.height()
+      if maxHeight <= currentHeight or maxWidth <= currentWidth
         # Font overflown. Take smaller half
         return recurse min, size
       else
