@@ -49,8 +49,11 @@ class views.Upload extends Backbone.View
       @total = e.totalSize / 1024
       @speed = e.loaded / ((Date.now() - started) / 1000) / 1024
 
+      # If upload is done but we have no response. This means that server is
+      # resizing the image
       if e.loaded >= e.totalSize - 1
         @status = "Resizing"
+
       console.log "Uploading image: #{ e.loaded } / #{ e.totalSize }", @speed
       @render()
 
