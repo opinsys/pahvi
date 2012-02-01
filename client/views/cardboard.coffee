@@ -66,6 +66,7 @@ class views.Cardboard extends Backbone.View
 
     upload.bind "uploaddone", =>
       upload.remove()
+
     upload.start()
 
 

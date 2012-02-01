@@ -55,7 +55,8 @@ class views.Upload extends Backbone.View
         @status = "Resizing"
 
       console.log "Uploading image: #{ e.loaded } / #{ e.totalSize }", @speed
-      @render()
+
+      @updateProgress()
 
     xhr.onreadystatechange = (e) =>
       if xhr.readyState is xhr.DONE
@@ -73,13 +74,25 @@ class views.Upload extends Backbone.View
               @model.set imgSrc: res.url
           else
             @model.set imgSrc: res.url
-        @render()
 
     xhr.open "POST", "/upload"
     xhr.send fd
 
   render: ->
-    @$el.html @template
+    @$el.html """
+    <div class=progressBar></div>
+    <div class=messages></div>
+    """
+    @messages = @$(".messages")
+    @progressBar = @$(".progressBar")
+
+
+    @progressBar.progressbar
+      value: 0
+
+  updateProgress: ->
+    @progressBar.progressbar "value", parseInt @loaded / @total * 100
+    @messages.html @template
       loaded: roundNumber @loaded, 2
       total: roundNumber @total, 2
       speed: roundNumber @speed, 2
@@ -90,6 +103,6 @@ class views.Upload extends Backbone.View
     @render()
     @$el.appendTo "body"
     @$el.dialog
+      title: "Image upload status"
       resizable: false
-
 
