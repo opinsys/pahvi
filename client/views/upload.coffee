@@ -64,8 +64,7 @@ class views.Upload extends Backbone.View
         else
           @trigger "uploaddone", @model, res.url
           if delaySet
-            helpers.loadImage res.url, (err) =>
-              throw err if err
+            helpers.loadImage res.url,  =>
               @model.set imgSrc: res.url
           else
             @model.set imgSrc: res.url
