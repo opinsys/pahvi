@@ -1,20 +1,12 @@
 
+<!--TODO: should not use pre....-->
+<pre>
 
 status: {{status}}
-
-<span class="loadedBytes">
-{{loaded}}
-</span>
-
-<span class="uploadSep">/</span>
-
-<span class="totalBytes">
-{{total}} kB
-</span>
-
-
-<span class="totalBytes">
+{{#if error}}
+error: {{error}}
+{{/if}}
+loaded: {{loaded}} / {{total}} kB
 Speed: {{speed}}kB/s
-</span>
 
-{{error}}
+</pre>
