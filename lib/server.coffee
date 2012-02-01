@@ -113,6 +113,7 @@ app.configure ->
   js.addFile rootDir + "/client/vendor/backbone.sharedcollection/src/backbone.sharedcollection.coffee"
   js.addFile rootDir + "/client/models.coffee"
 
+  js.addFile rootDir + "/client/views/upload.coffee"
   js.addFile rootDir + "/client/views/box.coffee"
   js.addFile rootDir + "/client/views/layers.coffee"
   js.addFile rootDir + "/client/views/sidemenu.coffee"
