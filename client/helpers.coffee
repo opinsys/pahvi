@@ -26,6 +26,10 @@ helpers.zoomOut = ->
   $("body").zoomTo
     targetSize: 1.0
 
+helpers.preloadImage = (url, cb=->) ->
+  img = new Image
+  img.onload = -> cb()
+  img.src = url
 
 S4 = -> (((1 + Math.random()) * 65536) | 0).toString(16).substring(1)
 helpers.generateGUID = ->
