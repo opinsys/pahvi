@@ -38,10 +38,13 @@ class views.Upload extends Backbone.View
     fd.append "imagedata", @file
     xhr = new XMLHttpRequest
 
+    started = Date.now()
+
     xhr.upload.onprogress = (e) =>
       console.log "Uploading image: #{ e.loaded } / #{ e.totalSize }"
       @loadedBytes = e.loaded
       @totalBytes = e.totalSize
+      @speed = e.loaded / (Date.now() - started)
       @render()
 
     xhr.onreadystatechange = (e) =>
@@ -68,6 +71,7 @@ class views.Upload extends Backbone.View
       loadedBytes: @loadedBytes
       totalBytes: @totalBytes
       error: @error
+      speed: parseInt @speed
 
   renderToBody: ->
     @render()
