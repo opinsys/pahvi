@@ -113,6 +113,7 @@ class views.BaseBox extends Backbone.View
       left: @$el.css "left"
       top: @$el.css "top"
 
+  resizableOptions: {}
 
   render: ->
 
@@ -136,7 +137,7 @@ class views.BaseBox extends Backbone.View
     # We need to activate resizable always after rendering because jQuery UI
     # adds some elements to this widget
     if @settings.get("mode") is "edit"
-      @$el.resizable()
+      @$el.resizable @resizableOptions
       @$el.draggable()
       @$el.transformable
         skewable: false
@@ -159,12 +160,12 @@ class views.PlainBox extends views.BaseBox
 
   type: "plain"
 
+
   constructor: ({@settings}) ->
     super
 
     source  = $("#plainboxTemplate").html()
     @template = Handlebars.compile source
-
 
 
 
@@ -180,47 +181,33 @@ class views.ImageBox extends views.BaseBox
     source  = $("#imageboxTemplate").html()
     @template = Handlebars.compile source
 
-    @$el.bind "resize", => @updateImageSize()
 
     @model.bind "change:imgSrc", =>
-      @currentImageSize = null
-      img = new Image
-      img.onload = =>
-        @currentImageSize =
-          width: img.width
-          height: img.height
-        @updateImageSize()
-      img.src = @model.get "imgSrc"
-
-    @model.trigger "change:imgSrc"
-
-  updateImageSize: ->
-    return if not @currentImageSize
-
-    srcWidth = @currentImageSize.width
-    srcHeight = @currentImageSize.height
-
-    maxWidth = @$el.width()
-    maxHeight = @$el.height()
-
-    ratio = Math.min [maxWidth / srcWidth,
-      maxHeight / srcHeight ]...
-
-    width = srcWidth * ratio
-    height = srcHeight * ratio
-
-    @$("img").css
-      width: width  + "px"
-      height: height  + "px"
+      @updateRatio true
 
 
-  _onResizeStop: ->
-    @updateImageSize()
-    super
+  loadAssets: (cb) ->
+    @updateRatio false, cb
 
-  render: ->
-    super
-    @updateImageSize()
+  updateRatio: (reset, cb=->) ->
+    if not @model.get "imgSrc"
+      @resizableOptions = {}
+      return
+
+    img = new Image
+    img.onload = =>
+      ratio = img.width / img.height
+      @resizableOptions = aspectRatio: ratio
+      if reset
+        @model.set
+          width: 200
+          height: 200 * ratio
+      cb()
+
+    img.src = @model.get "imgSrc"
+
+
+
 
 class views.TextBox extends views.BaseBox
 
