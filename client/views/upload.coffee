@@ -5,7 +5,7 @@ helpers = NS "Pahvi.helpers"
 
 class views.Upload extends Backbone.View
 
-  className: "status upload"
+  className: "uploadStatus"
 
   @allowedTypes = 
     "image/jpeg": true
@@ -16,6 +16,8 @@ class views.Upload extends Backbone.View
     @$el = $ @el
     {@file} = options
 
+    source  = $("#uploadTemplate").html()
+    @template = Handlebars.compile source
 
   start: ->
 
@@ -47,6 +49,7 @@ class views.Upload extends Backbone.View
         res = JSON.parse xhr.response
         if res.error
           alert "Error while saving image: #{ res.error }"
+          @error = res.error
           @trigger "uploaderror", @model, res.error, xhr
         else
           @trigger "uploaddone", @model, res.url
@@ -61,7 +64,10 @@ class views.Upload extends Backbone.View
     xhr.send fd
 
   render: ->
-    @$el.html "#{ @loadedBytes }/#{ @totalBytes }b"
+    @$el.html @template
+      loadedBytes: @loadedBytes
+      totalBytes: @totalBytes
+      error: @error
 
   renderToBody: ->
     @render()
