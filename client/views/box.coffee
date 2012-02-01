@@ -191,7 +191,10 @@ class views.ImageBox extends views.BaseBox
 
 
   loadAssets: (cb) ->
-    @updateRatio false, cb
+    @updateRatio false, =>
+      console.log "LAD"
+      cb()
+      @trigger "load"
 
   updateRatio: (reset, cb=->) ->
     if not @model.get "imgSrc"
