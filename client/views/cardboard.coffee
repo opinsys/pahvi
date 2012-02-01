@@ -1,7 +1,7 @@
 
 views = NS "Pahvi.views"
 models = NS "Pahvi.models"
-configureViews = NS "Pahvi.views.configure"
+helpers = NS "Pahvi.helpers"
 
 class views.Cardboard extends Backbone.View
 
@@ -84,7 +84,10 @@ class views.Cardboard extends Backbone.View
         if res.error
           alert "Error while saving image: #{ res.error }"
         else
-          box.set imgSrc: res.url
+          helpers.loadImage res.url, (err) ->
+            throw err if err
+            box.set imgSrc: res.url
+
     xhr.open "POST", "/upload"
     xhr.send fd
 
