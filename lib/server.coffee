@@ -1,11 +1,11 @@
 fs = require "fs"
+{resize} = require "./resize"
 
 express = require "express"
 hbs = require "hbs"
 piler = require "piler"
 sharejs = require("share").server
 
-fsextra = require "./fs.extra.js"
 
 rootDir = __dirname + "/../"
 clientTmplDir = rootDir + "/views/client/"
@@ -136,8 +136,6 @@ types =
 
 app.post "/upload", (req, res, foo) ->
 
-  console.log "UPLOAD", req.files, req.body
-
   if not ext = types[req.files.imagedata.type]
     res.json error: "Unkown file type"
     return
@@ -146,10 +144,10 @@ app.post "/upload", (req, res, foo) ->
   fileName = "#{ fileId }.#{ Date.now() }.#{ ext }"
   destination = rootDir + "public/userimages/#{ fileName }"
 
-  fsextra.move req.files.imagedata.path, destination, (err) ->
+  resize req.files.imagedata.path, destination, 1200, (err) ->
     if err
       console.log "ERROR", err
-      res.json error: "moving error"
+      res.json error: "resize error"
     else
       res.json url: "/userimages/#{ fileName }"
 

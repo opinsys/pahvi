@@ -64,6 +64,7 @@ Build
 ## Installing Webapp dependencies
 
     npm install
+    sudo apt-get install graphicsmagick
 
 ## Configuring
 
