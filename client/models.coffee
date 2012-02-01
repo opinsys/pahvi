@@ -65,9 +65,8 @@ class models.Boxes extends Backbone.SharedCollection
     if @size() isnt 0
       options.zIndex = @max( (box) -> box.get("zIndex") ).get("zIndex") + 1
 
-    @add new Model options
-
-
+    @add box = new Model options
+    return box
 
 
   makeUniqueName: (proposedName) ->
