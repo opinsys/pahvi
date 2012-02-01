@@ -59,6 +59,11 @@ class views.Cardboard extends Backbone.View
       console.log "Unkown file type '#{ file.type }'. Ignoring this file drop."
       return
 
+    if file.size > 2746288
+      # TODO: blocking confirm dialog is bad...
+      if not confirm "This image is huge. It might crash your browser. Ok?"
+        return
+
     options.imgSrc = "/img/loadingimage.png"
 
     box = @collection.createBox "image", options
