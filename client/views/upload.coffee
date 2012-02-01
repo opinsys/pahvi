@@ -63,14 +63,17 @@ class views.Upload extends Backbone.View
         if res.error
           alert "Error while saving image: #{ res.error }"
           @error = res.error
+          @status = "error: #{ @error }"
           @trigger "uploaderror", @model, res.error, xhr
         else
+          @status = "done"
           @trigger "uploaddone", @model, res.url
           if delaySet
             helpers.loadImage res.url,  =>
               @model.set imgSrc: res.url
           else
             @model.set imgSrc: res.url
+        @render()
 
     xhr.open "POST", "/upload"
     xhr.send fd
@@ -86,5 +89,7 @@ class views.Upload extends Backbone.View
   renderToBody: ->
     @render()
     @$el.appendTo "body"
+    @$el.dialog
+      resizable: false
 
 
