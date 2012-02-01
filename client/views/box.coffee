@@ -18,7 +18,11 @@ class views.BaseBox extends Backbone.View
 
   type: null
 
-  loadAssets: (cb) -> cb()
+  loadAssets: (cb) ->
+    setTimeout =>
+      cb()
+      @trigger "load"
+    , 0
 
   constructor: ({@settings}) ->
     @events = _.extend {}, views.BaseBox::events, @events
