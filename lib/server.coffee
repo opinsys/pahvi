@@ -5,6 +5,8 @@ hbs = require "hbs"
 piler = require "piler"
 sharejs = require("share").server
 
+fsextra = require "./fs.extra.js"
+
 rootDir = __dirname + "/../"
 clientTmplDir = rootDir + "/views/client/"
 
@@ -50,6 +52,7 @@ app.configure "production", ->
 
 
 app.configure ->
+  app.use express.bodyParser()
 
   # Connect Handlebars to Piler Asset Manager
   hbs.registerHelper "renderScriptTags", (pile) ->
@@ -124,6 +127,30 @@ app.configure ->
   css.addFile rootDir + "/client/styles/main.styl"
 
 
+
+types =
+  "image/png": "png"
+  "image/jpeg": "jpg"
+  "image/jpg": "jpg"
+
+app.post "/upload", (req, res, foo) ->
+
+  console.log "UPLOAD", req.files, req.body
+
+  if not ext = types[req.files.imagedata.type]
+    res.json error: "Unkown file type"
+    return
+
+  fileId = "/tmp/01caf875dfbd0860ae3d9e6297d86182".split("/").reverse()[0]
+  fileName = "#{ fileId }.#{ Date.now() }.#{ ext }"
+  destination = rootDir + "public/userimages/#{ fileName }"
+
+  fsextra.move req.files.imagedata.path, destination, (err) ->
+    if err
+      console.log "ERROR", err
+      res.json error: "moving error"
+    else
+      res.json url: "/userimages/#{ fileName }"
 
 
 app.get "/*", (req, res) ->
