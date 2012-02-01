@@ -63,6 +63,8 @@ class views.Cardboard extends Backbone.View
       model: box
       file: file
     upload.renderToBody()
+    upload.bind "uploaddone", =>
+      upload.remove()
     upload.start()
 
 
