@@ -209,7 +209,7 @@ class views.TextBox extends views.BaseBox
     maxHeight = parseInt @$el.height()
 
     prev = null
-    do recurse = (min=6, max=1000) =>
+    do recurse = (min=1, max=1000) =>
 
       size = Math.round (min + max) / 2
 
