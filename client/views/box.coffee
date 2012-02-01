@@ -201,17 +201,15 @@ class views.ImageBox extends views.BaseBox
       @resizableOptions = {}
       return
 
-    img = new Image
-    img.onload = =>
+    helpers.loadImage @model.get("imgSrc"), (err, img) =>
       ratio = img.width / img.height
       @resizableOptions = aspectRatio: ratio
       if reset
         @model.set
           width: 200
-          height: 200 * ratio
+          height: 200 / ratio
       cb()
 
-    img.src = @model.get "imgSrc"
 
 
 
