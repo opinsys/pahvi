@@ -5,12 +5,22 @@ configureViews = NS "Pahvi.views.configure"
 
 class views.Cardboard extends Backbone.View
 
-
-
   constructor: ({@settings}) ->
     super
     @$el = $ @el
 
+    $(document).bind "dragenter", (e) =>
+      e.preventDefault()
+      console.log "User is dragging something"
+      e.originalEvent.dataTransfer.dropEffect = 'copy'
+    $(document).bind "dragover", (e) =>
+      e.preventDefault()
+      e.originalEvent.dataTransfer.dropEffect = 'copy'
+    $(document).bind "dragleave", (e) =>
+      e.preventDefault()
+    $(document).bind "dragend", (e) =>
+      e.preventDefault()
+      dragInfo.hide()
 
     @collection.bind "add", (boxModel) =>
 
@@ -30,12 +40,40 @@ class views.Cardboard extends Backbone.View
     "drop": "dropped"
 
   dropped: (e, ui) ->
-    type = ui.draggable.data("boxtype")
-    if type
-      @collection.createBox type,
-        # TODO: fix initial position
-        left: ui.offset.left + "px"
-        top: ui.offset.top + "px"
+
+    options =
+      left: e.originalEvent.offsetX + "px"
+      top: e.originalEvent.offsetY + "px"
+
+    if type = ui?.draggable.data("boxtype")
+      @collection.createBox type, options
+    else if file = e.originalEvent?.dataTransfer?.files?[0]
+      @imageBoxFromFile file, options
+
+  imageBoxFromFile: (file, options) ->
+    options.imgSrc = "/img/loadingimage.png"
+
+    box = @collection.createBox "image", options
+
+    reader = new FileReader()
+    reader.onload = =>
+      box.set imgSrc: reader.result, { local: true }
+      @uploadImage file, box
+    reader.readAsDataURL file
+
+  uploadImage: (file, box, cb=->) ->
+    fd = new FormData
+    fd.append "imagedata", file
+    xhr = new XMLHttpRequest
+    xhr.onreadystatechange = (e) =>
+      if xhr.readyState is xhr.DONE
+        res = JSON.parse xhr.response
+        if res.error
+          alert "Error while saving image: #{ res.error }"
+        else
+          box.set imgSrc: res.url
+    xhr.open "POST", "/upload"
+    xhr.send fd
 
 
   render: ->
