@@ -2,6 +2,8 @@
 views = NS "Pahvi.views"
 helpers = NS "Pahvi.helpers"
 
+roundNumber = (num, dec) ->
+  Math.round(num*Math.pow(10,dec))/Math.pow(10,dec)
 
 class views.Upload extends Backbone.View
 
@@ -15,6 +17,7 @@ class views.Upload extends Backbone.View
     super
     @$el = $ @el
     {@file} = options
+    @status = "starting"
 
     source  = $("#uploadTemplate").html()
     @template = Handlebars.compile source
@@ -39,12 +42,16 @@ class views.Upload extends Backbone.View
     xhr = new XMLHttpRequest
 
     started = Date.now()
+    @status = "uploading"
 
     xhr.upload.onprogress = (e) =>
-      console.log "Uploading image: #{ e.loaded } / #{ e.totalSize }"
-      @loadedBytes = e.loaded
-      @totalBytes = e.totalSize
-      @speed = e.loaded / (Date.now() - started)
+      @loaded = e.loaded / 1024
+      @total = e.totalSize / 1024
+      @speed = e.loaded / ((Date.now() - started) / 1000) / 1024
+
+      if e.loaded >= e.totalSize - 1
+        @status = "Resizing"
+      console.log "Uploading image: #{ e.loaded } / #{ e.totalSize }", @speed
       @render()
 
     xhr.onreadystatechange = (e) =>
@@ -68,10 +75,11 @@ class views.Upload extends Backbone.View
 
   render: ->
     @$el.html @template
-      loadedBytes: @loadedBytes
-      totalBytes: @totalBytes
+      loaded: roundNumber @loaded, 2
+      total: roundNumber @total, 2
+      speed: roundNumber @speed, 2
       error: @error
-      speed: parseInt @speed
+      status: @status
 
   renderToBody: ->
     @render()
