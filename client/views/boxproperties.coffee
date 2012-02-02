@@ -11,8 +11,6 @@ class views.PropertiesManager extends Backbone.View
     super
     @$el = $ @el
 
-    source  = $("#boxpropertiesTemplate").html()
-    @template = Handlebars.compile source
 
     @activeConfigs = []
 
@@ -36,7 +34,7 @@ class views.PropertiesManager extends Backbone.View
         config.render()
         config
 
-    @$el.html @template active: !!@model
+    @$el.html @renderTemplate "boxproperties", active: !!@model
 
     @configContainer = @$(".configs")
 
@@ -47,13 +45,15 @@ class views.PropertiesManager extends Backbone.View
 
 class BaseConfig extends Backbone.View
 
+  templateId: null
+
   constructor: ->
     super
     @$el = $ @el
 
   render: ->
-    if @template
-      @$el.html @template @model.toJSON()
+    if @templateId
+      @$el.html @renderTemplate @templateId, @model.toJSON()
     else
       @$el.html "<div>Config for #{ @constructor.name } is not implemented yet</div>"
 
@@ -85,11 +85,12 @@ class configs.BackgroundColor extends BaseConfig
   colorProperty: "backgroundColor"
 
 
+  templateId: "config_color"
+
+
   constructor: ->
     super
 
-    source  = $("#config_colorTemplate").html()
-    @template = Handlebars.compile source
     @model.bind "change:#{ @colorProperty }", => @render()
 
   events:
@@ -102,7 +103,7 @@ class configs.BackgroundColor extends BaseConfig
 
   render: ->
 
-    @$el.html @template
+    @$el.html @renderTemplate @templateId,
       title: @title
       colors: @colors.map (color) =>
         name: color[0]
@@ -125,11 +126,11 @@ class configs.TextColor extends configs.BackgroundColor
 class configs.NameEditor extends BaseConfig
   className: "config nameEditor"
 
+  templateId: "config_nameeditor"
+
   constructor: ->
     super
     @$el = $ @el
-    source  = $("#config_nameeditorTemplate").html()
-    @template = Handlebars.compile source
 
   events:
     "keyup input": "_updateId"
@@ -148,7 +149,7 @@ class configs.NameEditor extends BaseConfig
       @$el.addClass "invalid"
 
   render: ->
-    @$el.html @template
+    @$el.html @renderTemplate @templateId,
       name: @model.get "name"
 
     @input = @$("input")
@@ -157,12 +158,11 @@ class configs.ImageSrc extends BaseConfig
   className: "config imageSrc"
   title: "Text Color"
 
+  templateId: "config_imgsrc"
+
   constructor: ->
     super
     @$el = $ @el
-    source  = $("#config_imgsrcTemplate").html()
-    @template = Handlebars.compile source
-
 
   events:
     "blur input": "onKeyUp"
@@ -204,13 +204,6 @@ class configs.TextEditor extends BaseConfig
         link = jQuery "a[href=" + sStamp + "]", wym._doc.body
 
       link.attr(WYMeditor.HREF, sUrl).attr WYMeditor.TITLE, jQuery(wym._options.titleSelector).val()
-
-
-
-  constructor: ->
-    super
-    source  = $("#config_texteditorTemplate").html()
-    @template = Handlebars.compile source
 
 
 

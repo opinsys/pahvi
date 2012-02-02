@@ -17,8 +17,6 @@ class views.Upload extends Backbone.View
     {@file} = options
     @status = "starting"
 
-    source  = $("#uploadTemplate").html()
-    @template = Handlebars.compile source
 
   start: ->
 
@@ -90,7 +88,7 @@ class views.Upload extends Backbone.View
 
   updateProgress: ->
     @progressBar.progressbar "value", parseInt @loaded / @total * 100
-    @messages.html @template
+    @messages.html @renderTemplate "upload",
       loaded: helpers.roundNumber @loaded, 2
       total: helpers.roundNumber @total, 2
       speed: helpers.roundNumber @speed, 2

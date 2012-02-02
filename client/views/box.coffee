@@ -125,7 +125,7 @@ class views.BaseBox extends Backbone.View
     @$el.transformable "destroy"
     @$el.draggable "destroy"
 
-    @$el.html @template @model.toJSON()
+    @$el.html @renderTemplate @templateId, @model.toJSON()
 
 
     @$el.css
@@ -164,12 +164,10 @@ class views.PlainBox extends views.BaseBox
 
   type: "plain"
 
+  templateId: "plainbox"
 
   constructor: ({@settings}) ->
     super
-
-    source  = $("#plainboxTemplate").html()
-    @template = Handlebars.compile source
 
 
 
@@ -179,12 +177,10 @@ class views.ImageBox extends views.BaseBox
 
   type: "image"
 
+  templateId: "imagebox"
+
   constructor: ({@settings}) ->
     super
-
-    source  = $("#imageboxTemplate").html()
-    @template = Handlebars.compile source
-
 
     @model.bind "change:imgSrc", =>
       @updateRatio true
@@ -230,11 +226,10 @@ class views.TextBox extends views.BaseBox
 
   className: "box textBox"
 
+  templateId: "textbox"
+
   constructor: ({@settings}) ->
     super
-
-    source  = $("#textboxTemplate").html()
-    @template = Handlebars.compile source
 
 
   events:

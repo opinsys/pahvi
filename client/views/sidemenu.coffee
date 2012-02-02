@@ -7,8 +7,6 @@ class views.ToolBox extends Backbone.View
   constructor: ->
     super
     @$el = $ @el
-    source  = $("#toolboxTemplate").html()
-    @template = Handlebars.compile source
 
   events:
     "dragstop": "restore"
@@ -17,7 +15,7 @@ class views.ToolBox extends Backbone.View
     @render()
 
   render: ->
-    @$el.html @template()
+    @$el.html @renderTemplate "toolbox"
     @$(".addElements * ").draggable()
 
 
@@ -30,8 +28,6 @@ class views.SideMenu extends Backbone.View
     super
     @$el = $ @el
 
-    source  = $("#sidemenuTemplate").html()
-    @template = Handlebars.compile source
 
     @boxProperties = new views.PropertiesManager
       collection: @collection
@@ -87,7 +83,7 @@ class views.SideMenu extends Backbone.View
     @subviewContainer.html currentView.el
 
   render: ->
-    @$el.html @template()
+    @$el.html @renderTemplate "sidemenu"
     @subviewContainer = @$(".media")
 
     @boxProperties.render()

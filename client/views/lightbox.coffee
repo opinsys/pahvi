@@ -32,8 +32,6 @@ class views.LightBox extends Backbone.View
     if not _.isArray @views
       @views = [ @views ]
 
-    source  = $("#lightboxTemplate").html()
-    @template = Handlebars.compile source
 
 
   events:
@@ -64,7 +62,7 @@ class views.LightBox extends Backbone.View
 
 
   render: ->
-    @$el.html @template()
+    @$el.html @renderTemplate "lightbox"
 
     viewContainer = @$(".views")
     for view in @views

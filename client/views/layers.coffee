@@ -9,8 +9,6 @@ class views.Layers extends Backbone.View
   constructor: ({@settings}) ->
     super
     @$el = $ @el
-    source  = $("#layersTemplate").html()
-    @template = Handlebars.compile source
 
     @collection.bind "add", => @render()
     @collection.bind "destroy", (box) => @render()
@@ -99,7 +97,7 @@ class views.Layers extends Backbone.View
     boxes.sort (a, b) -> b.zIndex - a.zIndex
     # (console.log b.name, b.zIndex) for b in boxes
 
-    @$el.html @template boxes: boxes
+    @$el.html @renderTemplate "layers", boxes: boxes
     @sortable = @$("ul").sortable()
     @items = @$(".layersSortable li")
 

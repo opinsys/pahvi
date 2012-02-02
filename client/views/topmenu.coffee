@@ -8,9 +8,7 @@ class views.Menu extends Backbone.View
 
   constructor: ({@settings}) ->
     super
-
-    source  = $("#topmenuTemplate").html()
-    @template = Handlebars.compile source
+    @$el = $ @el
 
     @settings.bind "change:mode", => @render()
 
@@ -39,8 +37,7 @@ class views.Menu extends Backbone.View
       $("body").addClass "presentation"
       $("body").removeClass "edit"
 
-
-    $(@el).html @template ob
+    @$el.html @renderTemplate "topmenu", ob
 
 
 
