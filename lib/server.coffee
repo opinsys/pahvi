@@ -1,19 +1,29 @@
 fs = require "fs"
-{resize} = require "./resize"
 
+
+redis = require "redis"
 express = require "express"
 hbs = require "hbs"
 piler = require "piler"
 sharejs = require("share").server
 
+RedisStore = require('connect-redis')(express)
+
+sessionStore = new RedisStore
+
+urlshortener = require "./urlshortener"
+{resize} = require "./resize"
+
+client = redis.createClient()
 
 rootDir = __dirname + "/../"
 clientTmplDir = rootDir + "/views/client/"
 
+webutils = require("connect").utils
 
 defaults =
   port: 8080
-  databaseType: "none"
+  sessionSecret: "change me"
 
 try
   config = JSON.parse fs.readFileSync rootDir + "config.json"
@@ -37,7 +47,28 @@ css.bind app
 js.bind app
 sharejs.attach app,
   db:
-    type: config.databaseType
+    type: "redis"
+  auth: (agent, action) ->
+
+    if agent.editor
+      console.log "Agent is editor. (cache)"
+      action.accept()
+      return
+
+
+    if action.type isnt "update"
+      action.accept()
+      return
+
+    cookies = webutils.parseCookie agent.headers.cookie
+    sessionStore.get cookies["connect.sid"], (err, data) ->
+      console.log "ShareJS: Reading session: #{ data.pahviAuth }"
+      if data.pahviAuth is "ok"
+        action.accept()
+        agent.editor = true
+      else
+        console.error "Unauthorized edit attempt"
+        action.reject()
 
 
 app.configure "development", ->
@@ -51,8 +82,13 @@ app.configure "production", ->
     templateCache[filename] = fs.readFileSync(clientTmplDir + filename).toString()
 
 
+
 app.configure ->
   app.use express.bodyParser()
+  app.use express.cookieParser()
+  app.use express.session
+    secret: config.sessionSecret
+    store: sessionStore
 
   # Connect Handlebars to Piler Asset Manager
   hbs.registerHelper "renderScriptTags", (pile) ->
@@ -161,8 +197,103 @@ app.get "/", (req, res) ->
   res.render "welcome",
     layout: false
 
-app.get "/*", (req, res) ->
-  res.render "index"
+
+S4 = -> (((1 + Math.random()) * 65536) | 0).toString(16).substring(1)
+
+createPahvi = (options, cb) ->
+
+
+
+
+
+class PahviMeta
+
+  constructor: ({@client}) ->
+
+
+  toRedisId: (id) -> "pahvi-#{ id }"
+
+  create: (options, cb) ->
+    @client.incr "pahvi_sequence", (err, uniqueNumber) =>
+      return cb err if err
+
+      id = urlshortener.encode uniqueNumber
+      ob =
+        id: id
+        name: options.name
+        email: options.email
+        authKey: "#{ S4() }-#{ S4() }-#{ S4() }"
+
+      client.hmset @toRedisId(id), ob, (err) ->
+        return cb err if err
+        cb null, ob
+
+  get: (id, cb) ->
+    @client.hgetall @toRedisId(id), (err, result) =>
+      throw err if err # TODO
+
+      if not result.id
+        return cb
+          code: 404
+          message: "Unkown pahvi id #{ id }"
+
+      cb null, result
+
+  authenticate: (id, authKey, cb) ->
+    if not authKey?
+      return cb null, false
+
+    @get id, (err, result) ->
+      return cb err if err
+      cb null, authKey is result.authKey
+
+
+app.post "/", (req, res) ->
+  pahvi = new PahviMeta
+    client: client
+
+  pahvi.create req.body, (err, result) ->
+    throw err if err
+    res.json result
+
+
+
+app.get "/*", (req, res, next) ->
+  parts = req.path.split "/"
+  if parts.length isnt 2
+    return next()
+
+  [__, id] = parts
+
+  pahvi = new PahviMeta
+    client: client
+
+  response = ->
+    pahvi.get id, (err, result) ->
+      if err?.code is 404
+        return res.redirect "/"
+      res.render "index",
+        authKey: req.query?.auth
+
+  if not req.query.auth
+    req.session.pahviAuth = ""
+    return response()
+
+
+  pahvi.authenticate id, req.query?.auth, (err, authOk) ->
+    req.session.foo = "bar #{ Math.random() }"
+
+    console.log "Setting auth session: #{ authOk }"
+
+    if authOk
+      req.session.pahviAuth = "ok"
+    else
+      req.session.pahviAuth = ""
+
+    response()
+
+
+
 
 
 app.listen config.port, ->

@@ -28,6 +28,8 @@
         , "hbs": ""
         , "socket.io": ""
         , "redis": ""
+        , "connect": ""
+        , "connect-redis": ""
         , "share": ""
         , "gm": ""
     }

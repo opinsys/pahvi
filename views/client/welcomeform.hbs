@@ -1,29 +1,34 @@
 
-<form action="." method="post" accept-charset="utf-8">
-
+<form action="" method="post" accept-charset="utf-8">
 
 
 <h2>Pahvi name</h2>
-<input type="text" name="name" />
+<input type="text" name="name" />*
 
 
 <h2>Email</h2>
 
 <p>
-  <input type="text" name="name" />*
+  <input type="text" name="email" />*
   <span class="generatedId"><!-- js will render --></span>
 </p>
 
 <p>
-Pahvi admin-url will be sent to this email address.
+
+Pahvi admin-url will be sent to this email address. We use the email
+address only for that unless you check the box below.
 
 </p>
 
 <p>
-  <input type="checkbox" id="contact" >
+  <input type="checkbox" id="contact" name="contact" value="ok" >
   <label for="contact" >
   I want to receive Pahvi updates via email
   </label>
+</p>
+
+<p>
+  <button class="submit">Create new Pahvi!</button>
 </p>
 
 <p>
