@@ -17,6 +17,8 @@ class views.Upload extends Backbone.View
     {@file} = options
     @status = "starting"
 
+    @bind "uploaddone", => @remove()
+
 
   start: ->
 
