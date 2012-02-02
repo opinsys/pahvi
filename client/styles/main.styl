@@ -5,6 +5,7 @@ pahvicream = #f5f4f0
 pahvigray = #363636
 pahvilightgray = #f3f3f3
 pahvibrown = rgb(130,70,50)
+pahvilightbrown = #b7a284
 pahvigreen = #339900
 pahvilightgreen = #d6f3c7
 pahvired = #FF530D
@@ -116,10 +117,11 @@ button:hover
       text-align center
       width 150px
     h1,h2,h3
-      color pahvibrown
+      color pahvilightbrown
       line-height 1
-      text-shadow  0 2px 4px pahviyellow, 0 -1px 2px pahvigray, -1px 0 0 pahvicream, 1px 0 0 pahvicream
       text-transform uppercase
+    h1
+      text-shadow  0 2px 4px pahviyellow, 0 -1px 2px pahvigray, -1px 0 0 pahvicream, 1px 0 0 pahvicream
     h2,h3
       font-size 0.8em
     h3
@@ -449,6 +451,7 @@ button:hover
               background-position plainbox_icon_position
             .image
               background-position image_icon_position
+              
 .dragdrop_image_from_computer
   background url("/img/add-image-from-computer.png") no-repeat 0 2px pahvicream
   border 1px dotted pahvigray
@@ -642,6 +645,7 @@ body.presentation
       border-radius 3px
       color pahvigray
       line-height 1
+      margin-top 1em
       padding 8px 0
       text-shadow 0 1px 0 #eee
       font-size 1em
