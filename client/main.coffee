@@ -74,6 +74,8 @@ class Workspace extends Backbone.Router
           helpers.zoomOut()
 
 $ ->
+  if window.location.pathname is "/"
+    return
 
 
   settings = new models.Settings

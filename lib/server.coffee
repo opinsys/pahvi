@@ -127,6 +127,9 @@ app.configure ->
   css.addFile rootDir + "/client/styles/reset.styl"
   css.addFile rootDir + "/client/styles/main.styl"
 
+  css.addFile "welcome", rootDir + "/client/styles/welcome.styl"
+  js.addFile "welcome", rootDir + "/client/welcome.coffee"
+
 
 
 types =
@@ -151,6 +154,9 @@ app.post "/upload", (req, res, foo) ->
     else
       res.json url: "/userimages/#{ fileName }"
 
+
+app.get "/", (req, res) ->
+  res.render "welcome"
 
 app.get "/*", (req, res) ->
   res.render "index"
