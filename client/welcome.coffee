@@ -11,9 +11,9 @@ class Welcome extends Backbone.View
   _onSubmit: (response) ->
 
     if not response.error
-      return window.location = "/#{ response.id }?auth=#{ response.authKey }"
-
-    alert "error: #{ response.error }"
+      window.location = "/#{ response.id }?auth=#{ response.authKey }"
+    else
+      alert "error: #{ response.error }"
 
 
 

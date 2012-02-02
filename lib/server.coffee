@@ -61,8 +61,10 @@ sharejs.attach app,
       return
 
     cookies = webutils.parseCookie agent.headers.cookie
+    console.log "ShareJS: cookies", cookies
     sessionStore.get cookies["connect.sid"], (err, data) ->
-      console.log "ShareJS: Reading session: #{ data.pahviAuth }"
+      throw err if err
+      console.log "ShareJS: Reading session:",  data
       if data.pahviAuth is "ok"
         action.accept()
         agent.editor = true
@@ -175,7 +177,7 @@ types =
   "image/jpeg": "jpg"
   "image/jpg": "jpg"
 
-app.post "/upload", (req, res, foo) ->
+app.post "/upload", (req, res) ->
 
   if not ext = types[req.files.imagedata.type]
     res.json error: "Unkown file type"
@@ -276,12 +278,10 @@ app.get "/*", (req, res, next) ->
         authKey: req.query?.auth
 
   if not req.query.auth
-    req.session.pahviAuth = ""
     return response()
 
 
   pahvi.authenticate id, req.query?.auth, (err, authOk) ->
-    req.session.foo = "bar #{ Math.random() }"
 
     console.log "Setting auth session: #{ authOk }"
 
