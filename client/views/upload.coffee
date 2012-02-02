@@ -7,7 +7,7 @@ class views.Upload extends Backbone.View
 
   className: "uploadStatus"
 
-  @allowedTypes = 
+  @allowedTypes =
     "image/jpeg": true
     "image/png": true
 
@@ -19,8 +19,16 @@ class views.Upload extends Backbone.View
 
     @bind "uploaddone", => @remove()
 
+  validateFile: ->
+    if not views.Upload.allowedTypes[@file.type]
+      @error = "Image #{ @file.name } has Unkown file type #{ @file.type }"
+      @updateStatus()
+      return false
+    return true
 
   start: ->
+    if not @validateFile()
+      return
 
     # Small image. Show it immediately in browser
     if @file.size < 1400000
@@ -54,7 +62,7 @@ class views.Upload extends Backbone.View
 
       console.log "Uploading image: #{ e.loaded } / #{ e.totalSize }", @speed
 
-      @updateProgress()
+      @updateStatus()
 
     xhr.onreadystatechange = (e) =>
       if xhr.readyState is xhr.DONE
@@ -88,8 +96,16 @@ class views.Upload extends Backbone.View
     @progressBar.progressbar
       value: 0
 
-  updateProgress: ->
+  updateStatus: ->
+    if @error
+      @$el.addClass "error"
+      @progressBar.hide()
+    else
+      @$el.removeClass "error"
+      @progressBar.show()
+
     @progressBar.progressbar "value", parseInt @loaded / @total * 100
+
     @messages.html @renderTemplate "upload",
       loaded: helpers.roundNumber @loaded, 2
       total: helpers.roundNumber @total, 2

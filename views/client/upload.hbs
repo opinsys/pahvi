@@ -1,13 +1,21 @@
 
 <!--TODO: should not use pre....-->
-<pre>
 
-status: {{status}}
+
+
+
 {{#if error}}
-error: {{error}}
-{{/if}}
+
+ERROR: {{error}}
+
+{{else}}
+
+<pre>
+status: {{status}}
 loaded: {{loaded}} / {{total}} kB
 Speed: {{speed}}kB/s
-
 </pre>
+
+{{/if}}
+
 

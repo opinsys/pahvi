@@ -49,20 +49,20 @@ class views.Cardboard extends Backbone.View
 
 
   imageBoxFromFile: (file, options) ->
-    if not views.Upload.allowedTypes[file.type]
-      console.log "Unkown file type '#{ file.type }'. Ignoring this file drop."
-      return
 
     options.imgSrc = "/img/loadingimage.gif"
     options.width = 66
     options.height = 66
-    box = @collection.createBox "image", options
+    box = new models.ImageBox options
 
     upload = new views.Upload
       model: box
       file: file
     upload.renderToBody()
-    upload.start()
+
+    if upload.validateFile()
+      @collection.add box
+      upload.start()
 
 
 
