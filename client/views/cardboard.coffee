@@ -16,11 +16,8 @@ class views.Cardboard extends Backbone.View
     $(document).bind "dragover", (e) =>
       e.preventDefault()
       e.originalEvent.dataTransfer.dropEffect = 'copy'
-    $(document).bind "dragleave", (e) =>
-      e.preventDefault()
-    $(document).bind "dragend", (e) =>
-      e.preventDefault()
-      dragInfo.hide()
+    $(document).bind "dragleave", (e) => e.preventDefault()
+    $(document).bind "dragend", (e) => e.preventDefault()
 
     @collection.bind "add", (boxModel) =>
 
