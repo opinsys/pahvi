@@ -203,6 +203,16 @@ class views.ImageBox extends views.BaseBox
 
     helpers.loadImage @model.get("imgSrc"), (err, img) =>
       ratio = img.width / img.height
+      console.log "RATIO #{ img.width } #{ img.height }"
+
+      # Skip size and aspect reset if the aspect is the same
+      round = String(helpers.roundNumber ratio, 2)
+      if @_prevRatio is round
+        return
+
+      console.log "Ratio changed #{ round } != #{ @_prevRatio }"
+
+      @_prevRatio = round
       @resizableOptions = aspectRatio: ratio
       if reset
         @model.set
