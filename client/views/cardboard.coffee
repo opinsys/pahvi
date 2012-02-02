@@ -56,7 +56,9 @@ class views.Cardboard extends Backbone.View
       console.log "Unkown file type '#{ file.type }'. Ignoring this file drop."
       return
 
-    options.imgSrc = "/img/loadingimage.png"
+    options.imgSrc = "/img/loadingimage.gif"
+    options.width = 66
+    options.height = 66
     box = @collection.createBox "image", options
 
     upload = new views.Upload
