@@ -2,8 +2,6 @@
 views = NS "Pahvi.views"
 helpers = NS "Pahvi.helpers"
 
-roundNumber = (num, dec) ->
-  Math.round(num*Math.pow(10,dec))/Math.pow(10,dec)
 
 class views.Upload extends Backbone.View
 
@@ -93,9 +91,9 @@ class views.Upload extends Backbone.View
   updateProgress: ->
     @progressBar.progressbar "value", parseInt @loaded / @total * 100
     @messages.html @template
-      loaded: roundNumber @loaded, 2
-      total: roundNumber @total, 2
-      speed: roundNumber @speed, 2
+      loaded: helpers.roundNumber @loaded, 2
+      total: helpers.roundNumber @total, 2
+      speed: helpers.roundNumber @speed, 2
       error: @error
       status: @status
 
