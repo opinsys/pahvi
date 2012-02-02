@@ -16,7 +16,7 @@ class views.ToolBox extends Backbone.View
 
   render: ->
     @$el.html @renderTemplate "toolbox"
-    @$(".addElements * ").draggable()
+    @$(".addElements .droppable ").draggable()
 
 
 
