@@ -122,10 +122,10 @@ app.configure ->
   js.addFile rootDir + "/client/views/boxproperties.coffee"
   js.addFile rootDir + "/client/views/cardboard.coffee"
 
-  js.addFile rootDir + "/client/main.coffee"
+  js.addFile "pahvi", rootDir + "/client/main.coffee"
 
   css.addFile rootDir + "/client/styles/reset.styl"
-  css.addFile rootDir + "/client/styles/main.styl"
+  css.addFile "pahvi", rootDir + "/client/styles/main.styl"
 
   css.addFile "welcome", rootDir + "/client/styles/welcome.styl"
   js.addFile "welcome", rootDir + "/client/welcome.coffee"
@@ -156,7 +156,8 @@ app.post "/upload", (req, res, foo) ->
 
 
 app.get "/", (req, res) ->
-  res.render "welcome"
+  res.render "welcome",
+    layout: false
 
 app.get "/*", (req, res) ->
   res.render "index"

@@ -73,10 +73,8 @@ class Workspace extends Backbone.Router
           @settings.set activeBox: null
           helpers.zoomOut()
 
-$ ->
-  if window.location.pathname is "/"
-    return
 
+$ ->
 
   settings = new models.Settings
     id: "settings"
