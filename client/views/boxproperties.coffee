@@ -168,6 +168,15 @@ class configs.ImageSrc extends BaseConfig
   events:
     "blur input": "setImageSrc"
     "keyup input": "_onKeyUp"
+    "change .fileInput": "_onFileSelected"
+
+  _onFileSelected: (e) ->
+    file = e.target.files[0]
+    upload = new views.Upload
+      model: @model
+      file: file
+    upload.renderToBody()
+    upload.start()
 
   _onKeyUp: (e) ->
     # If user hits enter
