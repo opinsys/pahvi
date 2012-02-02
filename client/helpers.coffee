@@ -23,7 +23,7 @@ if not window.console?.log?
 
 
 templateCache = {}
-Backbone.View::renderTemplate = (templateId, ob={}) ->
+helpers.template = (templateId, ob={}) ->
   if not templateFunction = templateCache[templateId]
     source = $("##{ templateId }Template").html()
     throw new Error "Unkown template #{ templateId }" if not source
@@ -31,6 +31,7 @@ Backbone.View::renderTemplate = (templateId, ob={}) ->
     console.log "CACHING #{ templateId }"
   return templateFunction ob
 
+Backbone.View::renderTemplate = helpers.template
 
 
 helpers.zoomOut = ->

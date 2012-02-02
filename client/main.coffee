@@ -42,16 +42,12 @@ class Workspace extends Backbone.Router
         @navigate @settings.get "mode"
 
   routes:
-    "": "welcome"
-    "/": "welcome"
     "presentation": "presentation"
     "presentation/:name": "presentation"
     "edit": "edit"
     "edit/:name": "edit"
 
 
-  welcome: ->
-    views.showMessage "Welcome to Pahvi!"
 
   navigateToBox: (box, trigger) ->
     @navigate "#{ @settings.get "mode" }/#{ escape box.get "name" }", trigger
@@ -101,6 +97,17 @@ $ ->
 
   board.render()
 
+  pahviId = window.location.pathname[1..-1]
+  if not pahviId
+    alert "bad url"
+
+  startUpNotification = ->
+    return if not window.AUTH_KEY
+
+    views.showMessage helpers.template "startinfo"
+      publicUrl: window.location.origin + "/" + pahviId
+      adminUrl: window.location.href
+
 
 
   sidemenu = new views.SideMenu
@@ -110,20 +117,21 @@ $ ->
 
   sidemenu.render()
 
-  sharejsId = window.location.pathname[1..-1] or "_default"
 
-  sharejs.open sharejsId, "json", (err, doc) =>
+  sharejs.open pahviId, "json", (err, doc) =>
     throw err if err
 
     boxes.fetch
       sharejsDoc: doc
-      succes: ->
+      success: ->
         settings.set activeBox: null
 
         router = new Workspace
           settings: settings
           collection: boxes
         Backbone.history.start()
+        startUpNotification()
+
       error: ->
         alert "Failed to connect"
 
