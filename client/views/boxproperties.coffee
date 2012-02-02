@@ -164,10 +164,17 @@ class configs.ImageSrc extends BaseConfig
     super
     @$el = $ @el
 
-  events:
-    "blur input": "onKeyUp"
 
-  onKeyUp: ->
+  events:
+    "blur input": "setImageSrc"
+    "keyup input": "_onKeyUp"
+
+  _onKeyUp: (e) ->
+    # If user hits enter
+    if e.which is 13
+      @setImageSrc()
+
+  setImageSrc: ->
     @model.set imgSrc: @$("input").val()
 
 
