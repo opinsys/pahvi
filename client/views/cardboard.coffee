@@ -9,6 +9,8 @@ class views.Cardboard extends Backbone.View
     super
     @$el = $ @el
 
+
+
     $(document).bind "dragenter", (e) =>
       e.preventDefault()
       console.log "User is dragging something"
@@ -19,19 +21,28 @@ class views.Cardboard extends Backbone.View
     $(document).bind "dragleave", (e) => e.preventDefault()
     $(document).bind "dragend", (e) => e.preventDefault()
 
-    @collection.bind "add", (boxModel) =>
+    @collection.bind "syncload", (collection, count) =>
 
-      View = @collection.getView boxModel.type
+      async.forEach @collection.toArray(), (boxModel, cb) =>
+        @_createView boxModel, cb
+      , =>
+        @trigger "viewsloaded"
+        @collection.bind "add", (boxModel) => @_createView boxModel
 
-      boxView = new View
-        settings: @settings
-        model: boxModel
 
-      boxView.loadAssets =>
-        @$el.append boxView.el
-        boxView.render()
+  _createView: (boxModel, cb=->) ->
+    View = @collection.getView boxModel.type
 
-      @settings.set activeBox: boxModel.id
+    boxView = new View
+      settings: @settings
+      model: boxModel
+
+    boxView.loadAssets =>
+      @$el.append boxView.el
+      boxView.render()
+      cb()
+
+    @settings.set activeBox: boxModel.id
 
   events:
     "drop": "dropped"
