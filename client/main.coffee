@@ -104,9 +104,13 @@ $ ->
   startUpNotification = ->
     return if not window.AUTH_KEY
 
+    uri = parseUri window.location.href
+    publicUrl = "#{ uri.protocol }://#{ uri.authority }#{ uri.path }"
+    adminUrl = "#{ publicUrl }?auth=#{ window.AUTH_KEY }"
+
     views.showMessage helpers.template "startinfo"
-      publicUrl: window.location.origin + "/" + pahviId
-      adminUrl: window.location.href
+      publicUrl: publicUrl
+      adminUrl: adminUrl
 
 
 
