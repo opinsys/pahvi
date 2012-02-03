@@ -97,7 +97,7 @@ $ ->
 
   board.render()
 
-  pahviId = window.location.pathname[1..-1]
+  pahviId = window.location.pathname.split("/")[2]
   if not pahviId
     alert "bad url"
 
