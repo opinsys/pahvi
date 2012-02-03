@@ -76,11 +76,24 @@ class Workspace extends Backbone.Router
 
 $ ->
 
-  settings = new models.Settings
+  window.settings = new models.Settings
     id: "settings"
 
+  if window.AUTH_KEY
+    $("body").removeClass "presentation"
+    $("body").addClass "edit"
 
-  boxes = new models.Boxes [],
+  settings.bind "change:mode", ->
+    settings.set activeBox: null
+    if settings.get("mode") is "edit"
+      $("body").removeClass "presentation"
+      $("body").addClass "edit"
+
+    if settings.get("mode") is "presentation"
+      $("body").addClass "presentation"
+      $("body").removeClass "edit"
+
+  window.boxes = new models.Boxes [],
     collectionId: "boxes"
     typeMapping: typeMapping
     modelClasses: (Model for __, Model of models when Model::?.type)

@@ -29,13 +29,9 @@ class views.Menu extends Backbone.View
 
     if @settings.get("mode") is "edit"
       ob.modeName = "Switch to presentation mode"
-      $("body").removeClass "presentation"
-      $("body").addClass "edit"
 
     if @settings.get("mode") is "presentation"
       ob.modeName = "Switch to edit mode"
-      $("body").addClass "presentation"
-      $("body").removeClass "edit"
 
     @$el.html @renderTemplate "topmenu", ob
 
