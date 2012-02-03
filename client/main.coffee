@@ -55,6 +55,10 @@ class Workspace extends Backbone.Router
   for mode in ["presentation", "edit"] then do (mode) ->
     Workspace::[mode] = (boxName) ->
 
+      if mode is "edit" and not window.AUTH_KEY
+        return @navigate "presentation", true
+
+
       @settings.set mode: mode
 
       if boxName
