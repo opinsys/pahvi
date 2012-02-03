@@ -193,6 +193,8 @@ class configs.TextEditor extends BaseConfig
 
   className: "config texteditor"
 
+  templateId: "config_texteditor"
+
   # Override annoying window popup in WYMeditor
   origDialog = WYMeditor.editor.prototype.dialog
   WYMeditor.editor.prototype.dialog = (type) ->
