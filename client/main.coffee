@@ -19,16 +19,17 @@ for metaClassName, namespace of typeSources
 
 
 
-
-
-
 class Workspace extends Backbone.Router
 
   constructor: ({@settings, @collection}) ->
     super
 
     @settings.bind "change:mode", =>
-      @navigate @settings.get "mode"
+      if boxId = @settings.get "activeBox"
+        box = @collection.get boxId
+        @navigateToBox box
+      else
+        @navigate @settings.get "mode"
 
     @collection.bind "change:name", (box) =>
       if box.id is  @settings.get "activeBox"
@@ -42,36 +43,44 @@ class Workspace extends Backbone.Router
         @navigate @settings.get "mode"
 
   routes:
+    "": "root"
     "presentation": "presentation"
     "presentation/:name": "presentation"
-    "edit": "edit"
-    "edit/:name": "edit"
+
+  root: ->
+    return if not window.AUTH_KEY
+
+    @settings.set mode: "edit"
+
+    return if @shown
+
+    uri = parseUri window.location.href
+    publicUrl = "#{ uri.protocol }://#{ uri.authority }#{ uri.path }"
+    adminUrl = "#{ publicUrl }?auth=#{ window.AUTH_KEY }"
+
+    views.showMessage helpers.template "startinfo"
+      publicUrl: publicUrl
+      adminUrl: adminUrl
+
+    @shown = true
 
 
 
   navigateToBox: (box, trigger) ->
     @navigate "#{ @settings.get "mode" }/#{ escape box.get "name" }", trigger
 
-  for mode in ["presentation", "edit"] then do (mode) ->
-    Workspace::[mode] = (boxName) ->
+  presentation: (boxName) ->
+    @settings.set mode: "presentation"
 
-      if mode is "edit" and not window.AUTH_KEY
-        return @navigate "presentation", true
+    if boxName
+      box = @collection.find (box) -> box.get("name") is unescape boxName
 
-
-      @settings.set mode: mode
-
-      if boxName
-        box = @collection.find (box) -> box.get("name") is unescape boxName
-
-      if box
-        @settings.set activeBox: box.id
-        @navigateToBox box
-      else
-        @navigate @settings.get "mode"
-        if @settings.get("mode") is "presentation"
-          @settings.set activeBox: null
-          helpers.zoomOut()
+    if box
+      @settings.set activeBox: box.id
+      @navigateToBox box
+    else
+      @settings.set activeBox: null
+      helpers.zoomOut()
 
 
 $ ->
@@ -100,11 +109,12 @@ $ ->
 
 
 
-  menu = new views.Menu
-    el: ".menu"
-    settings: settings
+  if window.AUTH_KEY
+    menu = new views.Menu
+      el: ".menu"
+      settings: settings
 
-  menu.render()
+    menu.render()
 
 
   board = new views.Cardboard
@@ -114,21 +124,16 @@ $ ->
 
   board.render()
 
+  board.bind "viewsloaded", _.once ->
+    # TODO: Why on earth this is called twice??
+    Backbone.history?.start()
+    if not window.AUTH_KEY
+      settings.set mode: "presentation"
+
   pahviId = window.location.pathname.split("/")[2]
   if not pahviId
     alert "bad url"
-
-  startUpNotification = ->
-    return if not window.AUTH_KEY
-
-    uri = parseUri window.location.href
-    publicUrl = "#{ uri.protocol }://#{ uri.authority }#{ uri.path }"
-    adminUrl = "#{ publicUrl }?auth=#{ window.AUTH_KEY }"
-
-    views.showMessage helpers.template "startinfo"
-      publicUrl: publicUrl
-      adminUrl: adminUrl
-
+    return
 
 
   sidemenu = new views.SideMenu
@@ -150,8 +155,7 @@ $ ->
         router = new Workspace
           settings: settings
           collection: boxes
-        Backbone.history.start()
-        startUpNotification()
+
 
       error: ->
         alert "Failed to connect"
