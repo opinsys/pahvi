@@ -123,6 +123,7 @@ app.configure ->
   js.addFile rootDir + "/client/vendor/underscore.js"
   js.addFile rootDir + "/client/vendor/backbone.js"
   js.addFile rootDir + "/client/vendor/async.js"
+  js.addFile rootDir + "/client/vendor/parseuri.js"
 
   js.addFile rootDir + "/client/vendor/jquery.form.js"
 
