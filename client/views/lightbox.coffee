@@ -14,10 +14,12 @@ class views.Info extends Backbone.View
     """
 
 
-views.showMessage = (msg) ->
+views.showMessage = (msg, hideCancel) ->
   lb = new views.LightBox
+    hideCancel: hideCancel
     views: new views.Info
       msg: msg
+
   lb.renderToBody()
 
 
@@ -25,7 +27,7 @@ class views.LightBox extends Backbone.View
 
   className: "lightbox"
 
-  constructor: ({@views, @alwaysOnTop}) ->
+  constructor: ({@views, @alwaysOnTop, @hideCancel}) ->
     super
     @$el = $ @el
 
@@ -62,7 +64,7 @@ class views.LightBox extends Backbone.View
 
 
   render: ->
-    @$el.html @renderTemplate "lightbox"
+    @$el.html @renderTemplate "lightbox", this
 
     viewContainer = @$(".views")
     for view in @views

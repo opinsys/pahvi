@@ -61,6 +61,7 @@ class Workspace extends Backbone.Router
     views.showMessage helpers.template "startinfo"
       publicUrl: publicUrl
       adminUrl: adminUrl
+    , true
 
     @shown = true
 
