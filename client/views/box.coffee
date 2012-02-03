@@ -21,7 +21,7 @@ class views.BaseBox extends Backbone.View
   loadAssets: (cb) ->
     setTimeout =>
       cb()
-      @trigger "load"
+      @model.trigger "load"
     , 0
 
   constructor: ({@settings}) ->
