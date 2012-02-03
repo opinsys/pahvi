@@ -36,3 +36,4 @@ $ ->
   w = new Welcome
   w.render()
   w.$el.appendTo ".pahviForm"
+  $("input").get(0).focus()
