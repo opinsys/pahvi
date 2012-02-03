@@ -6,14 +6,25 @@ express = require "express"
 hbs = require "hbs"
 piler = require "piler"
 sharejs = require("share").server
+nodemailer = require "nodemailer"
+_  = require 'underscore'
+
+{Validator} = require('validator')
+
+check = do ->
+  v = new Validator
+  v.error = -> false
+  -> v.check arguments...
 
 RedisStore = require('connect-redis')(express)
 
-sessionStore = new RedisStore
 
 {resize} = require "./resize"
-{PahviMeta} = require "./pahvi.coffee"
+{emailTemplate} = require "./emailtemplate"
+{PahviMeta} = require "./pahvi"
 
+
+sessionStore = new RedisStore
 
 client = redis.createClient()
 
@@ -24,7 +35,8 @@ webutils = require("connect").utils
 
 defaults =
   port: 8080
-  sessionSecret: "change me"
+  sessionSecret: "Very secret string. (override me)"
+  mailServer: "mail.opinsys.fi"
 
 try
   config = JSON.parse fs.readFileSync rootDir + "config.json"
@@ -36,11 +48,18 @@ for k, v of defaults
   config[k] ?= v
 
 
+nodemailer.SMTP =
+  host: config.mailServer
+
+
+
 app = express.createServer()
 
 
 css = piler.createCSSManager()
 js = piler.createJSManager()
+
+
 
 
 
@@ -61,16 +80,21 @@ sharejs.attach app,
       action.accept()
       return
 
+    # Aget does not give much information for us here. We need to manually
+    # parse the cookie header and fetch the session from Redis
     cookies = webutils.parseCookie agent.headers.cookie
+
     console.log "ShareJS: cookies", cookies
+
     sessionStore.get cookies["connect.sid"], (err, data) ->
       throw err if err
       console.log "ShareJS: Reading session:",  data
       if data.pahviAuth is "ok"
         action.accept()
+        # Cache accept
         agent.editor = true
       else
-        console.error "Unauthorized edit attempt"
+        console.log "Unauthorized edit attempt"
         action.reject()
 
 
@@ -202,48 +226,73 @@ app.get "/", (req, res) ->
     layout: false
 
 
-S4 = -> (((1 + Math.random()) * 65536) | 0).toString(16).substring(1)
-
-createPahvi = (options, cb) ->
-
-
-
-
 
 
 
 app.post "/", (req, res) ->
+
+  if not check(req.body.email).isEmail()
+    return res.json
+      error: "Bad email"
+      field: "email"
+
+  if not req.body.name
+    return res.json
+      error: "Name is missing"
+      field: "name"
+
+
   pahvi = new PahviMeta
     client: client
 
   pahvi.create req.body, (err, result) ->
     throw err if err
+
+    # TODO: This can fail in so many ways...
+    result.publicUrl = "http://#{ req.headers.host }/p/#{ result.id }"
+    result.adminUrl = result.publicUrl + "?auth=#{ result.authKey }"
+
     res.json result
+    sendMail result
+
+
+sendMail = (ob, cb=->) ->
+  {body, subject} = emailTemplate ob
+  nodemailer.send_mail
+    sender: 'dev@opinsys.fi',
+    to: ob.email,
+    subject: subject
+    body: body
+  , (err, success) ->
+    console.log "MAIL", err, success
+    cb err, success
 
 
 
-app.get "/*", (req, res, next) ->
+app.get "/p/:id", (req, res, next) ->
   parts = req.path.split "/"
-  if parts.length isnt 2
+  if parts.length isnt 3
     return next()
 
-  [__, id] = parts
+  id = req.params.id
 
   pahvi = new PahviMeta
     client: client
+    id: id
 
   response = ->
-    pahvi.get id, (err, result) ->
+    pahvi.get (err, result) ->
       if err?.code is 404
         return res.redirect "/"
       res.render "index",
         authKey: req.query?.auth
 
   if not req.query.auth
+    req.session.pahviAuth = ""
     return response()
 
 
-  pahvi.authenticate id, req.query?.auth, (err, authOk) ->
+  pahvi.authenticate req.query?.auth, (err, authOk) ->
 
     console.log "Setting auth session: #{ authOk }"
 

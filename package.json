@@ -32,6 +32,8 @@
         , "connect-redis": ""
         , "share": ""
         , "gm": ""
+        , "nodemailer": ""
+        , "validator": ""
     }
     , "devDependencies": {
           "mocha": ""
