@@ -109,7 +109,7 @@ button:hover
         
   header
     background url("/img/pahvi-bg.jpg") repeat 0 0 scroll
-    height 65px
+    height 55px
     padding 0.5em 0 0.25em
     position relative
     width 100%
@@ -146,11 +146,10 @@ button:hover
       margin 0
       padding 0.5em 0 0.25em 0.5em
       position absolute
-      top 43px
+      top 33px
       width 100px
       &:hover
         background-color pahvicream
-        top 43px
       a
         background url("/img/opinsys_logo.png") no-repeat 0 0 transparent
         display block
@@ -480,11 +479,8 @@ button:hover
 .hallotoolbar
   z-index 2001
 
-html.presentation
-  cursor url("/img/zoom-out-cursor.png") 15 15, pointer !important
-
-  .container
-    overflow auto
+body.presentation
+  overflow auto
   .box
     box-shadow none !important
     cursor url("/img/zoom-cursor.png") 15 15, pointer !important
@@ -622,6 +618,8 @@ html.presentation
     top 100px
     left 200px
 
+  .msgbox p
+    margin-bottom 0.5em
 
 
 .lightbox
