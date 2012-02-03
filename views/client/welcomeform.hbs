@@ -3,13 +3,22 @@
 
 
 <h2>Pahvi name</h2>
-<input type="text" name="name" placeholder="my presentation"/>
+
+{{#if nameError}}
+{{nameError}}
+{{/if}}
+
+<input type="text" name="name" placeholder="my presentation" value="{{name}}" />
 
 
 <h2>Email</h2>
 
+{{#if emailError}}
+<span class="error"> {{emailError}} </span>
+{{/if}}
+
 <p>
-  <input type="text" name="email" placeholder="name@mail.com" />
+  <input type="text" name="email" placeholder="name@mail.com" value="{{email}}" />
   <span class="generatedId"><!-- js will render --></span>
 </p>
 
