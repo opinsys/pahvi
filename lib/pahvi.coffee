@@ -1,4 +1,6 @@
 
+urlshortener = require "./urlshortener"
+
 
 class PahviMeta
 

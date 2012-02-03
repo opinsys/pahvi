@@ -11,7 +11,6 @@ RedisStore = require('connect-redis')(express)
 
 sessionStore = new RedisStore
 
-urlshortener = require "./urlshortener"
 {resize} = require "./resize"
 {PahviMeta} = require "./pahvi.coffee"
 
