@@ -85,10 +85,8 @@ class models.Boxes extends Backbone.SharedCollection
   getOrCreate: (id, Model=Backbone.Model) ->
 
     if model = @get id
-      log "getOrCreate: Got!"
       return model
 
-    log "getOrCreate: creating!"
     model = new Model id: id
     @add model
     return model
