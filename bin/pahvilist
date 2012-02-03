@@ -1,0 +1,32 @@
+#!/usr/bin/env coffee
+
+redis = require "redis"
+async = require "async"
+
+client = redis.createClient()
+
+
+printedMails = {}
+printMails = (ob) ->
+  if ob.contact is "true" and not printedMails[ob.email]
+    console.log printedMails[ob.email] = ob.email
+
+
+
+print = printAll = (ob) ->
+  console.log ob
+
+if process.argv[2] is "emails"
+  print = printMails
+
+client.keys "pahvi-*", (err, keys) ->
+  throw err if err
+  async.forEachSeries keys, (k, cb) ->
+    client.hgetall k, (err, ob) ->
+      if err
+        console.error k, err
+        return cb err
+      print ob
+      cb()
+  , -> process.exit()
+
