@@ -108,6 +108,9 @@ $ ->
     modelClasses: (Model for __, Model of models when Model::?.type)
 
 
+  router = new Workspace
+    settings: settings
+    collection: boxes
 
   if window.AUTH_KEY
     menu = new views.Menu
@@ -152,9 +155,6 @@ $ ->
       success: ->
         settings.set activeBox: null
 
-        router = new Workspace
-          settings: settings
-          collection: boxes
 
 
       error: ->
