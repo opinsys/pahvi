@@ -1,32 +1,35 @@
 
 urlshortener = require "./urlshortener"
 
+S4 = -> (((1 + Math.random()) * 65536) | 0).toString(16).substring(1)
 
 class PahviMeta
 
-  constructor: ({@client}) ->
+  constructor: ({@client, @id}) ->
 
-
-  toRedisId: (id) -> "pahvi-#{ id }"
+  getRedisId:  -> "pahvi-#{ @id }"
 
   create: (options, cb) ->
     @client.incr "pahvi_sequence", (err, uniqueNumber) =>
       return cb err if err
 
-      id = urlshortener.encode uniqueNumber
+      @id = urlshortener.encode uniqueNumber
+      console.log options
       ob =
-        id: id
+        id: @id
+        created: Date.now()
         name: options.name
         email: options.email
+        contact: options.contact is "ok"
         authKey: "#{ S4() }-#{ S4() }-#{ S4() }"
 
-      client.hmset @toRedisId(id), ob, (err) ->
+      @client.hmset @getRedisId(), ob, (err) ->
         return cb err if err
         cb null, ob
 
-  get: (id, cb) ->
-    @client.hgetall @toRedisId(id), (err, result) =>
-      throw err if err # TODO
+  get: (cb) ->
+    @client.hgetall @getRedisId(), (err, result) =>
+      return cb err if err
 
       if not result.id
         return cb
@@ -35,11 +38,11 @@ class PahviMeta
 
       cb null, result
 
-  authenticate: (id, authKey, cb) ->
+  authenticate: (authKey, cb) ->
     if not authKey?
       return cb null, false
 
-    @get id, (err, result) ->
+    @get (err, result) ->
       return cb err if err
       cb null, authKey is result.authKey
 
