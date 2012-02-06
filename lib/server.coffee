@@ -37,6 +37,7 @@ defaults =
   port: 8080
   sessionSecret: "Very secret string. (override me)"
   mailServer: "mail.opinsys.fi"
+  googleAnalytics: "UA-9439432-4"
 
 try
   config = JSON.parse fs.readFileSync rootDir + "config.json"
@@ -107,6 +108,23 @@ app.configure "production", ->
   console.log "Production mode detected!"
   for filename in fs.readdirSync clientTmplDir
     templateCache[filename] = fs.readFileSync(clientTmplDir + filename).toString()
+
+
+hbs.registerHelper "googleAnalytics", ->
+  """<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', '#{ config.googleAnalytics }']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+"""
 
 
 
@@ -224,6 +242,7 @@ app.post "/upload", (req, res) ->
 app.get "/", (req, res) ->
   res.render "welcome",
     layout: false
+    config: config
 
 
 
@@ -286,6 +305,7 @@ app.get "/p/:id", (req, res, next) ->
         return res.redirect "/"
       res.render "index",
         authKey: req.query?.auth
+        config: config
 
   if not req.query.auth
     req.session.pahviAuth = ""

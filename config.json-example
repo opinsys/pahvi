@@ -2,4 +2,5 @@
     "port" : 8080
     , "sessionSecret": "Secret string"
     , "mailServer": "mail.example.com"
+    , "googleAnalytics": "UA-xxxxxxx-x"
 }
