@@ -311,6 +311,7 @@ app.get "/p/:id", (req, res, next) ->
       res.render "index",
         authKey: req.query?.auth
         config: config
+        data: result
 
   if not req.query.auth
     req.session.pahviAuth = ""
