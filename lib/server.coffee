@@ -256,7 +256,7 @@ app.post "/", (req, res) ->
       message: "Bad email"
       field: "email"
 
-  if not req.body.name
+  if not req.body.name?.trim()
     errors.push
       message: "Name is required"
       field: "name"
