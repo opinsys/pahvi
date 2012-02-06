@@ -152,7 +152,7 @@ class views.BaseBox extends Backbone.View
     if @settings.get("mode") is "presentation"
       "pass"
 
-    @$el.attr "title", @model.get "id"
+    @$el.attr "title", @model.get "name"
 
 
 
