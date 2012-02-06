@@ -11,13 +11,14 @@ class views.Cardboard extends Backbone.View
 
     $(document).bind "dragenter", (e) =>
       e.originalEvent.dataTransfer.dropEffect = 'copy'
-      return false
+      e.preventDefault()
     $(document).bind "dragover", (e) =>
       e.originalEvent.dataTransfer.dropEffect = 'copy'
-      return false
+      e.preventDefault()
 
-    # Do everything to prevent user from navigating to the dropped image
     $(document).bind "dragleave dragend drag dragstart drop", (e, ui) ->
+      # If there is no ui-object this must be a dragging event from desktop.
+      # Do everything to prevent user from navigating to the dropped image
       if not ui
         e.preventDefault()
 
