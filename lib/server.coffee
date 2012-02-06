@@ -276,6 +276,11 @@ app.post "/", (req, res) ->
 
 
 sendMail = (ob, cb=->) ->
+
+  if not config.mailServer
+    console.error "Mail server not configured. Cannot send mail".
+    return cb()
+
   {body, subject} = emailTemplate ob
   nodemailer.send_mail
     sender: 'dev@opinsys.fi',
