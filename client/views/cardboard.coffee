@@ -9,17 +9,15 @@ class views.Cardboard extends Backbone.View
     super
     @$el = $ @el
 
-
-
     $(document).bind "dragenter", (e) =>
-      e.preventDefault()
-      console.log "User is dragging something"
       e.originalEvent.dataTransfer.dropEffect = 'copy'
+      return false
     $(document).bind "dragover", (e) =>
-      e.preventDefault()
       e.originalEvent.dataTransfer.dropEffect = 'copy'
-    $(document).bind "dragleave", (e) => e.preventDefault()
-    $(document).bind "dragend", (e) => e.preventDefault()
+      return false
+
+    # Do everything to prevent user from navigating to the dropped image
+    $(document).bind "dragleave dragend drag dragstart drop", false
 
     @collection.bind "syncload", (collection, count) =>
 
