@@ -34,7 +34,7 @@ class PahviMeta
       if not result.id
         return cb
           code: 404
-          message: "Unkown pahvi id #{ id }"
+          message: "Unkown pahvi id #{ result.id }"
 
       cb null, result
 
