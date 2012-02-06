@@ -17,7 +17,9 @@ class views.Cardboard extends Backbone.View
       return false
 
     # Do everything to prevent user from navigating to the dropped image
-    $(document).bind "dragleave dragend drag dragstart drop", false
+    $(document).bind "dragleave dragend drag dragstart drop", (e, ui) ->
+      if not ui
+        e.preventDefault()
 
     @collection.bind "syncload", (collection, count) =>
 
