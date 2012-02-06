@@ -191,6 +191,7 @@ class views.ImageBox extends views.BaseBox
       console.log "LAD"
       cb()
       @trigger "load"
+      @updateRatio()
 
   updateRatio: (reset, cb=->) ->
     if not @model.get "imgSrc"
@@ -210,7 +211,8 @@ class views.ImageBox extends views.BaseBox
 
       @_prevRatio = round
       @resizableOptions = aspectRatio: ratio
-      if reset
+
+      if reset or @model.get("imgSrc") is "/img/noimage.png"
         @model.set
           width: 200
           height: 200 / ratio
