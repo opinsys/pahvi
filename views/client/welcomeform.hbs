@@ -4,8 +4,8 @@
 
 <h2>Pahvi name</h2>
 
-{{#if nameError}}
-{{nameError}}
+{{#if error.name}}
+<span class="error"> {{error.name}} </span>
 {{/if}}
 
 <input type="text" name="name" placeholder="my presentation" value="{{name}}" />
@@ -13,8 +13,8 @@
 
 <h2>Email</h2>
 
-{{#if emailError}}
-<span class="error"> {{emailError}} </span>
+{{#if error.email}}
+<span class="error"> {{error.email}} </span>
 {{/if}}
 
 <p>

@@ -249,17 +249,21 @@ app.get "/", (req, res) ->
 
 
 app.post "/", (req, res) ->
+  errors = []
 
   if not check(req.body.email).isEmail()
-    return res.json
-      error: "Bad email"
+    errors.push
+      message: "Bad email"
       field: "email"
 
   if not req.body.name
-    return res.json
-      error: "Name is missing"
+    errors.push
+      message: "Name is required"
       field: "name"
 
+  if errors.length isnt 0
+    return res.json
+      error: errors
 
   pahvi = new PahviMeta
     client: client

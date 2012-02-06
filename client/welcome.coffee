@@ -17,10 +17,13 @@ class Welcome extends Backbone.View
 
   _onSubmit: (response) ->
 
+    @data.error = {}
+
     if not response.error
       window.location = response.adminUrl
     else
-      @data[response.field + "Error"] = response.error
+      for error in response.error
+        @data.error[error.field] = error.message
       @render()
 
 
