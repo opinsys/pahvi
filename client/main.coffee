@@ -90,18 +90,18 @@ $ ->
     id: "settings"
 
   if window.AUTH_KEY
-    $("body").removeClass "presentation"
-    $("body").addClass "edit"
+    $("html").removeClass "presentation"
+    $("html").addClass "edit"
 
   settings.bind "change:mode", ->
     settings.set activeBox: null
     if settings.get("mode") is "edit"
-      $("body").removeClass "presentation"
-      $("body").addClass "edit"
+      $("html").removeClass "presentation"
+      $("html").addClass "edit"
 
     if settings.get("mode") is "presentation"
-      $("body").addClass "presentation"
-      $("body").removeClass "edit"
+      $("html").addClass "presentation"
+      $("html").removeClass "edit"
 
   window.boxes = new models.Boxes [],
     collectionId: "boxes"

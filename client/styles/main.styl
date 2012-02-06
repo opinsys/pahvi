@@ -471,7 +471,9 @@ button:hover
 .hallotoolbar
   z-index 2001
 
-body.presentation
+html.presentation
+  cursor url("/img/zoom-out-cursor.png") 15 15, pointer !important
+
   .container
     overflow auto
   .box
@@ -481,8 +483,6 @@ body.presentation
       padding 0 !important
   	.box.selected
   	  cursor auto !important
-  .pasteboard
-    cursor url("/img/zoom-out-cursor.png") 15 15, pointer !important
 
   .box .tools
     display none !important
