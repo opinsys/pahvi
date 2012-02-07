@@ -11,7 +11,7 @@ You can edit it by using this url:
 
 #{ adminUrl }
 
-Share the presentation using this url:
+Share the presentation using this url (read-only):
 
 #{ publicUrl }
 
