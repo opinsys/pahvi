@@ -106,6 +106,9 @@ class models.Settings extends Backbone.Model
   getAdminURL: ->
     "#{ @getPublicURL() }?auth=#{ window.AUTH_KEY }"
 
+  canEdit: ->
+    !! window.AUTH_KEY
+
 
 class BaseBoxModel extends Backbone.Model
 
