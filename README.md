@@ -1,9 +1,10 @@
 
 # Pahvi - Virtual collages for class rooms
 
-## Blog posts
+Read more from our blogs:
 
 In Finnish: http://www.opinsys.fi/?p=1685
+
 In English: http://www.opinsys.fi/en/?p=1650
 
 ## Contact
