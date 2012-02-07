@@ -99,6 +99,13 @@ class models.Settings extends Backbone.Model
     mode: "edit"
     hover: null
 
+  getPublicURL: ->
+    uri = parseUri window.location.href
+    "#{ uri.protocol }://#{ uri.authority }#{ uri.path }"
+
+  getAdminURL: ->
+    "#{ @getPublicURL() }?auth=#{ window.AUTH_KEY }"
+
 
 class BaseBoxModel extends Backbone.Model
 

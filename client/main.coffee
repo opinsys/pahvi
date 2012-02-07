@@ -54,13 +54,9 @@ class Workspace extends Backbone.Router
 
     return if @shown
 
-    uri = parseUri window.location.href
-    publicUrl = "#{ uri.protocol }://#{ uri.authority }#{ uri.path }"
-    adminUrl = "#{ publicUrl }?auth=#{ window.AUTH_KEY }"
-
     views.showMessage helpers.template "startinfo"
-      publicUrl: publicUrl
-      adminUrl: adminUrl
+      publicUrl: @settings.getPublicURL()
+      adminUrl:  @settings.getAdminURL()
     , true
 
     @shown = true
