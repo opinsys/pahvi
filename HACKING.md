@@ -1,6 +1,5 @@
-# Pahvi - Making presentations together
+# Hacking pahvi
 
-Still hacking. Come back later :)
 
 ## Directories
 
