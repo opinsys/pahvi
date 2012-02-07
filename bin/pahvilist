@@ -19,7 +19,7 @@ print = printAll = (ob) ->
 if process.argv[2] is "emails"
   print = printMails
 
-client.keys "pahvi-*", (err, keys) ->
+client.keys "pahvi:meta:*", (err, keys) ->
   throw err if err
   async.forEachSeries keys, (k, cb) ->
     client.hgetall k, (err, ob) ->

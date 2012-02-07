@@ -7,10 +7,10 @@ class PahviMeta
 
   constructor: ({@client, @id}) ->
 
-  getRedisId:  -> "pahvi-#{ @id }"
+  getRedisId:  -> "pahvi:meta:#{ @id }"
 
   create: (options, cb) ->
-    @client.incr "pahvi_sequence", (err, uniqueNumber) =>
+    @client.incr "pahvi:sequence", (err, uniqueNumber) =>
       return cb err if err
 
       @id = urlshortener.encode uniqueNumber
