@@ -143,6 +143,11 @@ $ ->
 
   sidemenu.render()
 
+  linkbox = new views.LinkBox
+    el: ".readOnlyLink"
+    settings: settings
+  linkbox.render()
+
 
   sharejs.open pahviId, "json", (err, doc) =>
     throw err if err

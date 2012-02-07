@@ -198,6 +198,7 @@ app.configure ->
   js.addFile rootDir + "/client/models.coffee"
 
   js.addFile rootDir + "/client/views/upload.coffee"
+  js.addFile rootDir + "/client/views/readonlylink.coffee"
   js.addFile rootDir + "/client/views/box.coffee"
   js.addFile rootDir + "/client/views/layers.coffee"
   js.addFile rootDir + "/client/views/sidemenu.coffee"
