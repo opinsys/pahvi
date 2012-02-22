@@ -63,6 +63,9 @@ js = piler.createJSManager()
 
 
 
+prettyOfAgent = (agent) ->
+  "ip: #{ agent.remoteAddress }, id: #{ agent.id }"
+
 
 css.bind app
 js.bind app
@@ -72,10 +75,8 @@ sharejs.attach app,
   auth: (agent, action) ->
 
     if agent.editor
-      console.log "Agent is editor. (cache)"
       action.accept()
       return
-
 
     if action.type isnt "update"
       action.accept()
@@ -85,17 +86,15 @@ sharejs.attach app,
     # parse the cookie header and fetch the session from Redis
     cookies = webutils.parseCookie agent.headers.cookie
 
-    console.log "ShareJS: cookies", cookies
-
     sessionStore.get cookies["connect.sid"], (err, data) ->
       throw err if err
-      console.log "ShareJS: Reading session:",  data
       if data.pahviAuth is "ok"
         action.accept()
+        console.log "Auth ok for", prettyOfAgent agent
         # Cache accept
         agent.editor = true
       else
-        console.log "Unauthorized edit attempt"
+        console.log "Unauthorized edit attempt from", prettyOfAgent agent
         action.reject()
 
 
@@ -234,7 +233,7 @@ app.post "/upload", (req, res) ->
 
   resize req.files.imagedata.path, destination, 1200, (err) ->
     if err
-      console.log "ERROR", err
+      console.log "ERROR resize", err
       res.json error: "resize error"
     else
       res.json url: "/userimages/#{ fileName }"
@@ -293,7 +292,6 @@ sendMail = (ob, cb=->) ->
     subject: subject
     body: body
   , (err, success) ->
-    console.log "MAIL", err, success
     cb err, success
 
 
@@ -324,8 +322,6 @@ app.get "/p/:id", (req, res, next) ->
 
 
   pahvi.authenticate req.query?.auth, (err, authOk) ->
-
-    console.log "Setting auth session: #{ authOk }"
 
     if authOk
       req.session.pahviAuth = "ok"
