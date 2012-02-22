@@ -63,8 +63,8 @@ js = piler.createJSManager()
 
 
 
-prettyOfAgent = (agent) ->
-  "ip: #{ agent.remoteAddress }, id: #{ agent.id }"
+prettifyAgent = (agent) ->
+  "{ ip: #{ agent.remoteAddress }, id: #{ agent.id }: referer: #{ agent.headers?.referer } }"
 
 
 css.bind app
@@ -87,14 +87,19 @@ sharejs.attach app,
     cookies = webutils.parseCookie agent.headers.cookie
 
     sessionStore.get cookies["connect.sid"], (err, data) ->
-      throw err if err
+
+      if err
+        action.reject()
+        console.log "ERROR: Could not read cookies from redis for #{ prettifyAgent agent }", err
+        return
+
       if data.pahviAuth is "ok"
         action.accept()
-        console.log "Auth ok for", prettyOfAgent agent
+        console.log "Auth ok for", prettifyAgent agent
         # Cache accept
         agent.editor = true
       else
-        console.log "Unauthorized edit attempt from", prettyOfAgent agent
+        console.log "Unauthorized edit attempt from", prettifyAgent agent
         action.reject()
 
 
@@ -187,6 +192,8 @@ app.configure ->
   css.addFile rootDir + "/client/vendor/noty/css/jquery.noty.css"
 
   js.addUrl "/socket.io/socket.io.js"
+
+  # js.addUrl "/channel/bcsocket.js"
   js.addUrl "/share/share.uncompressed.js"
   js.addUrl "/share/json.uncompressed.js"
 
