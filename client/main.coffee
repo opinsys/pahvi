@@ -164,6 +164,14 @@ $ ->
       console.log msg, err
       return
 
+    # TODO: remove
+    if not doc.connection
+      helpers.showWarning "Notice for Pahvi devs: Running on bad ShareJS version. Check the docs."
+    else
+      doc.connection.on "disconnect", ->
+        helpers.showFatalError "Server disconnected. Please reload page."
+
+
     boxes.fetch
       sharejsDoc: doc
       success: ->
