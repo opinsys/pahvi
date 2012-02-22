@@ -47,7 +47,7 @@ helpers.loadImage = (url, cb=->) ->
 
 helpers.showFatalError = (msg) ->
   noty
-    text: msg
+    text: msg + "<p><small>Please contact us at <a href=\"mailto:dev@opinsys.fi\">dev@opinsys.fi</a> if this issue persists.</small></p>"
     layout: "center"
     type: "error"
     textAlign: "center"
