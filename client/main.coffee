@@ -156,7 +156,11 @@ $ ->
 
 
   sharejs.open pahviId, "json", (err, doc) =>
-    throw err if err
+
+    if err
+      helpers.showFatalError msg = "Failed to connect synchronization server: #{ err.message }"
+      console.log msg, err
+      return
 
     boxes.fetch
       sharejsDoc: doc
