@@ -52,14 +52,27 @@ helpers.showFatalError = (msg) ->
     type: "error"
     textAlign: "center"
     easing:"swing"
-    animateOpen: {"height":"toggle"}
-    animateClose: {"height":"toggle"}
+    animateOpen: {height:"toggle"}
+    animateClose: {height:"toggle"}
     speed: "50"
     closable: false
     closeOnSelfClick: false
     modal: true
     timeout: false
 
+helpers.showWarning = (msg) ->
+  noty
+    text: msg
+    layout:"top"
+    type:"error"
+    textAlign:"center"
+    easing:"swing"
+    animateOpen:{height:"toggle"}
+    animateClose:{height:"toggle"}
+    speed:"500"
+    timeout:false
+    closable:true
+    closeOnSelfClick:true
 
 S4 = -> (((1 + Math.random()) * 65536) | 0).toString(16).substring(1)
 helpers.generateGUID = ->
