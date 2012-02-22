@@ -44,6 +44,23 @@ helpers.loadImage = (url, cb=->) ->
     cb null, img
   img.src = url
 
+
+helpers.showFatalError = (msg) ->
+  noty
+    text: msg
+    layout: "center"
+    type: "error"
+    textAlign: "center"
+    easing:"swing"
+    animateOpen: {"height":"toggle"}
+    animateClose: {"height":"toggle"}
+    speed: "50"
+    closable: false
+    closeOnSelfClick: false
+    modal: true
+    timeout: false
+
+
 S4 = -> (((1 + Math.random()) * 65536) | 0).toString(16).substring(1)
 helpers.generateGUID = ->
   S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4()

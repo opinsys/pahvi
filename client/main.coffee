@@ -149,6 +149,12 @@ $ ->
   linkbox.render()
 
 
+
+  boxes.bind "syncerror", (model, method, err) ->
+    if err is "forbidden"
+      return helpers.showFatalError "Your authentication key is wrong. Please recheck the URL bar and reload this page."
+
+
   sharejs.open pahviId, "json", (err, doc) =>
     throw err if err
 
@@ -156,8 +162,6 @@ $ ->
       sharejsDoc: doc
       success: ->
         settings.set activeBox: null
-
-
 
       error: ->
         alert "Failed to connect"
