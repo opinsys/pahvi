@@ -183,9 +183,6 @@ app.configure ->
   js.addFile rootDir + "/client/vendor/zoomooz/jquery.animtrans.js"
   js.addFile rootDir + "/client/vendor/zoomooz/jquery.zoomooz.js"
 
-  js.addFile rootDir + "/client/vendor/hallo/hallo.coffee"
-  js.addFile rootDir + "/client/vendor/hallo/format.coffee"
-  js.addFile rootDir + "/client/vendor/hallo/link.coffee"
   js.addUrl "/socket.io/socket.io.js"
   js.addUrl "/share/share.uncompressed.js"
   js.addUrl "/share/json.uncompressed.js"
