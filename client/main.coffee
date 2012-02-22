@@ -152,7 +152,9 @@ $ ->
 
   boxes.bind "syncerror", (model, method, err) ->
     if err is "forbidden"
-      return helpers.showFatalError "Your authentication key is wrong. Please recheck the URL bar and reload this page."
+      return helpers.showFatalError "Your authentication key is bad. Please check the URL bar and reload this page."
+
+    helpers.showFatalError "Data synchronization error: '#{ err }'."
 
 
   sharejs.open pahviId, "json", (err, doc) =>
