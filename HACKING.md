@@ -62,8 +62,13 @@ Build
 
 ## Installing Webapp dependencies
 
-    npm install
+Image operations via gm module requires graphicsmagick
+
     sudo apt-get install graphicsmagick
+
+All Node.JS modules are vendored in the Git repo. Just run rebuild.
+
+    npm rebuild
 
 ## Configuring
 
