@@ -280,7 +280,7 @@ app.post "/", (req, res) ->
 
     # TODO: This can fail in so many ways...
     result.publicUrl = "http://#{ req.headers.host }/p/#{ result.id }"
-    result.adminUrl = result.publicUrl + "?auth=#{ result.authKey }"
+    result.adminUrl = "http://#{ req.headers.host }/e/#{ result.id }/#{ result.authKey }"
 
     res.json result
     sendMail result
@@ -303,11 +303,21 @@ sendMail = (ob, cb=->) ->
 
 
 
-app.get "/p/:id", (req, res, next) ->
-  parts = req.path.split "/"
-  if parts.length isnt 3
-    return next()
 
+app.get "/p/:id", (req, res, next) ->
+
+  # XXX: Legacy auth url
+  if req.query?.auth
+    return res.redirect "/e/#{ req.params.id }/#{ req.query.auth }"
+
+  req.session.pahviAuth = ""
+
+  res.render "index",
+    authKey: ""
+    config: config
+    data: {}
+
+app.get "/e/:id/:token", (req, res, next) ->
   id = req.params.id
 
   pahvi = new PahviMeta
@@ -319,16 +329,12 @@ app.get "/p/:id", (req, res, next) ->
       if err?.code is 404
         return res.redirect "/"
       res.render "index",
-        authKey: req.query?.auth
+        authKey: req.params.token
         config: config
         data: result
 
-  if not req.query.auth
-    req.session.pahviAuth = ""
-    return response()
-
-
-  pahvi.authenticate req.query?.auth, (err, authOk) ->
+  console.log "Authkey", req.params.token
+  pahvi.authenticate req.params.token, (err, authOk) ->
 
     if authOk
       req.session.pahviAuth = "ok"

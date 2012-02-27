@@ -82,8 +82,13 @@ class Workspace extends Backbone.Router
 
 $ ->
 
+
   window.settings = new models.Settings
     id: "settings"
+
+  if not settings.pahviId
+    alert "bad url"
+    return
 
   if window.AUTH_KEY
     $("html").removeClass "presentation"
@@ -130,10 +135,6 @@ $ ->
     if not window.AUTH_KEY
       settings.set mode: "presentation"
 
-  pahviId = window.location.pathname.split("/")[2]
-  if not pahviId
-    alert "bad url"
-    return
 
 
   sidemenu = new views.SideMenu
@@ -157,7 +158,7 @@ $ ->
     helpers.showFatalError "Data synchronization error: '#{ err }'."
 
 
-  sharejs.open pahviId, "json", (err, doc) =>
+  sharejs.open settings.pahviId, "json", (err, doc) =>
 
     if err
       helpers.showFatalError msg = "Failed to connect synchronization server: #{ err.message }"

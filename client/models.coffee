@@ -99,12 +99,19 @@ class models.Settings extends Backbone.Model
     mode: "edit"
     hover: null
 
+  constructor: ->
+    @pahviId = window.location.pathname.split("/")[2]
+    @_uri = parseUri window.location.href
+    super
+
   getPublicURL: ->
-    uri = parseUri window.location.href
-    "#{ uri.protocol }://#{ uri.authority }#{ uri.path }"
+    "#{ @_uri.protocol }://#{ @_uri.authority }/p/#{ @pahviId }"
 
   getAdminURL: ->
-    "#{ @getPublicURL() }?auth=#{ window.AUTH_KEY }"
+    "#{ @_uri.protocol }://#{ @_uri.authority }/e/#{ @pahviId }/#{ window.AUTH_KEY }"
+
+  getAuthKey: ->
+    window.AUTH_KEY
 
   canEdit: ->
     !! window.AUTH_KEY
