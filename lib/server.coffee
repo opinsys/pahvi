@@ -258,7 +258,7 @@ app.get "/", (req, res) ->
 app.post "/", (req, res) ->
   errors = []
 
-  if not check(req.body.email).isEmail()
+  if req.body.email and not check(req.body.email).isEmail()
     errors.push
       message: "Bad email"
       field: "email"
@@ -283,7 +283,9 @@ app.post "/", (req, res) ->
     result.adminUrl = "http://#{ req.headers.host }/e/#{ result.id }/#{ result.authKey }"
 
     res.json result
-    sendMail result
+
+    if result.email
+      sendMail result
 
 
 sendMail = (ob, cb=->) ->

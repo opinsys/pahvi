@@ -28,9 +28,10 @@ class PahviMeta
         id: @id
         created: Date.now()
         name: options.name
-        email: options.email
         contact: options.contact is "ok"
         authKey: generateSimpleKey()
+
+      ob.email or= options.email
 
       @client.hmset @getRedisId(), ob, (err) ->
         return cb err if err
