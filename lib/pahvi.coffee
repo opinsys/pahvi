@@ -1,7 +1,16 @@
 
 urlshortener = require "./urlshortener"
 
-S4 = -> (((1 + Math.random()) * 65536) | 0).toString(16).substring(1)
+
+# List of non-confusing characters. No "il1o0O".
+chars = "abcdefghjkmnopqrstuvwxyz".split("")
+
+randomInt = (min, max) ->
+  Math.floor(Math.random() * (max - min + 1)) + min
+
+generateSimpleKey = (size=5) ->
+  (chars[randomInt 0, chars.length-1] for i in [1..size]).join ""
+
 
 class PahviMeta
 
@@ -21,7 +30,7 @@ class PahviMeta
         name: options.name
         email: options.email
         contact: options.contact is "ok"
-        authKey: "#{ S4() }-#{ S4() }-#{ S4() }"
+        authKey: generateSimpleKey()
 
       @client.hmset @getRedisId(), ob, (err) ->
         return cb err if err
