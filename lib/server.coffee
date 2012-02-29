@@ -234,7 +234,7 @@ app.post "/upload", (req, res) ->
     res.json error: "Unkown file type"
     return
 
-  fileId = "/tmp/01caf875dfbd0860ae3d9e6297d86182".split("/").reverse()[0]
+  fileId = req.files.imagedata.path.split("/").reverse()[0]
   fileName = "#{ fileId }.#{ Date.now() }.#{ ext }"
   destination = rootDir + "public/userimages/#{ fileName }"
 
