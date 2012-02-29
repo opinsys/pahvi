@@ -216,8 +216,11 @@ app.configure ->
 
   js.addFile "pahvi", rootDir + "/client/main.coffee"
 
+  js.addFile "remote", rootDir + "/client/remote.coffee"
+
   css.addFile rootDir + "/client/styles/reset.styl"
   css.addFile "pahvi", rootDir + "/client/styles/main.styl"
+  css.addFile "remote", rootDir + "/client/styles/remote.styl"
 
   css.addFile "welcome", rootDir + "/client/styles/welcome.styl"
   js.addFile "welcome", rootDir + "/client/welcome.coffee"
@@ -320,7 +323,9 @@ app.get "/p/:id", (req, res, next) ->
     config: config
     data: {}
 
-app.get "/e/:id/:token", (req, res, next) ->
+
+
+authRender = (template, layout="layout") -> (req, res, next) ->
   id = req.params.id
 
   pahvi = new PahviMeta
@@ -331,10 +336,11 @@ app.get "/e/:id/:token", (req, res, next) ->
     pahvi.get (err, result) ->
       if err?.code is 404
         return res.redirect "/"
-      res.render "index",
+      res.render template,
         authKey: req.params.token
         config: config
         data: result
+        layout: layout
 
   console.log "Authkey", req.params.token
   pahvi.authenticate req.params.token, (err, authOk) ->
@@ -345,6 +351,9 @@ app.get "/e/:id/:token", (req, res, next) ->
       req.session.pahviAuth = ""
 
     response()
+
+app.get "/e/:id/:token", authRender "index"
+app.get "/r/:id/:token", authRender "remote", false
 
 
 
