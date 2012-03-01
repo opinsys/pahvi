@@ -110,6 +110,9 @@ class models.Settings extends Backbone.Model
   getAdminURL: ->
     "#{ @_uri.protocol }://#{ @_uri.authority }/e/#{ @pahviId }/#{ window.AUTH_KEY }"
 
+  getRemoteURL: ->
+    "#{ @_uri.protocol }://#{ @_uri.authority }/r/#{ @pahviId }/#{ window.AUTH_KEY }"
+
   getAuthKey: ->
     window.AUTH_KEY
 
