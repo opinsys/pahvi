@@ -29,9 +29,9 @@ Pahvi.init (err, settings, boxes, boardProperties) ->
 
 
 
-  router = new Pahvi.Router
-    settings: settings
-    collection: boxes
+  # router = new Pahvi.Router
+  #   settings: settings
+  #   collection: boxes
 
   if window.AUTH_KEY
     menu = new views.Menu
@@ -74,7 +74,10 @@ Pahvi.init (err, settings, boxes, boardProperties) ->
   board.bind "viewsloaded", _.once ->
     console.log "Views loaded"
     # TODO: Why on earth this is called twice??
-    Backbone.history?.start()
+
+    # Disable router temporarily
+    # Backbone.history?.start()
+
     if not window.AUTH_KEY
       settings.set mode: "presentation"
 
