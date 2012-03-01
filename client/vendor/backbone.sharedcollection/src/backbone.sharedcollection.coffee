@@ -102,13 +102,15 @@ class Backbone.SharedCollection extends Backbone.Collection
     if @_syncDoc.type.name isnt "json"
       throw new Error "The ShareJS document type must be 'json', not '#{ @_syncDoc.type.name }'"
 
-
-    if @_syncDoc.created
-      @_initSyncDoc callbackWrapper
-    else
-      @_loadModelsFromSyncDoc callbackWrapper
-
     @_bindSendOperations()
+
+    # TODO: Clean up before this is the pyramid of doom
+    @_initSyncDoc (err) =>
+      return callbackWrapper err if err
+      @_initCollection (err) =>
+        return callbackWrapper err if err
+        @_loadModelsFromSyncDoc callbackWrapper
+
 
 
 
@@ -124,16 +126,30 @@ class Backbone.SharedCollection extends Backbone.Collection
 
   _flushAddingQueue: ->
     while model = @_addingQueue.shift()
-      console.log "removing #{ model.get "name" } from queue"
       @add model
 
   _initSyncDoc: (cb) ->
-    log "Creating new sync doc with #{ @collectionId }"
-    ob = {}
-    ob[@collectionId] = {}
+
+    if not @_syncDoc.created
+      return cb()
+
+    if @_syncDoc.snapshot
+      return cb()
+
+    log "Creating new sync doc"
     @_syncDoc.submitOp [
       p: []
-      oi: ob
+      oi: {}
+    ], cb
+
+  _initCollection: (cb) ->
+    if @_syncDoc.snapshot[@collectionId]
+      return cb()
+
+    log "Adding new collection to syncdoc: #{ @collectionId }"
+    @_syncDoc.submitOp [
+      p: [@collectionId]
+      oi: {}
     ], cb
 
   _loadModelsFromSyncDoc: (cb=->) ->
@@ -185,8 +201,9 @@ class Backbone.SharedCollection extends Backbone.Collection
       model.set id: SharedCollection.generateGUID()
 
     # Just ignore readds
-    if @_syncDoc.snapshot[this.collectionId][model.id]
+    if @_syncDoc.snapshot[this.collectionId]?[model.id]
       return
+
 
     log "SEND ADD #{ model.id }: #{ JSON.stringify model.toJSON() }"
 
@@ -294,7 +311,6 @@ class Backbone.SharedCollection extends Backbone.Collection
 
     if not @fetched
       while model = models.shift()
-        console.log "Adding #{ model.get "name" } to queue"
         @_addingQueue.push model
       return this
 
