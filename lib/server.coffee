@@ -222,6 +222,7 @@ app.configure ->
   js.addFile "remote", rootDir + "/client/remote.coffee"
 
   css.addFile rootDir + "/client/styles/reset.styl"
+  css.addFile rootDir + "/client/styles/generic.styl"
   css.addFile "pahvi", rootDir + "/client/styles/main.styl"
   css.addFile "remote", rootDir + "/client/styles/remote.styl"
 
