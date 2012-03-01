@@ -48,12 +48,12 @@ class views.BaseBox extends Backbone.View
       if @settings.get("mode") is "presentation"
         @$el.zoomTo()
 
+
     @settings.bind "change:hoveredBox", =>
       if @settings.get("hoveredBox") is @model.id
         @$el.addClass "hovering"
       else
         @$el.removeClass "hovering"
-
 
 
 
@@ -192,6 +192,8 @@ class views.ImageBox extends views.BaseBox
       cb()
       @trigger "load"
       @updateRatio()
+
+
 
   updateRatio: (reset, cb=->) ->
     if not @model.get "imgSrc"

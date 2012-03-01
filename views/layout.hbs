@@ -5,6 +5,12 @@
 
   {{{googleAnalytics}}}
 
+  {{#if authKey}}
+  <script type="text/javascript" charset="utf-8">
+    window.AUTH_KEY = "{{authKey}}";
+  </script>
+  {{/if}}
+
   {{{renderStyleTags "pahvi"}}}
   {{{renderScriptTags "pahvi"}}}
 
