@@ -245,10 +245,10 @@ app.post "/upload", (req, res) ->
 
   timestamp = Date.now()
 
-  fileName = "#{ fileId }.#{ timestamp }.#{ ext }"
+  fileName = "box-image-#{ fileId }.#{ timestamp }.#{ ext }"
   destination = rootDir + "public/userimages/#{ fileName }"
 
-  fileNameThumb = "#{ fileId }.#{ timestamp }.thumb.#{ ext }"
+  fileNameThumb = "box-image-#{ fileId }.#{ timestamp }.thumb.jpg"
   destinationThumb = rootDir + "public/userimages/#{ fileNameThumb }"
 
   async.parallel [
