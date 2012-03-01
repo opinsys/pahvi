@@ -2,12 +2,10 @@
 
 Pahvi = NS "Pahvi"
 views = NS "Pahvi.views"
-models = NS "Pahvi.models"
 helpers = NS "Pahvi.helpers"
 
 
-
-Pahvi.init (err, settings, boxes, boardSettings) ->
+Pahvi.init (err, settings, boxes, boardProperties) ->
 
   if not settings.pahviId
     alert "bad url"
@@ -65,6 +63,7 @@ Pahvi.init (err, settings, boxes, boardSettings) ->
     el: ".pahvi"
     settings: settings
     collection: boxes
+    boardProperties: boardProperties
 
   console.log "Loading views"
   board.bind "viewsloaded", _.once ->

@@ -5,7 +5,7 @@ helpers = NS "Pahvi.helpers"
 
 class views.Cardboard extends Backbone.View
 
-  constructor: ({@settings}) ->
+  constructor: ({@settings, @boardProperties}) ->
     super
     @$el = $ @el
 
@@ -21,6 +21,11 @@ class views.Cardboard extends Backbone.View
       # Do everything to prevent user from navigating to the dropped image
       if not ui
         e.preventDefault()
+
+    @boardProperties.bind "change:remoteSelect", =>
+      if @settings.get("mode") is "presentation"
+        if id = @boardProperties.get "remoteSelect"
+          @settings.set activeBox: id
 
 
     async.forEach @collection.toArray(), (boxModel, cb) =>
