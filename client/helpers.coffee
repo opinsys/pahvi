@@ -33,6 +33,17 @@ helpers.template = (templateId, ob={}) ->
 Backbone.View::renderTemplate = helpers.template
 
 
+
+# Mobile detection
+# Touch devices and devices with screens < 960 are mobile
+# Borrowed from detectmobile.js
+helpers.isMobile = do ->
+  return true if "ontouchstart" of window
+  length = Math.max window.screen.availWidth, window.screen.availHeight
+  length <= 970
+
+
+
 helpers.zoomOut = ->
   $("body").zoomTo
     targetSize: 1.0
