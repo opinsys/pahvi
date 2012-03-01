@@ -26,6 +26,10 @@ class views.Cardboard extends Backbone.View
       if @settings.get("mode") is "presentation"
         if id = @boardProperties.get "remoteSelect"
           @settings.set activeBox: id
+        else
+          @settings.set activeBox: null
+          helpers.zoomOut()
+
 
 
     async.forEach @collection.toArray(), (boxModel, cb) =>

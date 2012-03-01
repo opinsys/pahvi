@@ -1,12 +1,19 @@
 
+@import 'nib'
+@import 'pahvicolors'
+
+body
+  background-color pahvicream
 
 h1
   font-size 3em
 
 .remoteItem
-  background-color #DDD
+  cursor pointer
+  background-color pahvilightbrown
   margin 1px
   padding 1em
-
+  &.selected
+    background-color darken(pahvilightbrown, 20%)
 
 

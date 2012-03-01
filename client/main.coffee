@@ -27,6 +27,8 @@ Pahvi.init (err, settings, boxes, boardProperties) ->
 
 
 
+
+
   router = new Pahvi.Router
     settings: settings
     collection: boxes
@@ -52,11 +54,14 @@ Pahvi.init (err, settings, boxes, boardProperties) ->
     settings: settings
   linkbox.render()
 
+
   boxes.bind "syncerror", (model, method, err) ->
     if err is "forbidden"
       return helpers.showFatalError "Your authentication key is bad. Please check the URL bar and reload this page."
-
     helpers.showFatalError "Data synchronization error: '#{ err }'."
+
+  boxes.bind "disconnect", ->
+    helpers.showFatalError "Server disconnected. Please reload page."
 
 
   board = new views.Cardboard
