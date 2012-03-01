@@ -58,7 +58,6 @@ class views.BaseBox extends Backbone.View
 
 
 
-
   events:
     "click button.up": "up"
     "click button.down": "down"
@@ -193,6 +192,8 @@ class views.ImageBox extends views.BaseBox
       cb()
       @trigger "load"
       @updateRatio()
+
+
 
   updateRatio: (reset, cb=->) ->
     if not @model.get "imgSrc"
