@@ -7,7 +7,8 @@ hbs = require "hbs"
 piler = require "piler"
 sharejs = require("share").server
 nodemailer = require "nodemailer"
-_  = require 'underscore'
+_  = require "underscore"
+async = require "async"
 
 {Validator} = require('validator')
 
@@ -203,20 +204,27 @@ app.configure ->
   js.addFile rootDir + "/client/vendor/backbone.sharedcollection/src/backbone.sharedcollection.coffee"
   js.addFile rootDir + "/client/models.coffee"
 
-  js.addFile rootDir + "/client/views/upload.coffee"
-  js.addFile rootDir + "/client/views/readonlylink.coffee"
-  js.addFile rootDir + "/client/views/box.coffee"
-  js.addFile rootDir + "/client/views/layers.coffee"
-  js.addFile rootDir + "/client/views/sidemenu.coffee"
-  js.addFile rootDir + "/client/views/topmenu.coffee"
-  js.addFile rootDir + "/client/views/lightbox.coffee"
-  js.addFile rootDir + "/client/views/boxproperties.coffee"
-  js.addFile rootDir + "/client/views/cardboard.coffee"
+  js.addFile  rootDir + "/client/views/upload.coffee"
+  js.addFile  rootDir + "/client/views/readonlylink.coffee"
+  js.addFile  rootDir + "/client/views/box.coffee"
+  js.addFile  rootDir + "/client/views/layers.coffee"
+  js.addFile  rootDir + "/client/views/sidemenu.coffee"
+  js.addFile  rootDir + "/client/views/topmenu.coffee"
+  js.addFile  rootDir + "/client/views/lightbox.coffee"
+  js.addFile  rootDir + "/client/views/boxproperties.coffee"
+  js.addFile  rootDir + "/client/views/cardboard.coffee"
+  js.addFile  rootDir + "/client/typemap.coffee"
+  js.addFile  rootDir + "/client/connection.coffee"
+  js.addFile  rootDir + "/client/router.coffee"
 
   js.addFile "pahvi", rootDir + "/client/main.coffee"
 
+  js.addFile "remote", rootDir + "/client/remote.coffee"
+
   css.addFile rootDir + "/client/styles/reset.styl"
+  css.addFile rootDir + "/client/styles/generic.styl"
   css.addFile "pahvi", rootDir + "/client/styles/main.styl"
+  css.addFile "remote", rootDir + "/client/styles/remote.styl"
 
   css.addFile "welcome", rootDir + "/client/styles/welcome.styl"
   js.addFile "welcome", rootDir + "/client/welcome.coffee"
@@ -234,11 +242,20 @@ app.post "/upload", (req, res) ->
     res.json error: "Unkown file type"
     return
 
-  fileId = "/tmp/01caf875dfbd0860ae3d9e6297d86182".split("/").reverse()[0]
-  fileName = "#{ fileId }.#{ Date.now() }.#{ ext }"
+  fileId = req.files.imagedata.path.split("/").reverse()[0]
+
+  timestamp = Date.now()
+
+  fileName = "box-image-#{ fileId }.#{ timestamp }.#{ ext }"
   destination = rootDir + "public/userimages/#{ fileName }"
 
-  resize req.files.imagedata.path, destination, 1200, (err) ->
+  fileNameThumb = "box-image-#{ fileId }.#{ timestamp }.thumb.jpg"
+  destinationThumb = rootDir + "public/userimages/#{ fileNameThumb }"
+
+  async.parallel [
+    (cb) -> resize req.files.imagedata.path, destination, 1200, cb
+    (cb) -> resize req.files.imagedata.path, destinationThumb, 200, cb
+  ], (err) ->
     if err
       console.log "ERROR resize", err
       res.json error: "resize error"
@@ -281,6 +298,7 @@ app.post "/", (req, res) ->
     # TODO: This can fail in so many ways...
     result.publicUrl = "http://#{ req.headers.host }/p/#{ result.id }"
     result.adminUrl = "http://#{ req.headers.host }/e/#{ result.id }/#{ result.authKey }"
+    result.remoteUrl = "http://#{ req.headers.host }/r/#{ result.id }/#{ result.authKey }"
 
     res.json result
 
@@ -319,7 +337,9 @@ app.get "/p/:id", (req, res, next) ->
     config: config
     data: {}
 
-app.get "/e/:id/:token", (req, res, next) ->
+
+
+authRender = (template, layout="layout") -> (req, res, next) ->
   id = req.params.id
 
   pahvi = new PahviMeta
@@ -330,10 +350,11 @@ app.get "/e/:id/:token", (req, res, next) ->
     pahvi.get (err, result) ->
       if err?.code is 404
         return res.redirect "/"
-      res.render "index",
+      res.render template,
         authKey: req.params.token
         config: config
         data: result
+        layout: layout
 
   console.log "Authkey", req.params.token
   pahvi.authenticate req.params.token, (err, authOk) ->
@@ -344,6 +365,9 @@ app.get "/e/:id/:token", (req, res, next) ->
       req.session.pahviAuth = ""
 
     response()
+
+app.get "/e/:id/:token", authRender "index"
+app.get "/r/:id/:token", authRender "remote", false
 
 
 
