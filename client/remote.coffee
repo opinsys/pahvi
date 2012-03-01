@@ -7,9 +7,17 @@ class RemoteItem extends Backbone.View
 
   className: "remoteItem"
 
+
   constructor: ->
     super
     @$el = $ @el
+
+  events:
+    "click": "_onTouch"
+
+  _onTouch: ->
+    console.log "Setting remoteSelect to #{ @mode.id }"
+    @model.set remoteSelect: @model.id
 
   render: ->
     @$el.html @renderTemplate "remote_item", @model.toJSON()

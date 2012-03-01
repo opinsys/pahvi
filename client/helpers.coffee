@@ -28,7 +28,6 @@ helpers.template = (templateId, ob={}) ->
     source = $("##{ templateId }Template").html()
     throw new Error "Unkown template #{ templateId }" if not source
     templateFunction = templateCache[templateId] = Handlebars.compile source
-    console.log "CACHING #{ templateId }"
   return templateFunction ob
 
 Backbone.View::renderTemplate = helpers.template

@@ -48,6 +48,7 @@ class views.BaseBox extends Backbone.View
       if @settings.get("mode") is "presentation"
         @$el.zoomTo()
 
+
     @settings.bind "change:hoveredBox", =>
       if @settings.get("hoveredBox") is @model.id
         @$el.addClass "hovering"
