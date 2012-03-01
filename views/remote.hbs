@@ -9,6 +9,12 @@
   <meta name="MobileOptimized" content="320">
   <meta name="viewport" content="width=device-width">
 
+  {{#if authKey}}
+  <script type="text/javascript" charset="utf-8">
+    window.AUTH_KEY = "{{authKey}}";
+  </script>
+  {{/if}}
+
   {{{renderStyleTags "remote"}}}
   {{{renderScriptTags "remote"}}}
 
