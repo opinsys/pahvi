@@ -39,6 +39,8 @@ Pahvi.init = (start) -> $ ->
           message: "Failed to connect to #{ collection.collectionId } collection"
           error: err
     , (err) ->
+        return start err if err
+
         settings.set activeBox: null
 
         if not boardProperties = miscCollection.get "boardProperties"
@@ -47,6 +49,6 @@ Pahvi.init = (start) -> $ ->
           miscCollection.add boardProperties
 
         console.log "All loaded. Starting app"
-        start err, settings, boxes, boardProperties
+        start null, settings, boxes, boardProperties
 
 
