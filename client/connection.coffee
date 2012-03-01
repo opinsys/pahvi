@@ -29,12 +29,6 @@ Pahvi.init = (start) -> $ ->
       console.log msg, err
       return
 
-    # TODO: remove
-    if not doc.connection
-      helpers.showWarning "Notice for Pahvi devs: Running on bad ShareJS version. Check the docs."
-    else
-      doc.connection.on "disconnect", ->
-        helpers.showFatalError "Server disconnected. Please reload page."
 
     async.forEachSeries [miscCollection, boxes], (collection, cb) ->
       console.log "Loading #{ collection.collectionId }"
