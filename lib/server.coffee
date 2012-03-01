@@ -297,6 +297,7 @@ app.post "/", (req, res) ->
     # TODO: This can fail in so many ways...
     result.publicUrl = "http://#{ req.headers.host }/p/#{ result.id }"
     result.adminUrl = "http://#{ req.headers.host }/e/#{ result.id }/#{ result.authKey }"
+    result.remoteUrl = "http://#{ req.headers.host }/r/#{ result.id }/#{ result.authKey }"
 
     res.json result
 
