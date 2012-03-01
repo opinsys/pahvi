@@ -12,6 +12,9 @@ class RemoteItem extends Backbone.View
     @$el = $ @el
 
     @model.bind "destroy", => @remove()
+    @model.bind "change", => @render()
+
+    @$el.addClass @model.type
 
     @boardProperties.bind "change:remoteSelect", =>
       if @model.id is @boardProperties.get "remoteSelect"
@@ -33,9 +36,34 @@ class RemoteItem extends Backbone.View
   render: ->
     @$el.html @renderTemplate "remote_item",
       name: @model.get "name"
+      previewHtml: @model.getPreviewHtml()
 
+
+class Remote extends Backbone.View
+
+  constructor: ({@boardProperties}) ->
+    super
+    @$el = $ @el
+    @collection.bind "add", => @render()
+
+  render: ->
+    @$el.empty()
+    @collection.forEach (model) =>
+      console.log model.id, model.get "name"
+      ri = new RemoteItem
+        model: model
+        boardProperties: @boardProperties
+      ri.render()
+      @$el.append ri.el
 
 Pahvi.init (err, settings, boxes, boardProperties) ->
+
+  remote = new Remote
+    boardProperties: boardProperties
+    collection: boxes
+    el: ".remote"
+
+  remote.render()
 
   boxes.bind "disconnect", ->
     helpers.showFatalError "Server disconnected. Please reload page."
@@ -45,12 +73,5 @@ Pahvi.init (err, settings, boxes, boardProperties) ->
       return helpers.showFatalError "Your authentication key is bad. Please check the URL bar and reload this page."
     helpers.showFatalError "Data synchronization error: '#{ err }'."
 
-  boxes.forEach (model) ->
-    console.log model.id, model.get "name"
-    ri = new RemoteItem
-      model: model
-      boardProperties: boardProperties
-    ri.render()
-    $("body").append ri.el
 
 
