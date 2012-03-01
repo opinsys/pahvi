@@ -1,5 +1,6 @@
 
 
+Pahvi = NS "Pahvi"
 views = NS "Pahvi.views"
 models = NS "Pahvi.models"
 helpers = NS "Pahvi.helpers"
