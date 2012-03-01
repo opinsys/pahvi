@@ -22,13 +22,12 @@ class views.Cardboard extends Backbone.View
       if not ui
         e.preventDefault()
 
-    @collection.bind "syncload", (collection, count) =>
 
-      async.forEach @collection.toArray(), (boxModel, cb) =>
-        @_createView boxModel, cb
-      , =>
-        @trigger "viewsloaded"
-        @collection.bind "add", (boxModel) => @_createView boxModel
+    async.forEach @collection.toArray(), (boxModel, cb) =>
+      @_createView boxModel, cb
+    , =>
+      @trigger "viewsloaded"
+      @collection.bind "add", (boxModel) => @_createView boxModel
 
 
   _createView: (boxModel, cb=->) ->

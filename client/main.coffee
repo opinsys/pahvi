@@ -66,11 +66,7 @@ class Workspace extends Backbone.Router
       helpers.zoomOut()
 
 
-$ ->
-
-
-  window.settings = new models.Settings
-    id: "settings"
+Pahvi.init (err, settings, boxes, boardSettings) ->
 
   if not settings.pahviId
     alert "bad url"
@@ -90,10 +86,6 @@ $ ->
       $("html").addClass "presentation"
       $("html").removeClass "edit"
 
-  window.boxes = new models.Boxes [],
-    collectionId: "boxes"
-    typeMapping: Pahvi.typeMapping
-    modelClasses: (Model for __, Model of models when Model::?.type)
 
 
   router = new Workspace
@@ -106,20 +98,6 @@ $ ->
       settings: settings
 
     menu.render()
-
-
-  board = new views.Cardboard
-    el: ".pahvi"
-    settings: settings
-    collection: boxes
-
-  board.render()
-
-  board.bind "viewsloaded", _.once ->
-    # TODO: Why on earth this is called twice??
-    Backbone.history?.start()
-    if not window.AUTH_KEY
-      settings.set mode: "presentation"
 
 
 
@@ -135,8 +113,6 @@ $ ->
     settings: settings
   linkbox.render()
 
-
-
   boxes.bind "syncerror", (model, method, err) ->
     if err is "forbidden"
       return helpers.showFatalError "Your authentication key is bad. Please check the URL bar and reload this page."
@@ -144,27 +120,17 @@ $ ->
     helpers.showFatalError "Data synchronization error: '#{ err }'."
 
 
-  sharejs.open settings.pahviId, "json", (err, doc) =>
+  board = new views.Cardboard
+    el: ".pahvi"
+    settings: settings
+    collection: boxes
 
-    if err
-      helpers.showFatalError msg = "Failed to connect synchronization server: #{ err.message }"
-      console.log msg, err
-      return
+  console.log "Loading views"
+  board.bind "viewsloaded", _.once ->
+    console.log "Views loaded"
+    # TODO: Why on earth this is called twice??
+    Backbone.history?.start()
+    if not window.AUTH_KEY
+      settings.set mode: "presentation"
 
-    # TODO: remove
-    if not doc.connection
-      helpers.showWarning "Notice for Pahvi devs: Running on bad ShareJS version. Check the docs."
-    else
-      doc.connection.on "disconnect", ->
-        helpers.showFatalError "Server disconnected. Please reload page."
-
-
-    boxes.fetch
-      sharejsDoc: doc
-      success: ->
-        settings.set activeBox: null
-
-      error: ->
-        alert "Failed to connect"
-
-
+  board.render()

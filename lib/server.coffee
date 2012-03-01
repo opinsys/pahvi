@@ -213,6 +213,7 @@ app.configure ->
   js.addFile  rootDir + "/client/views/boxproperties.coffee"
   js.addFile  rootDir + "/client/views/cardboard.coffee"
   js.addFile  rootDir + "/client/typemap.coffee"
+  js.addFile  rootDir + "/client/connection.coffee"
 
   js.addFile "pahvi", rootDir + "/client/main.coffee"
 
