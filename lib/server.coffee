@@ -7,7 +7,8 @@ hbs = require "hbs"
 piler = require "piler"
 sharejs = require("share").server
 nodemailer = require "nodemailer"
-_  = require 'underscore'
+_  = require "underscore"
+async = require "async"
 
 {Validator} = require('validator')
 
@@ -241,10 +242,19 @@ app.post "/upload", (req, res) ->
     return
 
   fileId = req.files.imagedata.path.split("/").reverse()[0]
-  fileName = "#{ fileId }.#{ Date.now() }.#{ ext }"
+
+  timestamp = Date.now()
+
+  fileName = "#{ fileId }.#{ timestamp }.#{ ext }"
   destination = rootDir + "public/userimages/#{ fileName }"
 
-  resize req.files.imagedata.path, destination, 1200, (err) ->
+  fileNameThumb = "#{ fileId }.#{ timestamp }.thumb.#{ ext }"
+  destinationThumb = rootDir + "public/userimages/#{ fileNameThumb }"
+
+  async.parallel [
+    (cb) -> resize req.files.imagedata.path, destination, 1200, cb
+    (cb) -> resize req.files.imagedata.path, destinationThumb, 200, cb
+  ], (err) ->
     if err
       console.log "ERROR resize", err
       res.json error: "resize error"
