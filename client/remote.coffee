@@ -65,6 +65,11 @@ Pahvi.init (err, settings, boxes, boardProperties) ->
 
   remote.render()
 
+  if not helpers.isMobile
+    setTimeout ->
+      helpers.showNotification "Pro Tip: Open this page on your mobile phone #{ settings.getRemoteURL() }"
+    , 1000
+
   boxes.bind "disconnect", ->
     helpers.showFatalError "Server disconnected. Please reload page."
 
