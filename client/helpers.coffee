@@ -84,6 +84,20 @@ helpers.showWarning = (msg) ->
     closable:true
     closeOnSelfClick:true
 
+helpers.showNotification = (msg) ->
+  noty
+    text: msg
+    layout:"bottom"
+    type:"alert"
+    textAlign:"center"
+    easing:"swing"
+    animateOpen:{height:"toggle"}
+    animateClose:{height:"toggle"}
+    speed:"500"
+    timeout: 10000
+    closable:true
+    closeOnSelfClick:true
+
 S4 = -> (((1 + Math.random()) * 65536) | 0).toString(16).substring(1)
 helpers.generateGUID = ->
   S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4()
