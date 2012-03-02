@@ -88,10 +88,11 @@ Pahvi.init (err, settings, boxes, boardProperties) ->
     scroll(0,0)
     helpers.showFatalError "Server disconnected. Please reload page."
 
-  boxes.bind "syncerror", (model, method, err) ->
-    if err is "forbidden"
-      return helpers.showFatalError "Your authentication key is bad. Please check the URL bar and reload this page."
-    helpers.showFatalError "Data synchronization error: '#{ err }'."
+  for e in [boxes, boardProperties] then do (e) ->
+    e.bind "syncerror", (model, method, err) ->
+      if err is "forbidden"
+        return helpers.showFatalError "Your authentication key is bad. Please check the URL bar and reload this page."
+      helpers.showFatalError "Data synchronization error: '#{ err }'."
 
 
 
