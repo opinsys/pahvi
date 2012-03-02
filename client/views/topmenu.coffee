@@ -21,7 +21,7 @@ class views.Menu extends Backbone.View
 
   openRemote: (e) ->
     e.preventDefault()
-    window.open @settings.getRemoteURL(), "remote", [
+    window.open @settings.getRemoteURL(), "remote-#{ @settings.pahviId }", [
       "directories=no",
       "titlebar=no",
       "toolbar=no",
