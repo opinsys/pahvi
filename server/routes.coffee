@@ -17,6 +17,8 @@ check = do ->
   v.error = -> false
   -> v.check arguments...
 
+rootDir = __dirname + "/../"
+
 types =
   "image/png": "png"
   "image/jpeg": "jpg"
