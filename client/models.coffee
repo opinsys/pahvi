@@ -197,7 +197,7 @@ class models.ImageBox extends BaseBoxModel
     console.log "IMAGE", @get("imgSrc")
     if @hasThumbnail()
       """
-      <img src="#{ @getThumbnailUrl() }" />
+      <img src="#{ @getThumbnailUrl() }" class=imageBoxThumbnail />
       """
     else
       ""

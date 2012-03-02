@@ -38,6 +38,8 @@ class RemoteItem extends Backbone.View
       name: @model.get "name"
       previewHtml: @model.getPreviewHtml()
 
+    @$("img.imageBoxThumbnail").forceImageSize 100
+
 
 class Remote extends Backbone.View
 
