@@ -3,6 +3,8 @@ views = NS "Pahvi.views"
 models = NS "Pahvi.models"
 helpers = NS "Pahvi.helpers"
 
+
+
 class RemoteItem extends Backbone.View
 
   className: "remoteItem"
@@ -22,8 +24,11 @@ class RemoteItem extends Backbone.View
       else
         @$el.removeClass "selected"
 
+
   events:
     "click": "_onSelect"
+
+
 
   _onSelect: ->
     console.log "Setting remoteSelect to #{ @model.id }"
@@ -73,6 +78,7 @@ Pahvi.init (err, settings, boxes, boardProperties) ->
     , 1000
 
   boxes.bind "disconnect", ->
+    scroll(0,0)
     helpers.showFatalError "Server disconnected. Please reload page."
 
   boxes.bind "syncerror", (model, method, err) ->

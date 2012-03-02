@@ -61,6 +61,9 @@ Pahvi.init (err, settings, boxes, boardProperties) ->
     helpers.showFatalError "Data synchronization error: '#{ err }'."
 
   boxes.bind "disconnect", ->
+    if settings.get("mode") is "presentation"
+      helpers.zoomOut()
+    scroll(0,0)
     helpers.showFatalError "Server disconnected. Please reload page."
 
 
