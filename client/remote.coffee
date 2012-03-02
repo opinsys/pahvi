@@ -65,6 +65,13 @@ class Remote extends Backbone.View
 
 Pahvi.init (err, settings, boxes, boardProperties) ->
 
+  $("a.pahviLink").attr "href", settings.getAdminURL()
+
+  # Open all links in a new window
+  $("a").click (e) ->
+    e.preventDefault()
+    window.open @href
+
   remote = new Remote
     boardProperties: boardProperties
     collection: boxes
