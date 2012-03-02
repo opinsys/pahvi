@@ -1,32 +1,20 @@
 fs = require "fs"
 
 
-redis = require "redis"
 express = require "express"
 hbs = require "hbs"
 piler = require "piler"
 sharejs = require("share").server
 nodemailer = require "nodemailer"
-_  = require 'underscore'
+_  = require "underscore"
 
-{Validator} = require('validator')
-
-check = do ->
-  v = new Validator
-  v.error = -> false
-  -> v.check arguments...
 
 RedisStore = require('connect-redis')(express)
 
 
-{resize} = require "./resize"
-{emailTemplate} = require "./emailtemplate"
-{PahviMeta} = require "./pahvi"
-
 
 sessionStore = new RedisStore
 
-client = redis.createClient()
 
 rootDir = __dirname + "/../"
 clientTmplDir = rootDir + "/views/client/"
@@ -53,13 +41,9 @@ nodemailer.SMTP =
   host: config.mailServer
 
 
-
 app = express.createServer()
-
-
 css = piler.createCSSManager()
 js = piler.createJSManager()
-
 
 
 
@@ -203,143 +187,34 @@ app.configure ->
   js.addFile rootDir + "/client/vendor/backbone.sharedcollection/src/backbone.sharedcollection.coffee"
   js.addFile rootDir + "/client/models.coffee"
 
-  js.addFile rootDir + "/client/views/upload.coffee"
-  js.addFile rootDir + "/client/views/readonlylink.coffee"
-  js.addFile rootDir + "/client/views/box.coffee"
-  js.addFile rootDir + "/client/views/layers.coffee"
-  js.addFile rootDir + "/client/views/sidemenu.coffee"
-  js.addFile rootDir + "/client/views/topmenu.coffee"
-  js.addFile rootDir + "/client/views/lightbox.coffee"
-  js.addFile rootDir + "/client/views/boxproperties.coffee"
-  js.addFile rootDir + "/client/views/cardboard.coffee"
+  js.addFile  rootDir + "/client/views/upload.coffee"
+  js.addFile  rootDir + "/client/views/readonlylink.coffee"
+  js.addFile  rootDir + "/client/views/box.coffee"
+  js.addFile  rootDir + "/client/views/layers.coffee"
+  js.addFile  rootDir + "/client/views/sidemenu.coffee"
+  js.addFile  rootDir + "/client/views/topmenu.coffee"
+  js.addFile  rootDir + "/client/views/lightbox.coffee"
+  js.addFile  rootDir + "/client/views/boxproperties.coffee"
+  js.addFile  rootDir + "/client/views/cardboard.coffee"
+  js.addFile  rootDir + "/client/typemap.coffee"
+  js.addFile  rootDir + "/client/connection.coffee"
+  js.addFile  rootDir + "/client/router.coffee"
 
   js.addFile "pahvi", rootDir + "/client/main.coffee"
 
+  js.addFile "remote", rootDir + "/client/remote.coffee"
+
   css.addFile rootDir + "/client/styles/reset.styl"
+  css.addFile rootDir + "/client/styles/generic.styl"
   css.addFile "pahvi", rootDir + "/client/styles/main.styl"
+  css.addFile "remote", rootDir + "/client/styles/remote.styl"
 
   css.addFile "welcome", rootDir + "/client/styles/welcome.styl"
   js.addFile "welcome", rootDir + "/client/welcome.coffee"
 
 
-
-types =
-  "image/png": "png"
-  "image/jpeg": "jpg"
-  "image/jpg": "jpg"
-
-app.post "/upload", (req, res) ->
-
-  if not ext = types[req.files.imagedata.type]
-    res.json error: "Unkown file type"
-    return
-
-  fileId = "/tmp/01caf875dfbd0860ae3d9e6297d86182".split("/").reverse()[0]
-  fileName = "#{ fileId }.#{ Date.now() }.#{ ext }"
-  destination = rootDir + "public/userimages/#{ fileName }"
-
-  resize req.files.imagedata.path, destination, 1200, (err) ->
-    if err
-      console.log "ERROR resize", err
-      res.json error: "resize error"
-    else
-      res.json url: "/userimages/#{ fileName }"
-
-
-app.get "/", (req, res) ->
-  res.render "welcome",
-    layout: false
-    config: config
-
-
-
-
-
-app.post "/", (req, res) ->
-  errors = []
-
-  if not check(req.body.email).isEmail()
-    errors.push
-      message: "Bad email"
-      field: "email"
-
-  if not req.body.name?.trim()
-    errors.push
-      message: "Name is required"
-      field: "name"
-
-  if errors.length isnt 0
-    return res.json
-      error: errors
-
-  pahvi = new PahviMeta
-    client: client
-
-  pahvi.create req.body, (err, result) ->
-    throw err if err
-
-    # TODO: This can fail in so many ways...
-    result.publicUrl = "http://#{ req.headers.host }/p/#{ result.id }"
-    result.adminUrl = result.publicUrl + "?auth=#{ result.authKey }"
-
-    res.json result
-    sendMail result
-
-
-sendMail = (ob, cb=->) ->
-
-  if not config.mailServer
-    console.error "Mail server not configured. Cannot send mail".
-    return cb()
-
-  {body, subject} = emailTemplate ob
-  nodemailer.send_mail
-    sender: 'dev@opinsys.fi',
-    to: ob.email,
-    subject: subject
-    body: body
-  , (err, success) ->
-    cb err, success
-
-
-
-app.get "/p/:id", (req, res, next) ->
-  parts = req.path.split "/"
-  if parts.length isnt 3
-    return next()
-
-  id = req.params.id
-
-  pahvi = new PahviMeta
-    client: client
-    id: id
-
-  response = ->
-    pahvi.get (err, result) ->
-      if err?.code is 404
-        return res.redirect "/"
-      res.render "index",
-        authKey: req.query?.auth
-        config: config
-        data: result
-
-  if not req.query.auth
-    req.session.pahviAuth = ""
-    return response()
-
-
-  pahvi.authenticate req.query?.auth, (err, authOk) ->
-
-    if authOk
-      req.session.pahviAuth = "ok"
-    else
-      req.session.pahviAuth = ""
-
-    response()
-
-
-
-
+# Add routes and real application logic
+require("./routes") app, config
 
 app.listen config.port, ->
   console.log "Now listening on port #{ config.port }"

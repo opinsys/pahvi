@@ -5,7 +5,7 @@ helpers = NS "Pahvi.helpers"
 
 class views.Cardboard extends Backbone.View
 
-  constructor: ({@settings}) ->
+  constructor: ({@settings, @boardProperties}) ->
     super
     @$el = $ @el
 
@@ -22,13 +22,21 @@ class views.Cardboard extends Backbone.View
       if not ui
         e.preventDefault()
 
-    @collection.bind "syncload", (collection, count) =>
+    @boardProperties.bind "change:remoteSelect", =>
+      if @settings.get("mode") is "presentation"
+        if id = @boardProperties.get "remoteSelect"
+          @settings.set activeBox: id
+        else
+          @settings.set activeBox: null
+          helpers.zoomOut()
 
-      async.forEach @collection.toArray(), (boxModel, cb) =>
-        @_createView boxModel, cb
-      , =>
-        @trigger "viewsloaded"
-        @collection.bind "add", (boxModel) => @_createView boxModel
+
+
+    async.forEach @collection.toArray(), (boxModel, cb) =>
+      @_createView boxModel, cb
+    , =>
+      @trigger "viewsloaded"
+      @collection.bind "add", (boxModel) => @_createView boxModel
 
 
   _createView: (boxModel, cb=->) ->

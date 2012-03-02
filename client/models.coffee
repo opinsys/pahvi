@@ -99,12 +99,22 @@ class models.Settings extends Backbone.Model
     mode: "edit"
     hover: null
 
+  constructor: ->
+    @pahviId = window.location.pathname.split("/")[2]
+    @_uri = parseUri window.location.href
+    super
+
   getPublicURL: ->
-    uri = parseUri window.location.href
-    "#{ uri.protocol }://#{ uri.authority }#{ uri.path }"
+    "#{ @_uri.protocol }://#{ @_uri.authority }/p/#{ @pahviId }"
 
   getAdminURL: ->
-    "#{ @getPublicURL() }?auth=#{ window.AUTH_KEY }"
+    "#{ @_uri.protocol }://#{ @_uri.authority }/e/#{ @pahviId }/#{ window.AUTH_KEY }"
+
+  getRemoteURL: ->
+    "#{ @_uri.protocol }://#{ @_uri.authority }/r/#{ @pahviId }/#{ window.AUTH_KEY }"
+
+  getAuthKey: ->
+    window.AUTH_KEY
 
   canEdit: ->
     !! window.AUTH_KEY
@@ -112,10 +122,12 @@ class models.Settings extends Backbone.Model
 
 class BaseBoxModel extends Backbone.Model
 
+  getPreviewHtml: -> ""
 
 class models.TextBoxModel extends BaseBoxModel
 
   type: "text"
+
 
   configs: [
     "NameEditor",
@@ -136,6 +148,8 @@ class models.TextBoxModel extends BaseBoxModel
     "backgroundColor": "white"
 
 
+  getPreviewHtml: ->
+    $("<div>").html(@get "text").text().substring(0, 100)
 
 class models.PlainBoxModel extends BaseBoxModel
 
@@ -174,5 +188,20 @@ class models.ImageBox extends BaseBoxModel
     height: "200px"
     zIndex: 100
     imgSrc: "/img/noimage.png"
+
+  hasThumbnail: -> !! @get("imgSrc").match(/\/userimages\/box\-image\-/)
+
+  getThumbnailUrl: -> @get("imgSrc").replace(/\.\w+$/, ".thumb.jpg")
+
+  getPreviewHtml: ->
+    console.log "IMAGE", @get("imgSrc")
+    if @hasThumbnail()
+      """
+      <img src="#{ @getThumbnailUrl() }" class=imageBoxThumbnail />
+      """
+    else
+      ""
+
+
 
 

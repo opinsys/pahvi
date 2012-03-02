@@ -1,89 +1,15 @@
 
 
+Pahvi = NS "Pahvi"
 views = NS "Pahvi.views"
-models = NS "Pahvi.models"
 helpers = NS "Pahvi.helpers"
 
-# Create model/view/configure mapping of available Box types.  Box Models,
-# Views and Configure views are connected together by their `type` property.
-# This will go through those and creates `Boxes.types` mapping for them.
-# Later this can be used to get corresponding View/Model/CongigureView
-typeMapping = {}
-typeSources =
-  Model: models
-  View: views
-for metaClassName, namespace of typeSources
-  for __, metaClass of namespace when metaClass.prototype?.type
-    typeMapping[metaClass.prototype.type] ?= {}
-    typeMapping[metaClass.prototype.type][metaClassName] = metaClass
 
+Pahvi.init (err, settings, boxes, boardProperties) ->
 
-
-class Workspace extends Backbone.Router
-
-  constructor: ({@settings, @collection}) ->
-    super
-
-    @settings.bind "change:mode", =>
-      if boxId = @settings.get "activeBox"
-        box = @collection.get boxId
-        @navigateToBox box
-      else
-        @navigate @settings.get "mode"
-
-    @collection.bind "change:name", (box) =>
-      if box.id is  @settings.get "activeBox"
-        @navigateToBox box
-
-    @settings.bind "change:activeBox", =>
-      if boxId = @settings.get "activeBox"
-        box = @collection.get boxId
-        @navigateToBox box
-      else
-        @navigate @settings.get "mode"
-
-  routes:
-    "": "root"
-    "presentation": "presentation"
-    "presentation/:name": "presentation"
-
-  root: ->
-    return if not window.AUTH_KEY
-
-    @settings.set mode: "edit"
-
-    return if @shown
-
-    views.showMessage helpers.template "startinfo"
-      publicUrl: @settings.getPublicURL()
-      adminUrl:  @settings.getAdminURL()
-    , true
-
-    @shown = true
-
-
-
-  navigateToBox: (box, trigger) ->
-    @navigate "#{ @settings.get "mode" }/#{ escape box.get "name" }", trigger
-
-  presentation: (boxName) ->
-    @settings.set mode: "presentation"
-
-    if boxName
-      box = @collection.find (box) -> box.get("name") is unescape boxName
-
-    if box
-      @settings.set activeBox: box.id
-      @navigateToBox box
-    else
-      @settings.set activeBox: null
-      helpers.zoomOut()
-
-
-$ ->
-
-  window.settings = new models.Settings
-    id: "settings"
+  if not settings.pahviId
+    alert "bad url"
+    return
 
   if window.AUTH_KEY
     $("html").removeClass "presentation"
@@ -99,15 +25,13 @@ $ ->
       $("html").addClass "presentation"
       $("html").removeClass "edit"
 
-  window.boxes = new models.Boxes [],
-    collectionId: "boxes"
-    typeMapping: typeMapping
-    modelClasses: (Model for __, Model of models when Model::?.type)
 
 
-  router = new Workspace
-    settings: settings
-    collection: boxes
+
+
+  # router = new Pahvi.Router
+  #   settings: settings
+  #   collection: boxes
 
   if window.AUTH_KEY
     menu = new views.Menu
@@ -116,24 +40,6 @@ $ ->
 
     menu.render()
 
-
-  board = new views.Cardboard
-    el: ".pahvi"
-    settings: settings
-    collection: boxes
-
-  board.render()
-
-  board.bind "viewsloaded", _.once ->
-    # TODO: Why on earth this is called twice??
-    Backbone.history?.start()
-    if not window.AUTH_KEY
-      settings.set mode: "presentation"
-
-  pahviId = window.location.pathname.split("/")[2]
-  if not pahviId
-    alert "bad url"
-    return
 
 
   sidemenu = new views.SideMenu
@@ -149,35 +55,33 @@ $ ->
   linkbox.render()
 
 
-
   boxes.bind "syncerror", (model, method, err) ->
     if err is "forbidden"
       return helpers.showFatalError "Your authentication key is bad. Please check the URL bar and reload this page."
-
     helpers.showFatalError "Data synchronization error: '#{ err }'."
 
-
-  sharejs.open pahviId, "json", (err, doc) =>
-
-    if err
-      helpers.showFatalError msg = "Failed to connect synchronization server: #{ err.message }"
-      console.log msg, err
-      return
-
-    # TODO: remove
-    if not doc.connection
-      helpers.showWarning "Notice for Pahvi devs: Running on bad ShareJS version. Check the docs."
-    else
-      doc.connection.on "disconnect", ->
-        helpers.showFatalError "Server disconnected. Please reload page."
+  boxes.bind "disconnect", ->
+    if settings.get("mode") is "presentation"
+      helpers.zoomOut()
+    scroll(0,0)
+    helpers.showFatalError "Server disconnected. Please reload page."
 
 
-    boxes.fetch
-      sharejsDoc: doc
-      success: ->
-        settings.set activeBox: null
+  board = new views.Cardboard
+    el: ".pahvi"
+    settings: settings
+    collection: boxes
+    boardProperties: boardProperties
 
-      error: ->
-        alert "Failed to connect"
+  console.log "Loading views"
+  board.bind "viewsloaded", _.once ->
+    console.log "Views loaded"
+    # TODO: Why on earth this is called twice??
 
+    # Disable router temporarily
+    # Backbone.history?.start()
 
+    if not window.AUTH_KEY
+      settings.set mode: "presentation"
+
+  board.render()

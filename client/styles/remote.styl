@@ -1,0 +1,93 @@
+
+@import 'nib'
+@import 'pahvicolors'
+
+body
+  background-color pahvicream
+  font 1em/1.4 "Helvetica Neue","Lucida Grande", tahoma, arial, sans-serif
+
+h1
+  font-size 3em
+
+.remote
+  margin-top 7em
+  padding-bottom 2em
+  .loading
+    text-align center
+    width 80px
+    margin 0 auto
+    padding 1em
+    background-color white
+    border-radius 5px
+
+
+h1.pahviNameRemote
+  font-size 18pt
+  font-weight bold
+  margin-left 30px
+
+
+.zoomOut
+  position absolute
+  right 10px
+  top 10px
+
+  button
+    background url("/img/iconset.png") no-repeat 7px -1421px pahvicream
+    height 50px
+    width 50px
+    &:hover
+      cursor pointer
+
+.remoteItem
+  cursor pointer
+  background-color pahvilightbrown
+  margin-bottom 10px
+  padding 1em
+  height 5em
+
+  h2
+    font-size 150%
+    float left
+  img
+    float left
+
+  &.selected
+    background-color darken(pahvilightbrown, 20%)
+
+  .contentPreview
+    float right
+
+@media screen and (max-width: 370px)
+  header figure a
+    display none !important
+
+@media screen and (max-width: 700px)
+
+  h1.pahviName
+    top 90px
+    margin-left 10px
+    position absolute
+
+@media screen and (min-width: 700px)
+
+  .remote
+    margin-top 3em
+
+  .remoteItem
+    float left
+    width 300px
+    margin 10px
+    border-radius 5px
+
+
+.footer
+  clear both
+  margin-top 2em
+  padding 1em
+  text-align center
+  color black
+  a
+    color black
+
+

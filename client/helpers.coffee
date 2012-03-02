@@ -28,10 +28,20 @@ helpers.template = (templateId, ob={}) ->
     source = $("##{ templateId }Template").html()
     throw new Error "Unkown template #{ templateId }" if not source
     templateFunction = templateCache[templateId] = Handlebars.compile source
-    console.log "CACHING #{ templateId }"
   return templateFunction ob
 
 Backbone.View::renderTemplate = helpers.template
+
+
+
+# Mobile detection
+# Touch devices and devices with screens < 960 are mobile
+# Borrowed from detectmobile.js
+helpers.isMobile = do ->
+  return true if "ontouchstart" of window
+  length = Math.max window.screen.availWidth, window.screen.availHeight
+  length <= 970
+
 
 
 helpers.zoomOut = ->
@@ -74,9 +84,58 @@ helpers.showWarning = (msg) ->
     closable:true
     closeOnSelfClick:true
 
+helpers.showNotification = (msg) ->
+  noty
+    text: msg
+    layout:"bottom"
+    type:"alert"
+    textAlign:"center"
+    easing:"swing"
+    animateOpen:{height:"toggle"}
+    animateClose:{height:"toggle"}
+    speed:"500"
+    timeout: 10000
+    closable:true
+    closeOnSelfClick:true
+
 S4 = -> (((1 + Math.random()) * 65536) | 0).toString(16).substring(1)
 helpers.generateGUID = ->
   S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4()
 
+
 helpers.roundNumber = (num, dec) ->
   Math.round(num*Math.pow(10,dec))/Math.pow(10,dec)
+
+
+
+downscale = (width, height, maxWidth) ->
+  if width < maxWidth and height < maxWidth
+    height = height
+    width = width
+  else if width > height
+    scale = maxWidth / width
+    width = maxWidth
+    height = height * scale
+  else
+    scale = maxWidth / height
+    height = maxWidth
+    width = width * scale
+
+  [width, height]
+
+jQuery.fn.forceImageSize = (max, cb) ->
+  @each ->
+    img = new Image
+    # Make sure that image is loaded. We cannot otherwise read its width and
+    # height
+    img.onload = =>
+      [width, height] = downscale img.width, img.height, max
+      console.log "Setting", width, height, @src
+      @width = width
+      @height = height
+      cb?()
+    img.src = @src
+
+
+
+

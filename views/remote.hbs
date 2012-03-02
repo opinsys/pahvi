@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>{{data.name}} - Pahvi - Opinsys Oy</title>
+
+  <!-- Mobile viewport optimization h5bp.com/ad -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width">
+
+  {{#if authKey}}
+  <script type="text/javascript" charset="utf-8">
+    window.AUTH_KEY = "{{authKey}}";
+  </script>
+  {{/if}}
+
+  {{{renderStyleTags "remote"}}}
+  {{{renderScriptTags "remote"}}}
+
+  {{{clientTemplate "remote_item"}}}
+</head>
+
+<body>
+
+  <header>
+    <hgroup class="pahviLogo">
+        <h1>Pahvi</h1>
+        <h3>Beta</h3>
+        <h4>Remote Controller</h4>
+    </hgroup>
+    <figure>
+      <a href="http://opinsys.fi" title="Opinsys Oy" target="_blank">Opinsys</a>
+    </figure>
+    <h1 class="pahviName" >
+      {{data.name}}
+    </h1>
+
+
+  <header>
+
+
+  <div class=zoomOut>
+    <button> </button>
+  </div>
+
+  <div class=remote >
+    <div class=loading><img src="/img/loadingimage.gif"></div>
+  </div>
+
+  <div class=footer >
+    This is a Remote Controller View for a <a href="/" class=pahviLink >Pahvi presentation</a> - <a href="http://opinsys.fi/">Opinsys Oy</a>
+  </div>
+
+</body>
+</html>
+
+
+
