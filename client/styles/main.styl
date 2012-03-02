@@ -24,6 +24,8 @@ image_icon_position = 10px 10px
 image_icon_position_hover = 10px -35px
 plainbox_icon_position = 10px -835px
 plainbox_icon_position_hover = 10px -880px
+remote_icon = iconurl no-repeat 10px -1305px pahvicream
+remote_icon_position_hover = 10px -1360px
 
 
 body
@@ -137,6 +139,10 @@ button:hover
       // TODO: icon
       // button.openRemote
       //   background open_remote_icon
+      button.openRemote
+        background remote_icon
+        &:hover
+          background-position remote_icon_position_hover
 
       button.modeToggle
         background switch_mode_icon
@@ -222,6 +228,7 @@ button:hover
           line-height 1.75
           margin-left 1em
         .down, .up
+          border none
           box-shadow none
           height 25px
           padding 0
@@ -542,6 +549,8 @@ html.presentation
     height 20px
     padding 0.25em
     width 70%
+  input.fileInput
+    margin-left 5px
   
 .tooltip
   background-color rgba(180,180,180,0.85)
