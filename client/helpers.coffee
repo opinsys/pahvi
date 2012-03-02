@@ -105,3 +105,37 @@ helpers.generateGUID = ->
 
 helpers.roundNumber = (num, dec) ->
   Math.round(num*Math.pow(10,dec))/Math.pow(10,dec)
+
+
+
+downscale = (width, height, maxWidth) ->
+  if width < maxWidth and height < maxWidth
+    height = height
+    width = width
+  else if width > height
+    scale = maxWidth / width
+    width = maxWidth
+    height = height * scale
+  else
+    scale = maxWidth / height
+    height = maxWidth
+    width = width * scale
+
+  [width, height]
+
+jQuery.fn.forceImageSize = (max, cb) ->
+  @each ->
+    img = new Image
+    # Make sure that image is loaded. We cannot otherwise read its width and
+    # height
+    img.onload = =>
+      [width, height] = downscale img.width, img.height, max
+      console.log "Setting", width, height, @src
+      @width = width
+      @height = height
+      cb?()
+    img.src = @src
+
+
+
+
