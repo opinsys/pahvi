@@ -72,6 +72,9 @@ Pahvi.init (err, settings, boxes, boardProperties) ->
     e.preventDefault()
     window.open @href
 
+  $(".zoomOut button").click ->
+    boardProperties.set remoteSelect: null
+
   remote = new Remote
     boardProperties: boardProperties
     collection: boxes
