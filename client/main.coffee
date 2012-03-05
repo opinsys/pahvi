@@ -7,6 +7,10 @@ helpers = NS "Pahvi.helpers"
 
 Pahvi.init (err, settings, boxes, boardProperties) ->
 
+  if err
+    helpers.showFatalError "Failed to load this Pahvi. <pre>#{ err.error }: #{ err.message }</pre>"
+    return console.log "Error while loading Pahvi", err
+
   if not settings.pahviId
     alert "bad url"
     return
@@ -26,6 +30,11 @@ Pahvi.init (err, settings, boxes, boardProperties) ->
       $("html").removeClass "edit"
 
 
+
+  if window.AUTH_KEY and boxes._syncDoc.created
+    views.showMessage helpers.template "startinfo"
+      publicUrl: settings.getPublicURL()
+      adminUrl: settings.getAdminURL()
 
 
 
@@ -74,12 +83,15 @@ Pahvi.init (err, settings, boxes, boardProperties) ->
     boardProperties: boardProperties
 
   console.log "Loading views"
+
   board.bind "viewsloaded", _.once ->
     console.log "Views loaded"
     # TODO: Why on earth this is called twice??
 
     # Disable router temporarily
     # Backbone.history?.start()
+
+
 
     if not window.AUTH_KEY
       settings.set mode: "presentation"
