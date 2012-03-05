@@ -27,6 +27,11 @@ Pahvi.init (err, settings, boxes, boardProperties) ->
 
 
 
+  if window.AUTH_KEY and boxes._syncDoc.created
+    views.showMessage helpers.template "startinfo"
+      publicUrl: settings.getPublicURL()
+      adminUrl: settings.getAdminURL()
+
 
 
   # router = new Pahvi.Router
@@ -74,12 +79,15 @@ Pahvi.init (err, settings, boxes, boardProperties) ->
     boardProperties: boardProperties
 
   console.log "Loading views"
+
   board.bind "viewsloaded", _.once ->
     console.log "Views loaded"
     # TODO: Why on earth this is called twice??
 
     # Disable router temporarily
     # Backbone.history?.start()
+
+
 
     if not window.AUTH_KEY
       settings.set mode: "presentation"
