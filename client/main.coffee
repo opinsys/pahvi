@@ -7,6 +7,10 @@ helpers = NS "Pahvi.helpers"
 
 Pahvi.init (err, settings, boxes, boardProperties) ->
 
+  if err
+    helpers.showFatalError "Failed to load this Pahvi. <pre>#{ err.error }: #{ err.message }</pre>"
+    return console.log "Error while loading Pahvi", err
+
   if not settings.pahviId
     alert "bad url"
     return
