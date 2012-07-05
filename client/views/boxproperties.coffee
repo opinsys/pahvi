@@ -111,8 +111,6 @@ class configs.BackgroundColor extends BaseConfig
         transparent: color[1] is "transparent"
         current: color[1] is @model.get @colorProperty
 
-    $("button.color").tooltip
-      position: "center left"
 
 
 
