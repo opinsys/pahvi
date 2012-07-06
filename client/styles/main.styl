@@ -63,11 +63,22 @@ hr
 button:hover
   cursor pointer
   
+
+.menu
+  margin-left 40%
+  button.openRemote
+    background remote_icon
+    &:hover
+      background-position remote_icon_position_hover
+
+  button.modeToggle
+    background switch_mode_icon
+    &:hover
+      background-position switch_mode_icon_position_hover
+
+
 .container
-  height 100%
   margin 0 auto
-  position relative
-  width 100%
   
   button
     background-color pahvicream
@@ -99,327 +110,262 @@ button:hover
       width 30px
       &:hover
         background-color pahvired !important
-  header
-    position relative
 
-  .wrap
-    height 100%
-    position relative
-    width 100%
+  .pasteboard
+    border-top solid 1px pahvigray
+    margin -1px
+    z-index 1
     
-    .pasteboard
-      border-top solid 1px pahvigray
-      height 100%
-      margin -1px
-      position relative
-      width 100%
-      z-index 1
+    .box.ui-draggable-dragging
+      border dotted 2px black !important
+      box-shadow 0px 0px 20px black !important
+      cursor move !important
+    .box.ui-draggable-dragging .tools
+      border-left dotted 2px black !important
+      border-right dotted 2px black !important
+      border-top dotted 2px black !important
+      margin-left -1px
+    .box.ui-draggable
+      cursor pointer
       
-      .box.ui-draggable-dragging
-        border dotted 2px black !important
-        box-shadow 0px 0px 20px black !important
-        cursor move !important
-      .box.ui-draggable-dragging .tools
-        border-left dotted 2px black !important
-        border-right dotted 2px black !important
-        border-top dotted 2px black !important
-        margin-left -1px
-      .box.ui-draggable
-        cursor pointer
-        
-      .menu
-        margin 0 5px 0
-        position absolute
-        right 30%
-        top -60px
 
-      button
-        border-bottom 1px solid pahvigray
+    button
+      border-bottom 1px solid pahvigray
 
-      // TODO: icon
-      // button.openRemote
-      //   background open_remote_icon
-      button.openRemote
-        background remote_icon
-        &:hover
-          background-position remote_icon_position_hover
 
-      button.modeToggle
-        background switch_mode_icon
-        &:hover
-          background-position switch_mode_icon_position_hover
+    .tools
+      background rgb(226,226,226)
+      background linear-gradient(top, rgba(226,226,226,0.8) 0%, rgba(242,242,242,0.8) 50%, rgba(226,226,226,0.8) 100%)
+      border-left 1px solid pahvigray
+      border-right 1px solid pahvigray
+      border-top 1px solid pahvigray
+      display block
+      height 30px
+      left -1px
+      margin 0
+      padding 0
+      position absolute
+      top -30px
+      visibility hidden
+      width 100%
 
-      .tools
-        background rgb(226,226,226)
-        background linear-gradient(top, rgba(226,226,226,0.8) 0%, rgba(242,242,242,0.8) 50%, rgba(226,226,226,0.8) 100%)
-        border-left 1px solid pahvigray
-        border-right 1px solid pahvigray
-        border-top 1px solid pahvigray
-        display block
-        height 30px
-        left -1px
-        margin 0
-        padding 0
-        position absolute
-        top -30px
-        visibility hidden
-        width 100%
-
-      .box
-        padding .25em
-        border 1px solid black
-        min-height 30px
-        min-width 60px
-        &.hovering
-          box-shadow 0 3px 10px blue, 0 -3px 10px blue
-        &.selected
-          box-shadow 0 3px 10px pahvigreen, 0 -3px 10px pahvigreen
-          .transformable-handle-rotate
-            background iconurl no-repeat 0 -930px pahvigray
-            border-radius 20px
-            height 20px
-            left -15px
-            padding 5px
-            top -40px !important
-            width 20px
-        &.hovering
-          box-shadow 0 10px 10px pahviyellow, 0 -10px 10px pahviyellow
+    .box
+      padding .25em
+      border 1px solid black
+      min-height 30px
+      min-width 60px
+      &.hovering
+        box-shadow 0 3px 10px blue, 0 -3px 10px blue
+      &.selected
+        box-shadow 0 3px 10px pahvigreen, 0 -3px 10px pahvigreen
         .transformable-handle-rotate
-          background none
-      // Only text box needs bottom padding?
-      .textBox
-        padding-bottom 0.5em
-        ul
-          list-style disc
-        ol
-          list-style decimal
-        li
-          margin-left 2em
-      .imageBox
-        border 0px
-        background-color transparent
-        padding 0px
-        img
-          width 100%
-          height 100%
-
+          background iconurl no-repeat 0 -930px pahvigray
+          border-radius 20px
+          height 20px
+          left -15px
+          padding 5px
+          top -40px !important
+          width 20px
+      &.hovering
+        box-shadow 0 10px 10px pahviyellow, 0 -10px 10px pahviyellow
+      .transformable-handle-rotate
+        background none
+    // Only text box needs bottom padding?
+    .textBox
+      padding-bottom 0.5em
       ul
         list-style disc
       ol
         list-style decimal
       li
         margin-left 2em
-
-      .box .tools
-        visibility hidden
-        button
-          position absolute
-        .edit
-          border-radius 10px
-          height 20px
-          padding 0.2em 1em
-          right 2em
-          top 5px
-          width auto
-          white-space nowrap
-          &:hover
-            background-color pahvigreen
-        .name
-          line-height 1.75
-          margin-left 1em
-        .down, .up
-          border none
-          box-shadow none
-          height 25px
-          padding 0
-          right -15px
-          text-indent -9999px
-          width 30px
-        .up
-          background z-index_up_icon
-          top 30px
-          &:hover
-            background z-index_up_icon_hover
-        .down
-          background z-index_down_icon
-          top 55px
-          &:hover
-            background z-index_down_icon_hover            
-      // We need to use class hovering instean of meta selector :hover so that
-      // we can also "hover" programatically using JavaScript
-      .box.selected .tools
-        visibility visible
-        
-    .mediamenu.open
-      .closeOpenMediamenuBtn
-        background-position close_mediamenu_icon_position
-        &:hover
-          background-position close_mediamenu_icon_position_hover
-    .mediamenu.closed
-      .closeOpenMediamenuBtn
-         background-position open_mediamenu_icon_position
-         &:hover
-          background-position open_mediamenu_icon_position_hover
-          
-    .mediamenu
-      background pahvicream repeat 0 0 scroll
-      border-top 1px solid pahvigray
-      border-left 1px solid pahvigray
-      height 100%
-      position absolute
-      right 0
-      top 0
-      width 30%
-      z-index 9999
-      .closeOpenMediamenuBtn
-        background-color rgba(255,253,241,0.7)
-        background-image iconurl 
-        background-repeat no-repeat 
-        border-top-left-radius 10px 15px 
-        border-bottom-left-radius 10px 15px
-        left -55px
-        height 35px
-        position absolute
-        text-indent -9999px
-        top 40%
-        width 55px
-      nav
-        height 50px
-        margin 0 0 0 5px
+    .imageBox
+      border 0px
+      background-color transparent
+      padding 0px
+      img
         width 100%
-        a
-          background-color pahvicream
-          border-left solid 1px bordergray
-          border-top solid 1px bordergray
-          border-right solid 1px bordergray
-          float left
-          height 50px
-          text-indent -9999px
-          width 50px
-          &:first-child
-            background add_objects_icon
-            &:hover
-              background add_objects_icon_hover
-          &:nth-child(2)
-            background layers_icon
-            &:hover
-              background layers_icon_hover
-          &:hover, &.active
-            background-color white
-      .mediamenuBtn
-        background mediamenu_icon
-        left 5px
-        position absolute
-        top -60px
-        
-      .media
-        background-color white
-        border-top solid 1px bordergray
-        display block
         height 100%
-        width 100%
-        .hovering
-          box-shadow 0 0 2px pahvigray, 0 10px 5px pahviyellow, 0 -10px 5px pahviyellow
-        .selected
-          background-color pahviblue
-          border 2px solid pahvigreen !important
+
+    ul
+      list-style disc
+    ol
+      list-style decimal
+    li
+      margin-left 2em
+
+    .box .tools
+      visibility hidden
+      button
+        position absolute
+      .edit
+        border-radius 10px
+        height 20px
+        padding 0.2em 1em
+        right 2em
+        top 5px
+        width auto
+        white-space nowrap
+        &:hover
+          background-color pahvigreen
+      .name
+        line-height 1.75
+        margin-left 1em
+      .down, .up
+        border none
+        box-shadow none
+        height 25px
+        padding 0
+        right -15px
+        text-indent -9999px
+        width 30px
+      .up
+        background z-index_up_icon
+        top 30px
+        &:hover
+          background z-index_up_icon_hover
+      .down
+        background z-index_down_icon
+        top 55px
+        &:hover
+          background z-index_down_icon_hover            
+    // We need to use class hovering instean of meta selector :hover so that
+    // we can also "hover" programatically using JavaScript
+    .box.selected .tools
+      visibility visible
+      
+        
+  .mediamenu
+    background pahvicream repeat 0 0 scroll
+    border-left 1px solid pahvigray
+    position fixed
+    right 0
+    top 81px
+    bottom 0px
+    z-index 9999
+    width 250px
+    .scroll
+      background-color white
+      float right
+      top 130px
+      position fixed
+      bottom 0px
+      overflow auto
+
+
+    // Colorjoe sizes
+    .colorConfig
+      .colorPicker .twod, .colorPicker .twod .bg
+        width 130px
+        height 130px
+      .colorPicker .oned, .colorPicker .oned .bg
+        height 130px
+
+    nav
+      height 50px
+      margin 0 0 0 5px
+      a
+        background-color pahvicream
+        border-left solid 1px bordergray
+        border-top solid 1px bordergray
+        border-right solid 1px bordergray
+        float left
+        height 50px
+        text-indent -9999px
+        width 50px
+        &:first-child
+          background add_objects_icon
+          &:hover
+            background add_objects_icon_hover
+        &:nth-child(2)
+          background layers_icon
+          &:hover
+            background layers_icon_hover
+        &:hover, &.active
+          background-color white
+    .media
+      border-top solid 1px bordergray
+      display block
+      .hovering
+        box-shadow 0 0 2px pahvigray, 0 10px 5px pahviyellow, 0 -10px 5px pahviyellow
+      .selected
+        background-color pahviblue
+        border 2px solid pahvigreen !important
+      .layersSortable 
+        list-style-type none
+      >div
+        font-size 0.8em
+        line-height 2
+        margin 1em
+        padding 0
+        
+      .addElements
+        position relative
+        div
+          background-color pahviyellow
+          border dotted 2px pahvigray
+          cursor move
+          height 35px
+          margin 0 0 0.5em
+          padding 1em 0.5em 0 50px
+          text-align left
+          text-transform uppercase
+        .textbox
+          background-image iconurl
+          background-position text_icon_position
+          background-repeat no-repeat
+          &:hover
+            background-position text_icon_position_hover
+        .plainbox
+          background-image iconurl
+          background-repeat no-repeat
+          background-position plainbox_icon_position
+          &:hover
+            background-position plainbox_icon_position_hover
+        .imagebox
+          background-image iconurl
+          background-repeat no-repeat
+          background-position image_icon_position
+          &:hover
+            background-position image_icon_position_hover
+        .text
+          background iconurl no-repeat 0 -75px transparent
+        .image
+          background iconurl no-repeat 0 10px transparent
+          h2
+            margin 0 0 0.5em
+            background-position 10px -35px
+      .layers
         .layersSortable 
           list-style-type none
-        >div
-          font-size 0.8em
-          line-height 2
-          margin 1em
+          margin 0
           padding 0
-          
-        .addElements
-          position relative
-          p
-            background url("/img/drag-drop-arrow.png") no-repeat 20px 40px transparent
-            height 135px
-            padding 0 0 0 15px
-            position absolute !important
-            left 130px
-            top -125px
-            width 120px
-            span
-              background-color pahviyellow
-              border 2px dotted pahvigray
-              border-radius 10px
-              box-shadow 1px 2px 4px pahvigray, -1px -1px 3px pahvigray
-              display block
-              line-height 1.2
-              padding 0.35em
-              text-align center
-              text-transform uppercase
-              transform rotate(10deg) translate(15%,-5%)
-              width 150px
-          div
-            background-color pahviyellow
-            border dotted 2px pahvigray
-            cursor move
+          li
+            background-color pahvilightgray
+            background-image iconurl
+            background-repeat no-repeat
+            border 2px solid pahvigray
             height 35px
             margin 0 0 0.5em
             padding 1em 0.5em 0 55px
-            text-align center
-            text-transform uppercase
-            width 80%
-          .textbox
-            background-image iconurl
-            background-position text_icon_position
-            background-repeat no-repeat
-            &:hover
-              background-position text_icon_position_hover
-          .plainbox
-            background-image iconurl
-            background-repeat no-repeat
-            background-position plainbox_icon_position
-            &:hover
-              background-position plainbox_icon_position_hover
-          .imagebox
-            background-image iconurl
-            background-repeat no-repeat
-            background-position image_icon_position
-            &:hover
-              background-position image_icon_position_hover
+            position relative
+            &.hovering
+              background-color pahviyellow !important
+              cursor pointer
+            &:hover > .delete
+              display block
+            .delete
+              display none
+              margin-right 10px
+              position absolute
+              right 0
+              top 10px
           .text
-            background iconurl no-repeat 0 -75px transparent
+            background-position text_icon_position
+          .plain
+            background-position plainbox_icon_position
           .image
-            background iconurl no-repeat 0 10px transparent
-            h2
-              margin 0 0 0.5em
-              background-position 10px -35px
-        .layers
-          .layersSortable 
-            list-style-type none
-            margin 0
-            padding 0
-            li
-              background-color pahvilightgray
-              background-image iconurl
-              background-repeat no-repeat
-              border 2px solid pahvigray
-              height 35px
-              margin 0 0 0.5em
-              padding 1em 0.5em 0 55px
-              position relative
-              width 80%
-              &.hovering
-                background-color pahviyellow !important
-                cursor pointer
-              &:hover > .delete
-                display block
-              .delete
-                display none
-                margin-right 10px
-                position absolute
-                right 0
-                top 10px
-            .text
-              background-position text_icon_position
-            .plain
-              background-position plainbox_icon_position
-            .image
-              background-position image_icon_position
+            background-position image_icon_position
               
 .dragdrop_image_from_computer
   background url("/img/add-image-from-computer.png") no-repeat 0 2px pahvicream
@@ -429,14 +375,18 @@ button:hover
   font-size 0.8em
   height 35px
   line-height 1.5
-  padding 20px 2px 0 60px
-  text-align center
+  padding 20px 0px 0 66px
+  text-align left
   text-transform uppercase
-  width 80%
 
 
-.hallotoolbar
-  z-index 2001
+.pasteboard
+  position absolute
+  z-index 0
+  top 0px
+  right 5px
+  bottom 5px
+  left 0px
 
 html.presentation
   overflow auto
@@ -451,8 +401,6 @@ html.presentation
 
   .box .tools
     display none !important
-  .mediamenu
-    display none
   .pasteboard
     cursor url("/img/zoom-out-cursor.png") 15 15, pointer !important
 
@@ -464,19 +412,14 @@ html.presentation
 .editing
   z-index 2000 !important
 
-.pahvi
-  width 100%
-  height 100%
 
 .boxProperties
   background-color white
   margin 0
-  padding 1em
+  padding .5em
   >div
-    border 1px solid black
     margin 0
     padding 1em 50px 1em 1em
-    width 80%
   h1
     font-size 1.25em
     line-height 1
@@ -600,7 +543,6 @@ html.presentation
     background-color rgb(245,245,245)
     background-color rgba(245,245,245,0.9)
     box-shadow 0 3px 10px pahvigreen, 0 -3px 10px pahvigreen
-    overflow auto
     left 20%
     right 20%
     top 10%

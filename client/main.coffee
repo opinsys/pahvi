@@ -77,7 +77,7 @@ Pahvi.init (err, settings, boxes, boardProperties) ->
 
 
   board = new views.Cardboard
-    el: ".pahvi"
+    el: ".pasteboard"
     settings: settings
     collection: boxes
     boardProperties: boardProperties

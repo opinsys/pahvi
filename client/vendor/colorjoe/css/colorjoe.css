@@ -116,7 +116,7 @@
     float: left;
     margin: 0.5em;
 }
-.colorPicker .oned, .colorPicker .oned .bg, .colorPicker .oned .pointer .shape {
+.colorPicker .oned, .colorPicker .oned .bg, .colorPicker .oned .pointer .shape, .pointer {
     width: 20px;
   }
 .colorPicker .oned .bg {

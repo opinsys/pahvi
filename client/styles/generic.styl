@@ -3,8 +3,6 @@
 
 @import 'pahvicolors'
 
-body
-  background url("/img/pahvi-bg.jpg") repeat 0 0 scroll
 
 .noty_message
   a
@@ -21,9 +19,11 @@ body
 
 // Styles for the Pahvi logo
 header
-  height 60px
-  padding 0.5em 0 0.25em
+  position fixed
+  z-index 9999
+  background url("/img/pahvi-bg.jpg") repeat 0 0 scroll
   width 100%
+  border-bottom 1px solid black
   h1,h2,h3
     color pahvibrown
     line-height 1
@@ -50,7 +50,7 @@ header
     font-size 1.0em
   h3
     left 160px
-    position absolute
+    position fixed
     top 35px
   h4
     color pahvilightbrown
