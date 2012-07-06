@@ -1,0 +1,105 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <meta name="description" content="Scaleable color picker.">
+    <meta name="author" content="Juho Vepsäläinen">
+
+    <title>colorjoe by bebraw</title>
+
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/pygment_trac.css">
+    <link rel="stylesheet" href="css/colorjoe.css">
+    <script src="src/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+  <script src="dist/colorjoe.js"></script>
+  <script type="text/javascript">
+  window.onload = function() {
+      colorjoe('regularPicker', 'black');
+      rgbjoe('rgbPicker', '#113c38');
+  }
+  </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>colorjoe</h1>
+        <p>Scaleable color picker (MIT).</p>
+        <p class="view"><a href="https://github.com/bebraw/colorjoe">View the Project on GitHub <small>bebraw/colorjoe</small></a></p>
+        <ul>
+          <li><a href="https://github.com/bebraw/colorjoe/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/bebraw/colorjoe/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/bebraw/colorjoe">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+      <h1>colorjoe - Scaleable color picker</h1>
+
+      <p>Unlike many other colorpickers out there, colorjoe is truly scaleable.
+      It is based on CSS and does not depend on external images. As a result,
+      you can tweak its size to fit your purposes. Supports touch and AMD
+      module definition as well.</p>
+      </section>
+      <section>
+
+    <h2>Regular Picker</h2>
+
+    <div id="regularPicker"></div>
+
+    <h2>RGB Picker</h2>
+
+    <div id="rgbPicker"></div>
+
+    <h2>Usage</h2>
+
+    <pre class="highlight"><span class="kd">var</span> <span class="nx">joe</span> <span class="o">=</span> <span class="nx">colorjoe</span><span class="p">(</span><span class="nx">element_id_or_dom_object</span><span class="p">,</span> <span class="nx">initial_color_value</span><span class="p">);</span>
+</pre>
+
+<p>or</p>
+
+    <pre class="highlight"><span class="kd">var</span> <span class="nx">joe</span> <span class="o">=</span> <span class="nx">rgbjoe</span><span class="p">(</span><span class="nx">element_id_or_dom_object</span><span class="p">,</span> <span class="nx">initial_color_value</span><span class="p">);</span>
+</pre>
+
+    <p>The returned joe object is an event emitter style object with
+    <code>change</code> and
+    <code>done</code> events. The <code>change</code> event is fired continuously when selecting and done
+    is fired when user has stopped selecting.</p>
+
+    <pre class="highlight"><span class="nx">joe</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;change&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">color</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Selecting &quot;</span> <span class="o">+</span> <span class="nx">color</span><span class="p">.</span><span class="nx">toCSS</span><span class="p">());</span>
+<span class="p">});</span>
+
+<span class="nx">joe</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">color</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Selected &quot;</span> <span class="o">+</span> <span class="nx">color</span><span class="p">.</span><span class="nx">toCSS</span><span class="p">());</span>
+<span class="p">});</span>
+</pre>
+
+    <p>The color object is from <a href="http://bebraw.github.com/colorjs/">colorjs</a>.</p>
+
+    <h2>Contributors</h2>
+
+    <ul>
+        <li><a href="https://github.com/bebraw">Juho Vepsäläinen</a> - Core</li>
+        <li><a href="https://github.com/epeli">Esa-Matti Suuronen</a> -<a href="https://github.com/cowboy/grunt">Grunt</a> support</li>
+    </ul>
+
+    <h2>License</h2>
+
+    <p>colorjoe is available under MIT. See <a
+    href="https://github.com/bebraw/colorjoe/blob/master/LICENSE">LICENSE</a> for more details.</p>
+
+      </section>
+    </div>
+    <footer>
+      <p>Project maintained by <a href="https://github.com/bebraw">bebraw</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+  </body>
+</html>

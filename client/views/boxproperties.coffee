@@ -61,55 +61,38 @@ class BaseConfig extends Backbone.View
 class configs.BackgroundColor extends BaseConfig
 
   className: "config colorConfig backgroundColor"
-
-  colors: [
-    [ "Transparent", "transparent" ],
-    [ "Red", "#ff0000" ],
-    [ "Green", "#008000" ],
-    [ "Blue", "#0000ff" ],
-    [ "Yellow", "#ffff00" ],
-    [ "Orange", "#ff9900" ],
-    [ "Violet", "#9400D3" ],
-    [ "Magenta", "#ff00ff" ],
-    [ "Pink", "#ffc0cb" ],
-    [ "Cyan", "#99CCCC" ],
-    [ "White", "#ffffff" ],
-    [ "Pahvi Yellow", "#fffdf1" ],
-    [ "Gray", "#c2c2c2" ],
-    [ "Pahvi Gray", "#363636" ],
-    [ "Black", "#000000" ],
-  ]
-
   title: "Background Color"
-
   colorProperty: "backgroundColor"
-
-
   templateId: "config_color"
 
 
   constructor: ->
     super
+    # TODO: fix
+    # @model.bind "change:#{ @colorProperty }", =>
+    #   @joe?.set color.hsva @model.get @colorProperty
 
-    @model.bind "change:#{ @colorProperty }", => @render()
 
-  events:
-    "click button": "update"
-
-  update: (e) ->
+  update: (color, localOnly) ->
     ob = {}
-    ob[@colorProperty] = $(e.target).data("value")
-    @model.set ob
+    ob[@colorProperty] = color
+    console.info "Setting #{ ob[@colorProperty] } with #{ localOnly }"
+    @model.set ob, local: localOnly
+
 
   render: ->
 
     @$el.html @renderTemplate @templateId,
       title: @title
-      colors: @colors.map (color) =>
-        name: color[0]
-        value: color[1]
-        transparent: color[1] is "transparent"
-        current: color[1] is @model.get @colorProperty
+
+    @joe?.removeAllListeners()
+
+    window.joe = @joe = colorjoe(@$(".colorWidgetContainer").get(0), @model.get @colorProperty)
+
+    @joe.on "change", (color) => @update color.toCSS(), true
+    @joe.on "done", (color) =>
+      @update "black", true
+      @update "#" + color.toHex(), false
 
 
 
