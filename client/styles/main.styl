@@ -240,37 +240,38 @@ button:hover
     border-left 1px solid pahvigray
     position fixed
     right 0
-    top 81px
+    top 82px
     bottom 0px
     z-index 9999
-    width 250px
-    .scroll
-      background-color white
-      float right
-      top 130px
-      position fixed
-      bottom 0px
-      overflow auto
+    width 205px
+
+    .help
+      line-height 1
+      margin-top 1em
+      margin-bottom 1em
 
 
     // Colorjoe sizes
     .colorConfig
+      .colorPicker
+        margin 0
       .colorPicker .twod, .colorPicker .twod .bg
-        width 130px
-        height 130px
+        width 120px
+        height 120px
       .colorPicker .oned, .colorPicker .oned .bg
-        height 130px
+        height 120px
 
     nav
-      height 50px
-      margin 0 0 0 5px
+      padding 0 0 0 10px
+      border-bottom solid 1px bordergray
+      height 47px
       a
         background-color pahvicream
         border-left solid 1px bordergray
         border-top solid 1px bordergray
         border-right solid 1px bordergray
         float left
-        height 50px
+        height 47px
         text-indent -9999px
         width 50px
         &:first-child
@@ -283,15 +284,20 @@ button:hover
             background layers_icon_hover
         &:hover, &.active
           background-color white
-    .media
-      border-top solid 1px bordergray
-      display block
+    .scroll
+      background-color white
+      float right
+      top 130px
+      position fixed
+      bottom 0px
+      overflow auto
       .hovering
         box-shadow 0 0 2px pahvigray, 0 10px 5px pahviyellow, 0 -10px 5px pahviyellow
       .selected
         background-color pahviblue
         border 2px solid pahvigreen !important
-      .layersSortable 
+      .layersSortable
+        width 181px
         list-style-type none
       >div
         font-size 0.8em
@@ -300,7 +306,6 @@ button:hover
         padding 0
         
       .addElements
-        position relative
         div
           background-color pahviyellow
           border dotted 2px pahvigray
@@ -348,7 +353,6 @@ button:hover
             height 35px
             margin 0 0 0.5em
             padding 1em 0.5em 0 55px
-            position relative
             &.hovering
               background-color pahviyellow !important
               cursor pointer
@@ -372,10 +376,10 @@ button:hover
   border 1px dotted pahvigray
   color pahvibrown
   display block
-  font-size 0.8em
-  height 35px
+  font-size 0.7em
+  height 47px
   line-height 1.5
-  padding 20px 0px 0 66px
+  padding 8px 0px 0 66px
   text-align left
   text-transform uppercase
 
@@ -391,8 +395,6 @@ button:hover
 html.presentation
   overflow auto
   .box
-    border none !important
-    box-shadow none !important
     cursor url("/img/zoom-cursor.png") 15 15, pointer !important
     .content
       padding 0 !important
@@ -403,6 +405,8 @@ html.presentation
     display none !important
   .pasteboard
     cursor url("/img/zoom-out-cursor.png") 15 15, pointer !important
+  .mediamenu
+    display none
 
 .box
   position absolute
@@ -415,68 +419,44 @@ html.presentation
 
 .boxProperties
   background-color white
-  margin 0
-  padding .5em
-  >div
-    margin 0
-    padding 1em 50px 1em 1em
+  padding 10px
   h1
     font-size 1.25em
     line-height 1
     margin 0 0 0.5em
     padding 0
-    span
-      font-size 0.8em
-      display block
-      padding 0
-      margin 0.2em 0
-    .colorPicker
-      background-color pahvigreen
-      border 2px solid black
-      height 80px
-      width 80px
-    .slider
-      margin 0 auto 1em
-      height 80px
-      width 80px
+    text-align center
 
-  .configs > div
+  .configs
     background-color rgb(242,242,242)
     background-color rgba(242,242,242,0.8)
     border-radius 5px 5px 0 0
     margin 1em 0 0
     padding 0
-    .config div
-      margin 0 0
   .configs .invalid
     color pahvired
     input
       border 2px solid pahvired
       color pahvired
-  .colorConfig
-    h1
-      background rgb(194,194,194)
-      background linear-gradient(top, rgba(226,226,226,1) 0%, rgba(242,242,242,1) 50%, rgba(226,226,226,1) 100%)
-      border-bottom 1px solid rgb(205,205,205)
-      border-radius 5px 5px 0 0
-      font-size 0.7em
-      padding 0.75em 0
-      text-align center
-      text-transform uppercase
-    button
-      border 2px solid gray
-      height 40px
-      margin 0.25em
-      padding 0
-      width 40px
-      &.transparentColor
-        background url("/img/transparent.png") no-repeat 0 0 transparent
-    button.selectedColor
-      border 2px solid black
 
+
+
+h1.propertyTitle
+  background rgb(194,194,194)
+  background linear-gradient(top, rgba(226,226,226,1) 0%, rgba(242,242,242,1) 50%, rgba(226,226,226,1) 100%)
+  border-bottom 1px solid rgb(205,205,205)
+  border-radius 5px 5px 0 0
+  font-size 0.7em
+  padding 0.75em 0
+  text-align center
+  text-transform uppercase
 
 .config.imageSrc, .config.nameEditor
   background-color transparent !important
+
+.config.nameEditor input
+  width 157px
+
   
 .config
   span

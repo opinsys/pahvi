@@ -31,19 +31,18 @@ class views.SideMenu extends Backbone.View
     @$el = $ @el
 
 
-    @boxProperties = new views.PropertiesManager
-      collection: @collection
-      settings: @settings
-
     @subviews =
       "toolbox": new views.ToolBox
       "layers": new views.Layers
         collection: @collection
         settings: @settings
+      "properties": new views.PropertiesManager
+        collection: @collection
+        settings: @settings
 
-    @settings.bind "change:sideMenu", =>
-      console.log "Rendering subview"
-      @renderSubview()
+
+    @settings.bind "change:sideMenu", => @renderSubview()
+    @settings.bind "change:mode", => @render()
 
   events:
     "click a": "selectSubview"
@@ -58,20 +57,19 @@ class views.SideMenu extends Backbone.View
 
   renderSubview: ->
 
-    currentView = @subviews[@settings.get("sideMenu") or "toolbox"]
-    currentView.render()
+    subviewContainer = @$(".scroll")
 
     for k, view of @subviews
       view.$el.detach()
 
-    @subviewContainer.html currentView.el
+    for viewName in (@settings.get("sideMenu") or "toolbox properties").split(" ")
+      console.info "RENDERING", viewName
+      currentView = @subviews[viewName]
+      currentView.render()
+      subviewContainer.append currentView.el
 
   render: ->
     @$el.html @renderTemplate "sidemenu"
-    @subviewContainer = @$(".media")
-
-    @boxProperties.render()
-    @$(".boxProperties").html @boxProperties.el
-
     @renderSubview()
+
 

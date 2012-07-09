@@ -6,6 +6,7 @@ configs = NS "Pahvi.configs"
 
 class views.PropertiesManager extends Backbone.View
 
+  className: "boxProperties"
 
   constructor: ({@settings}) ->
     super
@@ -87,12 +88,12 @@ class configs.BackgroundColor extends BaseConfig
 
     @joe?.removeAllListeners()
 
-    window.joe = @joe = colorjoe(@$(".colorWidgetContainer").get(0), @model.get @colorProperty)
+    joe = @joe = colorjoe.rgb(@$(".colorWidgetContainer").get(0), @model.get(@colorProperty) or "white")
 
-    @joe.on "change", (color) => @update color.toCSS(), true
+    @joe.on "change", (color) => @update color.css(), true
     @joe.on "done", (color) =>
       @update "black", true
-      @update "#" + color.toHex(), false
+      @update color.css(), false
 
 
 
