@@ -1,4 +1,5 @@
-<html>
+<!doctype html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
@@ -10,21 +11,10 @@
 
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/pygment_trac.css">
+    <link rel="stylesheet" href="css/iehacks.css">
     <link rel="stylesheet" href="css/colorjoe.css">
-    <script src="src/scale.fix.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-  <script src="dist/colorjoe.js"></script>
-  <script type="text/javascript">
-  window.onload = function() {
-      colorjoe('regularPicker', 'black');
-      rgbjoe('rgbPicker', '#113c38');
-  }
-  </script>
   </head>
   <body>
     <div class="wrapper">
@@ -39,60 +29,33 @@
         </ul>
       </header>
       <section>
-      <h1>colorjoe - Scaleable color picker</h1>
 
-      <p>Unlike many other colorpickers out there, colorjoe is truly scaleable.
-      It is based on CSS and does not depend on external images. As a result,
-      you can tweak its size to fit your purposes. Supports touch and AMD
-      module definition as well.</p>
+        <p>Unlike many other colorpickers out there, colorjoe is truly scaleable.
+        It is based on CSS and does not depend on external images. As a result,
+        you can tweak its size to fit your purposes. Supports touch and AMD
+        module definition as well.</p>
+
+        <p>Study the source of this page to get started. You might also check out
+        the <a href="https://github.com/bebraw/colorjoe/blob/master/README.md">README</a>
+        for some additional details and API documentation.
+        </p>
+
       </section>
       <section>
 
-    <h2>Regular Picker</h2>
+        <h2>RGB Picker</h2>
 
-    <div id="regularPicker"></div>
+        <div id="rgbValue"></div>
 
-    <h2>RGB Picker</h2>
+        <div id="rgbPicker"></div>
 
-    <div id="rgbPicker"></div>
+        <h2>RGB Picker with Extras</h2>
 
-    <h2>Usage</h2>
+        <div id="extraPicker"></div>
 
-    <pre class="highlight"><span class="kd">var</span> <span class="nx">joe</span> <span class="o">=</span> <span class="nx">colorjoe</span><span class="p">(</span><span class="nx">element_id_or_dom_object</span><span class="p">,</span> <span class="nx">initial_color_value</span><span class="p">);</span>
-</pre>
+        <h2>HSL Picker with Extras</h2>
 
-<p>or</p>
-
-    <pre class="highlight"><span class="kd">var</span> <span class="nx">joe</span> <span class="o">=</span> <span class="nx">rgbjoe</span><span class="p">(</span><span class="nx">element_id_or_dom_object</span><span class="p">,</span> <span class="nx">initial_color_value</span><span class="p">);</span>
-</pre>
-
-    <p>The returned joe object is an event emitter style object with
-    <code>change</code> and
-    <code>done</code> events. The <code>change</code> event is fired continuously when selecting and done
-    is fired when user has stopped selecting.</p>
-
-    <pre class="highlight"><span class="nx">joe</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;change&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">color</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Selecting &quot;</span> <span class="o">+</span> <span class="nx">color</span><span class="p">.</span><span class="nx">toCSS</span><span class="p">());</span>
-<span class="p">});</span>
-
-<span class="nx">joe</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">color</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Selected &quot;</span> <span class="o">+</span> <span class="nx">color</span><span class="p">.</span><span class="nx">toCSS</span><span class="p">());</span>
-<span class="p">});</span>
-</pre>
-
-    <p>The color object is from <a href="http://bebraw.github.com/colorjs/">colorjs</a>.</p>
-
-    <h2>Contributors</h2>
-
-    <ul>
-        <li><a href="https://github.com/bebraw">Juho Vepsäläinen</a> - Core</li>
-        <li><a href="https://github.com/epeli">Esa-Matti Suuronen</a> -<a href="https://github.com/cowboy/grunt">Grunt</a> support</li>
-    </ul>
-
-    <h2>License</h2>
-
-    <p>colorjoe is available under MIT. See <a
-    href="https://github.com/bebraw/colorjoe/blob/master/LICENSE">LICENSE</a> for more details.</p>
+        <div id="hslPicker"></div>
 
       </section>
     </div>
@@ -100,6 +63,69 @@
       <p>Project maintained by <a href="https://github.com/bebraw">bebraw</a></p>
       <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
     </footer>
-    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+      (function () {
+          defer = (function (document, script) {
+              var scripts = {},
+                  firstScript = document.getElementsByTagName(script)[0];
+
+              return function (url, callback) {
+                  var inc;
+
+                  if (typeof scripts[url] === 'undefined') {
+                      inc = document.createElement(script);
+                      inc.async = true;
+                      inc.src = url;
+                      if (callback) {
+                          inc.onload = function () {
+                              if (!inc.onloadDone) {
+                                  inc.onloadDone = true;
+                                  callback();
+                              }
+                          };
+                          inc.onreadystatechange = function () {
+                              if (inc.readyState === "loaded" || inc.readyState === "complete") {
+                                  inc.onload();
+                              }
+                          };
+                      }
+                      firstScript.parentNode.insertBefore(inc, firstScript);
+                      scripts[url] = inc;
+                  } else {
+                      if (callback) {
+                          callback();
+                      }
+                  }
+              };
+          }(document, 'script'));
+
+          defer('js/scale.fix.js', function() {
+              fixScale(document);
+          });
+          defer('dist/colorjoe.js', function () {
+              var val = document.getElementById('rgbValue');
+              // undefined or any other erroneous value results as black
+              colorjoe.rgb('rgbPicker', undefined).on('change', function(c) {
+                  val.innerHTML = c.css();
+              }).update();
+              colorjoe.rgb('extraPicker', '#113c38', [
+                  colorjoe.extras.currentColor,
+                  colorjoe.extras.fields('RGB', 255, 0),
+                  colorjoe.extras.fields('HSL', 100),
+                  colorjoe.extras.hex
+              ]);
+              colorjoe.hsl('hslPicker', '#113c38', [
+                  colorjoe.extras.currentColor,
+                  colorjoe.extras.fields('HSL', 100),
+                  colorjoe.extras.fields('CMYK', 100),
+                  colorjoe.extras.hex
+              ]);
+          });
+      }());
+    </script>
   </body>
 </html>

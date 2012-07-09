@@ -4,7 +4,7 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
     meta: {
-      version: '0.3.0',
+      version: '0.6.0',
       banner: '/*! colorjoe - v<%= meta.version %> - ' +
         '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
         '* http://bebraw.github.com/colorjoe/\n' +
@@ -14,11 +14,11 @@ module.exports = function(grunt) {
     concat: {
       dist: {
         src: ['<banner:meta.banner>',
-              'src/drag.js',
-              'src/colorutils.js',
-              'src/color.js',
-              'src/colorjoe.js',
-              'src/rgbjoe.js'],
+              'node_modules/drag.js/src/drag.js',
+              'node_modules/onecolor/one-color-all-debug.js',
+              'src/elemutils.js',
+              'src/extras.js',
+              'src/colorjoe.js'],
         dest: 'dist/colorjoe.js'
       }
     },

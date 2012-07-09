@@ -1,154 +1,192 @@
 (function(root, factory) {
   if(typeof define === 'function' && define.amd)
-    define(['./color', './drag'], factory);
-  else root.colorjoe = factory(root.color, root.drag);
-}(this, function(color, drag) {
-var ret = function(element, initialColor) {
-  var picker = element;
-  if(isString(element)) picker = document.getElementById(element);
+    define(['./onecolor', './drag', './elemutils', './extras'], factory);
+  else root.colorjoe = factory(root.ONECOLOR, root.drag, root.elemutils,
+    root.colorjoeextras);
+}(this, function(onecolor, drag, utils, extras) {
+var picker = function(cbs) {
+  if(!all(isFunction, [cbs.init, cbs.xy, cbs.z]))
+    return console.warn('colorjoe: missing cb');
 
-  if(picker) return setup(picker, initialColor);
-
-  function setup(picker, col) {
-    var hsv = color.hsva(col);
-
-    picker.className = 'colorPicker';
-
-    var div = partial(e, 'div');
-    var twod = div('twod', picker);
-    var p1 = div('pointer', twod);
-    div('shape shape1', p1);
-    div('shape shape2', p1);
-    div('bg bg1', twod);
-    div('bg bg2', twod);
-
-    var oned = div('oned', picker);
-    var p2 = div('pointer', oned);
-    div('shape', p2);
-    div('bg', oned);
-
-    drag(oned, {
-      begin: changeH,
-      change: changeH,
-      end: done
+  return function(element, initialColor, extras) {
+    return setup({
+      e: element,
+      color: initialColor,
+      cbs: cbs,
+      extras: extras
     });
-
-    function changeH(p) {
-      hsv.h(p.y);
-      H(p.y);
-      changed(hsv);
-    }
-
-    drag(twod, {
-      begin: changeSV,
-      change: changeSV,
-      end: done
-    });
-
-    function changeSV(p) {
-      hsv.s(p.x);
-      hsv.v(1 - p.y);
-      SV(p.x, 1 - p.y);
-      changed(hsv);
-    }
-
-    H(hsv.h());
-
-    SV(hsv.s(), hsv.v());
-
-    function H(h) {
-      p2.style.top = clamp(h * 100, 0, 100) + '%';
-      twod.style.background = color.hsva({h: h, s: 1, v: 1}).toCSS();
-    }
-
-    function SV(s, v) {
-      p1.style.left = clamp(s * 100, 0, 100) + '%';
-      p1.style.top = clamp((1 - v) * 100, 0, 100) + '%';
-    }
-
-    var listeners = {change: [], done: []};
-
-    function changed() {
-      for(var i = 0, len = listeners.change.length; i < len; i++)
-        listeners.change[i](hsv);
-    }
-
-    function done() {
-      for(var i = 0, len = listeners.done.length; i < len; i++)
-        listeners.done[i](hsv);
-    }
-
-    var ob = {
-      e: picker,
-      update: function() {
-        changed(hsv);
-
-        return ob;
-      },
-      get: function() {
-          return color.rgba(hsv);
-      },
-      set: function(c) {
-        hsv = color.hsva(c);
-        hsv.v(hsv.v());
-        H(hsv.h());
-        SV(hsv.s(), hsv.v());
-
-        return ob;
-      },
-      on: function(evt, cb) {
-        if(evt == 'change' || evt == 'done') {
-          listeners[evt].push(cb);
-        }
-        else console.warn('Passed invalid evt name to colorjoe.on');
-
-        return ob;
-      },
-      removeAllListeners: function(evt) {
-        if (evt) {
-          delete listeners[evt];
-        }
-        else {
-          for(var key in listeners) {
-            delete listeners[key];
-          }
-        }
-      }
-    };
-
-    return ob;
-  }
+  };
 };
 
-// helpers needed by rgbjoe
-ret.partial = partial;
-ret.e = e;
+/* pickers */
+picker.rgb = picker({
+  init: function(col, xy, z) {
+    var ret = onecolor(col).hsl();
 
-return ret;
+    this.xy(ret, {x: ret.saturation(), y: 1 - ret.value()}, xy, z);
+    this.z(ret, ret.hue(), xy, z);
 
-function clamp(a, minValue, maxValue) {
-  return Math.min(Math.max(a, minValue), maxValue);
-}
+    return ret;
+  },
+  xy: function(col, p, xy, z) {
+    utils.X(xy.pointer, p.x);
+    utils.Y(xy.pointer, p.y);
 
-function isString(o) {
-  return typeof(o) === 'string';
-}
+    return col.saturation(p.x).value(1 - p.y);
+  },
+  z: function(col, v, xy, z) {
+    utils.Y(z.pointer, v);
+    RGB_BG(xy.background, v);
 
-function e(type, klass, p) {
-  var elem = document.createElement(type);
-  elem.className = klass;
-  p.appendChild(elem);
+    return col.hue(v);
+  }
+});
 
-  return elem;
-}
+picker.hsl = picker({
+  init: function(col, xy, z) {
+    var ret = onecolor(col).hsl();
 
-// http://stackoverflow.com/questions/4394747/javascript-curry-function
-function partial(fn) {
-  var slice = Array.prototype.slice;
-  var args = slice.apply(arguments, [1]);
+    this.xy(ret, {x: ret.hue(), y: 1 - ret.saturation()}, xy, z);
+    this.z(ret, 1 - ret.lightness(), xy, z);
 
-  return function() {
-    return fn.apply(null, args.concat(slice.apply(arguments)));
+    return ret;
+  },
+  xy: function(col, p, xy, z) {
+    utils.X(xy.pointer, p.x);
+    utils.Y(xy.pointer, p.y);
+    RGB_BG(z.background, p.x);
+
+    return col.hue(p.x).saturation(1 - p.y);
+  },
+  z: function(col, v, xy, z) {
+    utils.Y(z.pointer, v);
+
+    return col.lightness(1 - v);
+  }
+});
+
+picker.extras = extras;
+
+return picker;
+
+function RGB_BG(e, h) {utils.BG(e, new onecolor.HSV(h, 1, 1).cssa());}
+
+function setup(o) {
+  if(!o.e) return console.warn('colorjoe: missing element');
+
+  var e = isString(o.e)? document.getElementById(o.e): o.e;
+  e.className = 'colorPicker';
+
+  var cbs = o.cbs;
+
+  var xy = drag.xyslider({
+    parent: e,
+    'class': 'twod',
+    cbs: {
+      begin: changeXY,
+      change: changeXY,
+      end: done
+    }
+  });
+
+  function changeXY(p) {
+    col = cbs.xy(col, p, xy, z);
+    changed();
+  }
+
+  var z = drag.slider({
+    parent: e,
+    'class': 'oned',
+    cbs: {
+      begin: changeZ,
+      change: changeZ,
+      end: done
+    }
+  });
+
+  function changeZ(p) {
+    col = cbs.z(col, p.y, xy, z);
+    changed();
+  }
+
+  var col = cbs.init(getColor(o.color), xy, z);
+  var listeners = {change: [], done: []};
+
+  function changed() {
+    for(var i = 0, len = listeners.change.length; i < len; i++)
+      listeners.change[i](col);
+  }
+
+  function done() {
+    for(var i = 0, len = listeners.done.length; i < len; i++)
+      listeners.done[i](col);
+  }
+
+  var ob = {
+    e: e,
+    update: function() {
+      changed();
+
+      return ob;
+    },
+    get: function() {
+      return col;
+    },
+    set: function(c) {
+      var oldCol = this.get();
+      col = cbs.init(getColor(c), xy, z);
+
+      if(oldCol.hex() != col.hex()) changed();
+
+      return ob;
+    },
+    on: function(evt, cb) {
+      if(evt == 'change' || evt == 'done') {
+        listeners[evt].push(cb);
+      }
+      else console.warn('Passed invalid evt name "' + evt + '" to colorjoe.on');
+
+      return ob;
+    },
+    removeAllListeners: function(evt) {
+      if (evt) {
+        delete listeners[evt];
+      }
+      else {
+        for(var key in listeners) {
+          delete listeners[key];
+        }
+      }
+    }
   };
+
+  setupExtras(e, ob, o.extras);
+  changed();
+
+  return ob;
 }
+
+function getColor(c) {
+   var ret = onecolor(c);
+
+   return ret? ret: onecolor('black');
+}
+
+function setupExtras(p, joe, extras) {
+  if(!extras) return;
+
+  var c = utils.div('extras', p);
+  var cbs;
+
+  extras.forEach(function(e) {
+    cbs = e(c, joe);
+
+    for(var k in cbs) joe.on(k, cbs[k]);
+  });
+}
+
+function all(cb, a) {return a.map(cb).filter(id).length == a.length;}
+function isString(o) {return typeof(o) === 'string';}
+function isFunction(input) {return typeof input === "function";}
+function id(a) {return a;}
 }));
