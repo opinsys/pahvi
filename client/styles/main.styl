@@ -306,41 +306,6 @@ button:hover
         margin 1em
         padding 0
 
-      .addElements
-        .draggable
-          background-color pahviyellow
-          border dotted 2px pahvigray
-          cursor move
-          height 35px
-          margin 0 0 0.5em
-          padding 1em 0.5em 0 50px
-          text-align left
-          text-transform uppercase
-        .textbox
-          background-image iconurl
-          background-position text_icon_position
-          background-repeat no-repeat
-          &:hover
-            background-position text_icon_position_hover
-        .plainbox
-          background-image iconurl
-          background-repeat no-repeat
-          background-position plainbox_icon_position
-          &:hover
-            background-position plainbox_icon_position_hover
-        .imagebox
-          background-image iconurl
-          background-repeat no-repeat
-          background-position image_icon_position
-          &:hover
-            background-position image_icon_position_hover
-        .text
-          background iconurl no-repeat 0 -75px transparent
-        .image
-          background iconurl no-repeat 0 10px transparent
-          h2
-            margin 0 0 0.5em
-            background-position 10px -35px
       .layers
         .layersSortable
           list-style-type none
@@ -371,6 +336,34 @@ button:hover
             background-position plainbox_icon_position
           .image
             background-position image_icon_position
+
+.draggable
+  background-color pahviyellow
+  border dotted 2px pahvigray
+  cursor move
+  height 35px
+  margin 0 0 0.5em
+  padding 1em 0.5em 0 50px
+  text-align left
+  text-transform uppercase
+.textbox
+  background-image iconurl
+  background-position text_icon_position
+  background-repeat no-repeat
+  &:hover
+    background-position text_icon_position_hover
+.plainbox
+  background-image iconurl
+  background-repeat no-repeat
+  background-position plainbox_icon_position
+  &:hover
+    background-position plainbox_icon_position_hover
+.imagebox
+  background-image iconurl
+  background-repeat no-repeat
+  background-position image_icon_position
+  &:hover
+    background-position image_icon_position_hover
 
 .dragdrop_image_from_computer
   background url("/img/add-image-from-computer.png") no-repeat 0 2px pahvicream
