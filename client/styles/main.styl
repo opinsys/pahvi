@@ -77,6 +77,17 @@ button:hover
       background-position switch_mode_icon_position_hover
 
 
+button.delete, .visibility
+  border 2px solid pahviyellow !important
+  border-radius 20px
+  background-color pahvigray
+  color pahviyellow
+  &:hover
+    background-color pahvired !important
+
+.visibility :checked
+  background-color pahvired !important
+
 .container
   margin 0 auto
 
@@ -97,8 +108,6 @@ button:hover
       color pahviyellow
       font-size 0.6em
     &.delete
-      border 2px solid pahviyellow !important
-      border-radius 20px
       font-size 12px
       font-weight 600
       height 30px
@@ -108,8 +117,6 @@ button:hover
       text-align center
       top -15px
       width 30px
-      &:hover
-        background-color pahvired !important
 
   .pasteboard
     border-top solid 1px pahvigray
@@ -317,19 +324,32 @@ button:hover
             background-repeat no-repeat
             border 2px solid pahvigray
             height 35px
+            overflow hidden
             margin 0 0 0.5em
             padding 1em 0.5em 0 55px
+            .tools
+              float left
+            .nameText
+              float left
+              overflow hidden
+              width 70px
             &.hovering
               background-color pahviyellow !important
-              cursor pointer
-            &:hover > .delete
-              display block
+              cursor move
             .delete
-              display none
-              margin-right 10px
-              position absolute
-              right 0
-              top 10px
+              display block
+              float left
+              font-size 10px
+              font-weight 600
+              height 20px
+              width 20px
+              margin-left 5px
+              margin-top 2px
+            .visibility
+              display block
+              float left
+              font-size 14px
+
           .text
             background-position text_icon_position
           .plain
