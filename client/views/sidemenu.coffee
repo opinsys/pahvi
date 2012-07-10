@@ -4,6 +4,8 @@ views = NS "Pahvi.views"
 
 class views.ToolBox extends Backbone.View
 
+  className: "addElements"
+
   constructor: ->
     super
     @$el = $ @el
@@ -16,7 +18,7 @@ class views.ToolBox extends Backbone.View
 
   render: ->
     @$el.html @renderTemplate "toolbox"
-    @$(".addElements .droppable ").draggable
+    @$(".draggable ").draggable
       helper: "clone"
       appendTo: "body"
 
