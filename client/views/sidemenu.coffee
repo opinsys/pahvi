@@ -48,7 +48,7 @@ class views.SideMenu extends Backbone.View
       # Zoomooz causes some weird bugs on Chrome. Try to workaround those.
       $("body").removeAttr("style")
       @$el.css("position", "absolute").removeAttr("style");
-      @render()
+      @renderSubview()
 
   events:
     "click a": "selectSubview"
