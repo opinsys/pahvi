@@ -422,8 +422,6 @@ html.presentation
     text-align center
 
   .configs
-    background-color rgb(242,242,242)
-    background-color rgba(242,242,242,0.8)
     border-radius 5px 5px 0 0
     margin 1em 0 0
     padding 0
@@ -445,29 +443,34 @@ h1.propertyTitle
   text-align center
   text-transform uppercase
 
-.config.imageSrc, .config.nameEditor
-  background-color transparent !important
-
-.config.nameEditor input
-  width 160px
 
 
 .config
+  text-align center
+  margin-bottom 10px
+  background-color rgb(242,242,242)
+  background-color rgba(242,242,242,0.8)
+  &.nameEditor input
+    margin-top 5px
+    margin-bottom 5px
   span
     font-size 0.7em
     display inline-block
     height 20px
     padding 0.25em 0 !important
-    text-transform uppercase
+  input,button
+    height 20px
+    width 150px
+  .fileInput
+    position relative
+    top -20px
+    opacity 0
   input
     background-color pahvilightgray
     background-image linear-gradient(top, pahvilightgray 25%, #f9f9f9)
     border 1px solid bordergray
-    height 20px
-    padding 0.25em
-    width 70%
-  input.fileInput
-    margin-left 5px
+
+
 
 .tooltip
   background-color rgba(180,180,180,0.85)
