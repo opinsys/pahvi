@@ -158,6 +158,9 @@ app.configure ->
 
   js.addFile rootDir + "/client/vendor/jquery.form.js"
 
+  js.addFile rootDir + "/client/vendor/tipsy/src/javascripts/jquery.tipsy.js"
+  css.addFile rootDir + "/client/vendor/tipsy/src/stylesheets/tipsy.css"
+
   js.addFile rootDir + "/client/vendor/jquery-ui/jquery-ui.js"
   css.addFile rootDir + "/client/vendor/jquery-ui/jquery-ui.css"
 
