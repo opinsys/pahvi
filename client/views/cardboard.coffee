@@ -59,8 +59,8 @@ class views.Cardboard extends Backbone.View
   dropped: (e, ui) ->
 
     options =
-      left: e.originalEvent.offsetX + "px"
-      top: e.originalEvent.offsetY + "px"
+      left: e.clientX + "px"
+      top: e.clientY + "px"
 
     if type = ui?.draggable.data("boxtype")
       @collection.createBox type, options
