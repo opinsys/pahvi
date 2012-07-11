@@ -124,6 +124,12 @@ class BaseBoxModel extends Backbone.Model
 
   getPreviewHtml: -> ""
 
+  # Getter extension http://stackoverflow.com/a/6696112/153718
+  get: (attr) ->
+    if typeof(getter = this["_bbGet_" + attr]) is "function"
+      return getter.call this, attr
+    super
+
 class models.TextBoxModel extends BaseBoxModel
 
   type: "text"
