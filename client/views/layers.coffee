@@ -4,7 +4,7 @@ views = NS "Pahvi.views"
 
 class views.Layers extends Backbone.View
 
-  className: "layers"
+  className: "bb-layers"
 
   constructor: ({@settings}) ->
     super
