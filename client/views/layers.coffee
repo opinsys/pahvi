@@ -105,10 +105,19 @@ class views.Layers extends Backbone.View
 
      # Make sure that the order is correct
     boxes.sort (a, b) -> b.zIndex - a.zIndex
-    # (console.log b.name, b.zIndex) for b in boxes
 
     @$el.html @renderTemplate "layers", boxes: boxes
+
     @sortable = @$("ul").sortable()
+
+    # Remove orphan tooltips if any
+    $(".layersTooltip").remove()
+
+    tipsy = @$(".fancyTooltip").tipsy
+      gravity: "e"
+      opacity: 1
+      className: "layersTooltip"
+
     @items = @$(".layersSortable li")
 
 

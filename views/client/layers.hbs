@@ -4,13 +4,13 @@ Set box layering by dragging them to desired order.
 </p>
 <ul class="layersSortable" >
 {{#each boxes}}
-  <li class="{{this.type}}" data-id="{{this.id}}" title="{{this.name}}">
-  <div class="nameText">{{this.name}}</div>
+  <li class="{{this.type}}" data-id="{{this.id}}" >
+  <div class="nameText" title="{{this.name}}">{{this.name}}</div>
   <div class="tools">
-    <div class="visible">
+    <div class="visible fancyTooltip"  title="Hide box temporarily" >
       <input type="checkbox"  {{#if this.visible}}checked{{/if}} />
     </div>
-    <button class="delete">X</button>
+    <button class="delete fancyTooltip" title="Delete box permanently" >X</button>
   </div>
   </li>
 {{/each}}
