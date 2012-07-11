@@ -169,6 +169,7 @@ app.configure ->
   js.addFile rootDir + "/client/vendor/noty/js/jquery.noty.js"
   css.addFile rootDir + "/client/vendor/noty/css/jquery.noty.css"
 
+
   js.addFile rootDir + "/client/vendor/colorjoe/dist/colorjoe.js"
   css.addFile rootDir + "/client/vendor/colorjoe/css/colorjoe.css"
 

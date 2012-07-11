@@ -7,8 +7,8 @@ Set box layering by dragging them to desired order.
   <li class="{{this.type}}" data-id="{{this.id}}" title="{{this.name}}">
   <div class="nameText">{{this.name}}</div>
   <div class="tools">
-    <div class="visibility">
-      <input type="checkbox" class="visibility" />
+    <div class="visible">
+      <input type="checkbox"  {{#if this.visible}}checked{{/if}} />
     </div>
     <button class="delete">X</button>
   </div>

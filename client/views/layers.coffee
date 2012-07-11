@@ -10,10 +10,13 @@ class views.Layers extends Backbone.View
     super
     @$el = $ @el
 
-    @collection.bind "add", => @render()
-    @collection.bind "destroy", (box) => @render()
-    @collection.bind "change:name", (box) => @render()
-    @collection.bind "change:zIndex", (box) => @render()
+    @collection.bind [
+      "add"
+      "destroy"
+      "change:name"
+      "change:zIndex"
+      "change:visible"
+    ].join(" "), => @render()
 
     @collection.bind "pushdown", (box) => @move box, -1
     @collection.bind "pushup", (box) => @move box, 1
@@ -32,7 +35,12 @@ class views.Layers extends Backbone.View
     "click .layersSortable li": "onClickItem"
     "mouseenter .layersSortable li": "onMouseEnterItem"
     "mouseleave .layersSortable li": "onMouseLeaveItem"
+    "click .visible input": "onVisibleClick"
 
+
+  onVisibleClick: (e) ->
+    model = @collection.get @boxIdFromParent e.target
+    model.set visible: $(e.target).prop "checked"
 
   addUniqueClass: (id, className) ->
     return if not @items
@@ -43,10 +51,11 @@ class views.Layers extends Backbone.View
 
 
   delete: (e, ui) ->
-    id = $(e.target).parent("li").data("id")
-    model = @collection.get id
+    model = @collection.get @boxIdFromParent e.target
     model.destroy()
 
+  boxIdFromParent: (elem) ->
+    $(elem).parents("li").first().data("id")
 
   onMouseEnterItem: (e) ->
     @settings.set hoveredBox: $(e.target).data "id"
@@ -92,6 +101,7 @@ class views.Layers extends Backbone.View
       name: m.get "name"
       type: m.type
       zIndex: m.get "zIndex"
+      visible: m.get "visible"
 
      # Make sure that the order is correct
     boxes.sort (a, b) -> b.zIndex - a.zIndex

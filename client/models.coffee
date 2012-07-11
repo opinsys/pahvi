@@ -130,6 +130,13 @@ class BaseBoxModel extends Backbone.Model
       return getter.call this, attr
     super
 
+  # If visibility is undefined default to visible
+  _bbGet_visible: (attr) ->
+    val = @attributes[attr]
+    if typeof(val) is "undefined"
+      return true
+    return val
+
 class models.TextBoxModel extends BaseBoxModel
 
   type: "text"

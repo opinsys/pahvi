@@ -121,12 +121,18 @@ class views.BaseBox extends Backbone.View
 
   render: ->
 
+
     @$el.resizable "destroy"
     @$el.transformable "destroy"
     @$el.draggable "destroy"
 
-    @$el.html @renderTemplate @templateId, @model.toJSON()
+    if not @model.get "visible"
+      @$el.css "display", "none"
+      return
+    else
+      @$el.css "display", "block"
 
+    @$el.html @renderTemplate @templateId, @model.toJSON()
 
     @$el.css
       left: @model.get "left"
@@ -135,6 +141,7 @@ class views.BaseBox extends Backbone.View
       height: @model.get "height"
       "z-index": @model.get "zIndex"
       "background-color": @model.get("backgroundColor") or "white" # XXX
+
 
     @$el.setTransform "rotate", @model.get "rotate"
 
