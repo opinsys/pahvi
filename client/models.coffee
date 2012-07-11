@@ -42,10 +42,7 @@ class models.Boxes extends Backbone.SharedCollection
     @sort()
 
 
-  sort: ->
-    if not @disableSort
-      super
-
+  sort: -> super if not @disableSort
 
   createBox: (type, options={}) ->
 
