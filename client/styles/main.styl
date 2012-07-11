@@ -122,7 +122,6 @@ button.delete, .visible
   .pasteboard
     border-top solid 1px pahvigray
     margin -1px
-    z-index 1
 
     .box.ui-draggable-dragging
       border dotted 2px black !important
@@ -250,7 +249,7 @@ button.delete, .visible
     right 0
     top 82px
     bottom 0px
-    z-index 9999
+    z-index 13
     width 205px
     margin-right 4px
 
@@ -370,6 +369,7 @@ button.delete, .visible
   padding 1em 0.5em 0 50px
   text-align left
   text-transform uppercase
+  z-index 15
 .textbox
   background-image iconurl
   background-position text_icon_position
@@ -505,10 +505,10 @@ h1.propertyTitle
   height 30px
   padding 0 1em
   text-transform uppercase
-  z-index 9999
+  z-index 16
 
 .lightbox
-  z-index 100000
+  z-index 14
   position absolute
   width 100%
   height 100%
@@ -517,7 +517,6 @@ h1.propertyTitle
   right 0px
 
   .content
-    z-index 100001
     padding 2em
     margin auto 0
     background-color white
@@ -530,7 +529,7 @@ h1.propertyTitle
 
 
 .lightbox
-  z-index 100000
+  z-index 14
   position absolute
   width 100%
   height 100%
@@ -551,7 +550,7 @@ h1.propertyTitle
     max-height 800px
     padding 2em
     position absolute
-    z-index 100001
+    z-index 16
 
     .ok
       background-color #eeeeee
@@ -675,7 +674,7 @@ h1.propertyTitle
 
 .uploadStatus
   position absolute
-  z-index 10000
+  z-index 15
   background-color white
   font-size 8pt
 
