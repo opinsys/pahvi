@@ -7,6 +7,8 @@ piler = require "piler"
 sharejs = require("share").server
 nodemailer = require "nodemailer"
 _  = require "underscore"
+path = require "path"
+
 
 
 RedisStore = require('connect-redis')(express)
@@ -91,8 +93,10 @@ app.configure "development", ->
 #  js.liveUpdate css
 
 
+DEVELOP = true
 templateCache = {}
 app.configure "production", ->
+  DEVELOP = false
   console.log "Production mode detected!"
   for filename in fs.readdirSync clientTmplDir
     templateCache[filename] = fs.readFileSync(clientTmplDir + filename).toString()
@@ -176,6 +180,9 @@ app.configure ->
   js.addFile rootDir + "/client/vendor/colorjoe/dist/colorjoe.js"
   css.addFile rootDir + "/client/vendor/colorjoe/css/colorjoe.css"
 
+  js.addFile rootDir + "/client/vendor/i18next.js"
+
+
   js.addUrl "/socket.io/socket.io.js"
 
   # js.addUrl "/channel/bcsocket.js"
@@ -212,6 +219,33 @@ app.configure ->
 
   css.addFile "welcome", rootDir + "/client/styles/welcome.styl"
   js.addFile "welcome", rootDir + "/client/welcome.coffee"
+
+
+  js.addUrl "translations", "/translations.js"
+  app.get "/setlang", (req, res) ->
+    console.info "Setting language to #{ req.query.lang }"
+    res.cookie "i18next", req.query.lang
+    res.redirect req.query.return
+
+  loadTranslation = (lang) ->
+    langPath = path.normalize "#{ rootDir }/locales/#{ lang }/translation.coffee"
+    if DEVELOP
+      delete require.cache[langPath]
+    return require langPath
+
+  app.get "/translations.js", (req, res) ->
+    lang = req.cookies.i18next or "en"
+    console.info "Using language #{ lang }"
+
+    translations = {}
+
+    translations[lang] = translation: loadTranslation lang
+
+    # Load fallback language always
+    translations["en"] = translation: loadTranslation "en"
+
+    res.send "window.TRANSLATIONS = #{ JSON.stringify translations };",
+      "Content-Type": "text/javascript"
 
 
 # Add routes and real application logic
