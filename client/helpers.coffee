@@ -15,13 +15,18 @@ Pahvi = NS "Pahvi"
 helpers = NS "Pahvi.helpers"
 
 $.i18n.init
-  resStore: window.TRANSLATIONS
   fallbackLng: "en"
+  sendMissing: true
+  debug: true
+  useLocalStorage: false
+  dynamicLoad: true
+  resGetPath: '/locales/resources.json?lng=__lng__&ns=__ns__'
+  resPostPath: '/locales/add/__lng__/__ns__'
 
 # Setup translation helpers
-t = Pahvi.translate = (args...) -> ($.i18n.t args...)
+t = Pahvi.translate = $.i18n.t
 Handlebars.registerHelper "t", (translationKey, opts) ->
-  (Pahvi.translate translationKey, opts)
+  Pahvi.translate translationKey, opts
 console.info "Language is #{ Pahvi.translate "lang" }"
 
 
