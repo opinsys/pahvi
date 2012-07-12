@@ -33,6 +33,7 @@
         , "gm": ""
         , "nodemailer": ""
         , "validator": ""
+        , "i18next": ""
     }
     , "devDependencies": {
           "mocha": ""
