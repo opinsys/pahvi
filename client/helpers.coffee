@@ -11,7 +11,19 @@ window.NS = (nsString) ->
     parent = parent[ns] ?= {}
   parent # return the asked namespace
 
+Pahvi = NS "Pahvi"
 helpers = NS "Pahvi.helpers"
+
+$.i18n.init
+  resStore: window.TRANSLATIONS
+  fallbackLng: "en"
+
+# Setup translation helpers
+t = Pahvi.translate = (args...) -> ($.i18n.t args...)
+Handlebars.registerHelper "t", (translationKey, opts) ->
+  (Pahvi.translate translationKey, opts)
+console.info "Language is #{ Pahvi.translate "lang" }"
+
 
 
 localStorage.debugSharedCollection = true
