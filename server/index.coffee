@@ -7,6 +7,7 @@ piler = require "piler"
 sharejs = require("share").server
 nodemailer = require "nodemailer"
 _  = require "underscore"
+i18next = require "i18next"
 path = require "path"
 
 
@@ -37,6 +38,7 @@ catch e
 
 for k, v of defaults
   config[k] ?= v
+
 
 
 nodemailer.SMTP =
@@ -122,6 +124,7 @@ hbs.registerHelper "googleAnalytics", ->
 
 app.configure ->
   app.use express.bodyParser()
+  app.use i18next.handle
   app.use express.cookieParser()
   app.use express.session
     secret: config.sessionSecret
@@ -153,6 +156,7 @@ app.configure ->
 
 
 
+
   js.addFile rootDir + "/client/vendor/jquery.js"
   js.addFile rootDir + "/client/vendor/handlebars.js"
   js.addFile rootDir + "/client/vendor/underscore.js"
@@ -161,6 +165,7 @@ app.configure ->
   js.addFile rootDir + "/client/vendor/parseuri.js"
 
   js.addFile rootDir + "/client/vendor/jquery.form.js"
+
 
   js.addFile rootDir + "/client/vendor/tipsy/src/javascripts/jquery.tipsy.js"
   css.addFile rootDir + "/client/vendor/tipsy/src/stylesheets/tipsy.css"
@@ -180,8 +185,6 @@ app.configure ->
   js.addFile rootDir + "/client/vendor/colorjoe/dist/colorjoe.js"
   css.addFile rootDir + "/client/vendor/colorjoe/css/colorjoe.css"
 
-  js.addFile rootDir + "/client/vendor/i18next.js"
-
 
   js.addUrl "/socket.io/socket.io.js"
 
@@ -190,6 +193,8 @@ app.configure ->
   js.addUrl "/share/json.uncompressed.js"
 
   js.addFile rootDir + "/public/vendor/wymeditor/jquery.wymeditor.js"
+
+  js.addFile rootDir + "/client/vendor/i18next.js"
 
   js.addFile rootDir + "/client/helpers.coffee"
   js.addFile rootDir + "/client/vendor/backbone.sharedcollection/src/backbone.sharedcollection.coffee"
@@ -221,32 +226,21 @@ app.configure ->
   js.addFile "welcome", rootDir + "/client/welcome.coffee"
 
 
-  js.addUrl "translations", "/translations.js"
-  app.get "/setlang", (req, res) ->
-    console.info "Setting language to #{ req.query.lang }"
-    res.cookie "i18next", req.query.lang
-    res.redirect req.query.return
+  resPath = path.normalize "#{ rootDir }/locales/__lng__/__ns__.json"
 
-  loadTranslation = (lang) ->
-    langPath = path.normalize "#{ rootDir }/locales/#{ lang }/translation.coffee"
-    if DEVELOP
-      delete require.cache[langPath]
-    return require langPath
+  i18next.init
+    fallbackLng: 'en'
+    resGetPath: resPath
+    resSetPath: resPath
+    debug: DEVELOP
 
-  app.get "/translations.js", (req, res) ->
-    lang = req.cookies.i18next or "en"
-    console.info "Using language #{ lang }"
+  i18next.serveClientScript(app)
+         .serveDynamicResources(app)
+         .serveMissingKeyRoute(app)
+         .serveChangeKeyRoute(app)
 
-    translations = {}
-
-    translations[lang] = translation: loadTranslation lang
-
-    # Load fallback language always
-    translations["en"] = translation: loadTranslation "en"
-
-    res.send "window.TRANSLATIONS = #{ JSON.stringify translations };",
-      "Content-Type": "text/javascript"
-
+  hbs.registerHelper "t", (translationKey, opts) ->
+    (new hbs.SafeString i18next.t translationKey, opts) + "*"
 
 # Add routes and real application logic
 require("./routes") app, config
