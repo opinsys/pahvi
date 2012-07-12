@@ -1,8 +1,8 @@
 
 
 views = NS "Pahvi.views"
-
 configs = NS "Pahvi.configs"
+t = NS "Pahvi.translate"
 
 class views.PropertiesManager extends Backbone.View
 
@@ -62,10 +62,10 @@ class BaseConfig extends Backbone.View
 class configs.BackgroundColor extends BaseConfig
 
   className: "config colorConfig backgroundColor"
-  title: "Background Color"
   colorProperty: "backgroundColor"
   templateId: "config_color"
 
+  title: t "boxproperties.backgroundColor.title"
 
   constructor: ->
     super
@@ -101,14 +101,15 @@ class configs.BackgroundColor extends BaseConfig
 
 class configs.TextColor extends configs.BackgroundColor
   className: "config colorConfig textColor"
-  title: "Text Color"
   colorProperty: "textColor"
 
+  title: t "boxproperties.textColor.title"
 
 class configs.NameEditor extends BaseConfig
   className: "config nameEditor"
 
   templateId: "config_nameeditor"
+
 
   constructor: ->
     super

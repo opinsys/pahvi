@@ -1,5 +1,6 @@
 
 views = NS "Pahvi.views"
+t = NS "Pahvi.translate"
 
 
 
@@ -47,10 +48,10 @@ class views.Menu extends Backbone.View
       modeName: "Unkown mode"
 
     if @settings.get("mode") is "edit"
-      ob.modeName = "Switch to presentation mode"
+      ob.modeName = t "topmenu.presentation"
 
     if @settings.get("mode") is "presentation"
-      ob.modeName = "Switch to edit mode"
+      ob.modeName = t "topmenu.edit"
       ob.presentation = true
 
     @$el.html @renderTemplate "topmenu", ob

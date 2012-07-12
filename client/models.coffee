@@ -3,6 +3,7 @@
 models = NS "Pahvi.models"
 views = NS "Pahvi.views"
 helpers = NS "Pahvi.helpers"
+t = NS "Pahvi.translate"
 
 
 
@@ -154,7 +155,7 @@ class models.TextBoxModel extends BaseBoxModel
     width: "200px"
     height: "200px"
     zIndex: 100
-    text: "<p>TextBox sample content</p>"
+    text: "<p>#{ t "textboxmodel.sample" }</p>"
     "backgroundColor": "white"
 
 

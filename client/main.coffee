@@ -3,9 +3,12 @@
 Pahvi = NS "Pahvi"
 views = NS "Pahvi.views"
 helpers = NS "Pahvi.helpers"
+t = NS "Pahvi.translate"
+
 
 
 Pahvi.init (err, settings, boxes, boardProperties) ->
+
 
   if err
     helpers.showFatalError "Failed to load this Pahvi. <pre>#{ err.error }: #{ err.message }</pre>"
@@ -66,14 +69,15 @@ Pahvi.init (err, settings, boxes, boardProperties) ->
 
   boxes.bind "syncerror", (model, method, err) ->
     if err is "forbidden"
-      return helpers.showFatalError "Your authentication key is bad. Please check the URL bar and reload this page."
+      return helpers.showFatalError t "main.authError"
+
     helpers.showFatalError "Data synchronization error: '#{ err }'."
 
   boxes.bind "disconnect", ->
     if settings.get("mode") is "presentation"
       helpers.zoomOut()
     scroll(0,0)
-    helpers.showFatalError "Server disconnected. Please reload page."
+    helpers.showFatalError t "main.disconnectError"
 
 
   board = new views.Cardboard

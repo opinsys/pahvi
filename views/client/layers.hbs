@@ -1,16 +1,14 @@
 
-<p class="help">
-Set box layering by dragging them to desired order.
-</p>
+<p class="help">{{ t "layers.help" }}</p>
 <ul class="layersSortable" >
 {{#each boxes}}
   <li class="{{this.type}}" data-id="{{this.id}}" >
   <div class="nameText" title="{{this.name}}">{{this.name}}</div>
   <div class="tools">
-    <div class="visible fancyTooltip"  title="Hide box temporarily" >
+    <div class="visible fancyTooltip"  title='{{ t "layers.hide" }}' >
       <input type="checkbox"  {{#if this.visible}}checked{{/if}} />
     </div>
-    <button class="delete fancyTooltip" title="Delete box permanently" >X</button>
+    <button class="delete fancyTooltip" title='{{ t "layers.delete" }}' >X</button>
   </div>
   </li>
 {{/each}}
