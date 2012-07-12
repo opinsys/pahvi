@@ -34,9 +34,9 @@ console.info "Language is #{ Pahvi.translate "lang" }"
 localStorage.debugSharedCollection = true
 
 # Do not die if we have no logging function. Eg. FF without Firebug.
-if not window.console?.log?
-  window.console =
-    log: ->
+["log", "info", "error"].forEach (method) ->
+  if not window.console?[method]?
+    window.console[method] = ->
 
 
 templateCache = {}
