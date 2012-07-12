@@ -92,8 +92,6 @@ class views.Layers extends Backbone.View
     @collection.updateZIndexes orderedIds
 
 
-
-
   render: ->
 
     boxes = @collection.filter( (m) -> m.id ).map (m) ->

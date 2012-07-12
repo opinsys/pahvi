@@ -149,13 +149,13 @@ class models.TextBoxModel extends BaseBoxModel
   ]
 
   defaults:
-    name: "Text Box"
+    name: t "model.text.name"
     top: "100px"
     left: "100px"
     width: "200px"
     height: "200px"
     zIndex: 100
-    text: "<p>#{ t "textboxmodel.sample" }</p>"
+    text: "<p>#{ t "model.text.sample" }</p>"
     "backgroundColor": "white"
 
 
@@ -173,7 +173,8 @@ class models.PlainBoxModel extends BaseBoxModel
   ]
 
   defaults:
-    name: "Plain Box"
+    name: t "model.plain.name"
+    top: "100px"
     top: "100px"
     left: "100px"
     width: "200px"
@@ -192,7 +193,7 @@ class models.ImageBox extends BaseBoxModel
   ]
 
   defaults:
-    name: "Image Box"
+    name: t "model.image.name"
     top: "100px"
     left: "100px"
     width: "200px"

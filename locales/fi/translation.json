@@ -1,58 +1,58 @@
 {
-  "main": {
-    "disconnectError": "Yhteys katkaistu. Lataa sivu uusiksi.",
-    "authError": "Your todennusavaun on virheellinen. Tarkista, että sivun osoite on oikein.",
-    "contact": 'Ota yhteyttä osoitteeseen <a href="mailto:dev@opinsys.fi">dev@opinsys.fi</a>, jos tämä virhe ei poistu.'
-  },
-  "layers": {
-    "help": "Aseta laatikoiden päällekkäisyys raahaamalla niitä.",
-    "delete": "Poista laatikko lopullisesti",
-    "hide": "Piilota laatikko väliaikaisesti"
-  },
-  "toolbox": {
-    "help": "Raahaa alla olevia elementtejä pahville luodaksesi uusia laatikoita.",
-    "desktopHelp": "Raaha ja pudota kuvia suoraan tietokoneeltasi",
-    "textbox": "Tekstiä",
-    "plainbox": "Laatikko",
-    "imagebox": "Kuva"
-  },
-  "model": {
-    "text": {
-      "sample": "Double click to edit me.",
-      "name": "Tekstilaatikko"
+    "main": {
+      "disconnectError": "Yhteys katkaistu. Lataa sivu uusiksi.",
+      "authError": "Your todennusavaun on virheellinen. Tarkista, että sivun osoite on oikein.",
+      "contact": "Ota yhteyttä osoitteeseen <a href=\"mailto:dev@opinsys.fi\">dev@opinsys.fi</a>, jos tämä virhe ei poistu."
     },
-    "image": {
-      "name": "Kuvalaatikko"
+    "layers": {
+      "help": "Aseta laatikoiden päällekkäisyys raahaamalla niitä.",
+      "delete": "Poista laatikko lopullisesti",
+      "hide": "Piilota laatikko väliaikaisesti"
     },
-    "plain": {
-      "name": "Laatikko"
+    "toolbox": {
+      "help": "Raahaa alla olevia elementtejä pahville luodaksesi uusia laatikoita.",
+      "desktopHelp": "Raaha ja pudota kuvia suoraan tietokoneeltasi",
+      "textbox": "Tekstiä",
+      "plainbox": "Laatikko",
+      "imagebox": "Kuva"
+    },
+    "model": {
+      "text": {
+        "sample": "Double click to edit me.",
+        "name": "Tekstilaatikko"
+      },
+      "image": {
+        "name": "Kuvalaatikko"
+      },
+      "plain": {
+        "name": "Laatikko"
+      }
+    },
+    "textbox": {
+      "edit": "muokkaa"
+    },
+    "readonlylink": {
+      "help": "Vain luku -linkki tähän esitykseen"
+    },
+    "topmenu": {
+      "remote": "Open Remote Controller",
+      "presentation": "Vaihda esitystilaan",
+      "edit": "Vaihda muokkaustilaan"
+    },
+    "boxproperties": {
+      "help": "Klikkaa laatikkoa muokataksesi sitä.",
+      "title": "Asetukset",
+      "image": {
+        "browse": "Selaa..."
+      },
+      "backgroundColor": {
+        "title": "Taustaväri"
+      },
+      "textColor": {
+        "title": "Tekstin väri"
+      },
+      "nameEditor": {
+        "title": "Nimi"
+      }
     }
-  },
-  "textbox": {
-    "edit": "muokkaa"
-  },
-  "readonlylink": {
-    "help": "Vain luku -linkki tähän esitykseen"
-  },
-  "topmenu": {
-    "remote": "Open Remote Controller",
-    "presentation": "Vaihda esitystilaan",
-    "edit": "Vaihda muokkaustilaan"
-  },
-  "boxproperties": {
-    "help": "Klikkaa laatikkoa muokataksesi sitä.",
-    "title": "Asetukset",
-    "image": {
-      "browse": "Selaa..."
-    },
-    "backgroundColor": {
-      "title": "Taustaväri"
-    },
-    "textColor": {
-      "title": "Tekstin väri"
-    },
-    "nameEditor": {
-      "title": "Nimi"
-    }
-  }
 }
