@@ -7,7 +7,7 @@ helpers = NS "Pahvi.helpers"
 
 
 # Init models and ShareJS
-Pahvi.init = (start) -> $ ->
+Pahvi.createConnection = (start) -> $ ->
 
   window.settings = new models.Settings
     id: "settings"

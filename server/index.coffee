@@ -154,76 +154,88 @@ app.configure ->
   app.set "views", rootDir + "/views"
   app.set 'view engine', 'hbs'
 
+  css.addFile "vendor", rootDir + "/client/styles/reset.styl"
 
+  js.addFile "vendor", rootDir + "/client/vendor/jquery.js"
 
+  js.addFile "vendor", rootDir + "/client/vendor/i18next.js"
 
-  js.addFile rootDir + "/client/vendor/jquery.js"
-  js.addFile rootDir + "/client/vendor/handlebars.js"
-  js.addFile rootDir + "/client/vendor/underscore.js"
-  js.addFile rootDir + "/client/vendor/backbone.js"
-  js.addFile rootDir + "/client/vendor/async.js"
-  js.addFile rootDir + "/client/vendor/parseuri.js"
+  js.addFile "vendor", rootDir + "/client/vendor/handlebars.js"
+  js.addFile "vendor", rootDir + "/client/vendor/underscore.js"
+  js.addFile "vendor", rootDir + "/client/vendor/backbone.js"
 
-  js.addFile rootDir + "/client/vendor/jquery.form.js"
+  js.addFile "vendor", rootDir + "/client/vendor/async.js"
+  js.addFile "vendor", rootDir + "/client/vendor/parseuri.js"
 
+  js.addFile "vendor", rootDir + "/client/vendor/jquery.form.js"
 
-  js.addFile rootDir + "/client/vendor/tipsy/src/javascripts/jquery.tipsy.js"
-  css.addFile rootDir + "/client/vendor/tipsy/src/stylesheets/tipsy.css"
+  js.addFile "vendor", rootDir + "/client/vendor/noty/js/jquery.noty.js"
+  css.addFile "vendor", rootDir + "/client/vendor/noty/css/jquery.noty.css"
 
-  js.addFile rootDir + "/client/vendor/jquery-ui/jquery-ui.js"
-  css.addFile rootDir + "/client/vendor/jquery-ui/jquery-ui.css"
+  js.addFile "vendor", rootDir + "/client/vendor/tipsy/src/javascripts/jquery.tipsy.js"
+  css.addFile "vendor", rootDir + "/client/vendor/tipsy/src/stylesheets/tipsy.css"
+  js.addFile "vendor", rootDir + "/client/helpers.coffee"
 
-  js.addFile rootDir + "/client/vendor/jquery.transform.js"
-  js.addFile rootDir + "/client/vendor/jquery.transformable-v.3.js"
-
-  js.addFile rootDir + "/client/vendor/jquery.zoomooz.js"
-
-  js.addFile rootDir + "/client/vendor/noty/js/jquery.noty.js"
-  css.addFile rootDir + "/client/vendor/noty/css/jquery.noty.css"
-
-
-  js.addFile rootDir + "/client/vendor/colorjoe/dist/colorjoe.js"
-  css.addFile rootDir + "/client/vendor/colorjoe/css/colorjoe.css"
-
-
-  js.addUrl "/socket.io/socket.io.js"
-
+  js.addUrl "pahvi", "/socket.io/socket.io.js"
   # js.addUrl "/channel/bcsocket.js"
-  js.addUrl "/share/share.uncompressed.js"
-  js.addUrl "/share/json.uncompressed.js"
+  js.addUrl "pahvi", "/share/share.uncompressed.js"
+  js.addUrl "pahvi", "/share/json.uncompressed.js"
 
-  js.addFile rootDir + "/public/vendor/wymeditor/jquery.wymeditor.js"
 
-  js.addFile rootDir + "/client/vendor/i18next.js"
 
-  js.addFile rootDir + "/client/helpers.coffee"
-  js.addFile rootDir + "/client/vendor/backbone.sharedcollection/src/backbone.sharedcollection.coffee"
-  js.addFile rootDir + "/client/models.coffee"
+  js.addFile "pahvi", rootDir + "/client/vendor/jquery-ui/jquery-ui.js"
+  css.addFile "pahvi", rootDir + "/client/vendor/jquery-ui/jquery-ui.css"
 
-  js.addFile  rootDir + "/client/views/upload.coffee"
-  js.addFile  rootDir + "/client/views/readonlylink.coffee"
-  js.addFile  rootDir + "/client/views/box.coffee"
-  js.addFile  rootDir + "/client/views/layers.coffee"
-  js.addFile  rootDir + "/client/views/sidemenu.coffee"
-  js.addFile  rootDir + "/client/views/topmenu.coffee"
-  js.addFile  rootDir + "/client/views/lightbox.coffee"
-  js.addFile  rootDir + "/client/views/boxproperties.coffee"
-  js.addFile  rootDir + "/client/views/cardboard.coffee"
-  js.addFile  rootDir + "/client/typemap.coffee"
-  js.addFile  rootDir + "/client/connection.coffee"
-  js.addFile  rootDir + "/client/router.coffee"
+  js.addFile "pahviui", rootDir + "/client/vendor/jquery.transform.js"
+  js.addFile "pahviui", rootDir + "/client/vendor/jquery.transformable-v.3.js"
 
-  js.addFile "pahvi", rootDir + "/client/main.coffee"
+  js.addFile "pahvi", rootDir + "/client/vendor/jquery.zoomooz.js"
 
+
+
+  js.addFile "pahviui", rootDir + "/client/vendor/colorjoe/dist/colorjoe.js"
+  css.addFile "pahviui", rootDir + "/client/vendor/colorjoe/css/colorjoe.css"
+
+
+
+  js.addFile "pahviui", rootDir + "/public/vendor/wymeditor/jquery.wymeditor.js"
+
+  js.addFile "pahvi", rootDir + "/client/vendor/backbone.sharedcollection/src/backbone.sharedcollection.coffee"
+  js.addFile "pahvi", rootDir + "/client/models.coffee"
+  js.addFile  "pahvi", rootDir + "/client/connection.coffee"
+
+  js.addFile  "pahviui", rootDir + "/client/views/upload.coffee"
+  js.addFile  "pahviui", rootDir + "/client/views/readonlylink.coffee"
+  js.addFile  "pahviui", rootDir + "/client/views/box.coffee"
+  js.addFile  "pahviui", rootDir + "/client/views/layers.coffee"
+  js.addFile  "pahviui", rootDir + "/client/views/sidemenu.coffee"
+  js.addFile  "pahviui", rootDir + "/client/views/topmenu.coffee"
+  js.addFile  "pahviui", rootDir + "/client/views/lightbox.coffee"
+  js.addFile  "pahviui", rootDir + "/client/views/boxproperties.coffee"
+  js.addFile  "pahviui", rootDir + "/client/views/cardboard.coffee"
+  js.addFile  "pahviui", rootDir + "/client/typemap.coffee"
+  js.addFile  "pahviui", rootDir + "/client/router.coffee"
+  js.addFile "pahviui", rootDir + "/client/main.coffee"
+  css.addFile "pahviui", rootDir + "/client/styles/generic.styl"
+  css.addFile "pahviui", rootDir + "/client/styles/main.styl"
+
+
+  js.addFile "remote", rootDir + "/client/vendor/handlebars.js"
   js.addFile "remote", rootDir + "/client/remote.coffee"
-
-  css.addFile rootDir + "/client/styles/reset.styl"
-  css.addFile rootDir + "/client/styles/generic.styl"
-  css.addFile "pahvi", rootDir + "/client/styles/main.styl"
   css.addFile "remote", rootDir + "/client/styles/remote.styl"
+
 
   css.addFile "welcome", rootDir + "/client/styles/welcome.styl"
   js.addFile "welcome", rootDir + "/client/welcome.coffee"
+
+
+  js.addFile "loader", rootDir + "/client/vendor/head.js"
+  js.addOb "loader",
+    PahviSources:
+      app: (s[0] for s in js.getSources "pahvi", "pahviui")
+      welcome: (s[0] for s in js.getSources "pahvi", "welcome")
+      remote: (s[0] for s in js.getSources "pahvi", "remote")
+  js.addFile "loader", rootDir + "/client/load.coffee"
 
 
   resPath = path.normalize "#{ rootDir }/locales/__lng__/__ns__.json"
@@ -243,7 +255,7 @@ app.configure ->
     (new hbs.SafeString i18next.t translationKey, opts) + "*"
 
 # Add routes and real application logic
-require("./routes") app, config
+require("./routes") app, js, css, config
 
 app.listen config.port, ->
   console.log "Now listening on port #{ config.port }"

@@ -1,11 +1,14 @@
 {
     "welcome": {
+        "name": "Pahvi name",
+        "required": "required",
+        "aboutEmail": "Pahvi edit-url will be sent to this email address. We use the email address only for that unless you check the box below.",
         "about": "Simple collaborative presentation tool for class rooms.",
         "more": "Read more from our blog in <a href=\"http://www.opinsys.fi/en/?p=1650\">English</a> or in <a href=\"http://www.opinsys.fi/?p=1685\">Finnish</a>.",
         "title": "Virtual collages for class rooms"
     },
     "main": {
-        "disconnectError": "main.disconnectError",
+        "disconnectError": "Disconnected",
         "authError": "Your authentication key is bad. Please check the URL bar and reload this page.",
         "contact": "Please contact us at <a href=\"mailto:dev@opinsys.fi\">dev@opinsys.fi</a> if this issue persists."
     },
@@ -19,7 +22,8 @@
         "desktopHelp": "Drag&amp;Drop images from your computer",
         "textbox": "Text Box",
         "plainbox": "Plain Box",
-        "imagebox": "Image Box"
+        "imagebox": "Image Box",
+        "help_foo": "toolbox.help_foo"
     },
     "model": {
         "text": {

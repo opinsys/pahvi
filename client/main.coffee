@@ -6,9 +6,7 @@ helpers = NS "Pahvi.helpers"
 t = NS "Pahvi.translate"
 
 
-
-Pahvi.init (err, settings, boxes, boardProperties) ->
-
+Pahvi.createConnection (err, settings, boxes, boardProperties) -> $ ->
 
   if err
     helpers.showFatalError "Failed to load this Pahvi. <pre>#{ err.error }: #{ err.message }</pre>"

@@ -63,7 +63,7 @@ class Remote extends Backbone.View
       ri.render()
       @$el.append ri.el
 
-Pahvi.init (err, settings, boxes, boardProperties) ->
+Pahvi.createConnection (err, settings, boxes, boardProperties) -> $ ->
 
   $("a.pahviLink").attr "href", settings.getAdminURL()
 

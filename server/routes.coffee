@@ -24,7 +24,7 @@ types =
   "image/jpeg": "jpg"
   "image/jpg": "jpg"
 
-module.exports = (app, config) ->
+module.exports = (app, js, css, config) ->
 
   app.post "/upload", (req, res) ->
 
@@ -57,8 +57,8 @@ module.exports = (app, config) ->
     res.render "welcome",
       layout: false
       config: config
-
-
+      css: css.renderTags "vendor", "welcome"
+      js: js.renderTags "vendor", "loader"
 
 
 
@@ -126,10 +126,12 @@ module.exports = (app, config) ->
       authKey: ""
       config: config
       data: {}
+      js: js.renderTags "vendor", "loader"
+      css: css.renderTags "vendor", "pahvi"
 
 
 
-  authRender = (template, layout="layout") -> (req, res, next) ->
+  authRender = (template, options={}) -> (req, res, next) ->
     id = req.params.id
 
     pahvi = new PahviMeta
@@ -141,10 +143,12 @@ module.exports = (app, config) ->
         if err?.code is 404
           return res.redirect "/"
         res.render template,
-          authKey: req.params.token
-          config: config
-          data: result
-          layout: layout
+          _.extend
+            authKey: req.params.token
+            config: config
+            data: result
+            layout: true
+          , options
 
     console.log "Authkey", req.params.token
     pahvi.authenticate req.params.token, (err, authOk) ->
@@ -156,7 +160,13 @@ module.exports = (app, config) ->
 
       response()
 
-  app.get "/e/:id/:token", authRender "index"
-  app.get "/r/:id/:token", authRender "remote", false
+  app.get "/e/:id/:token", authRender "index",
+    js: js.renderTags "vendor", "loader"
+    css: css.renderTags "vendor", "pahvi", "pahviui"
+
+  app.get "/r/:id/:token", authRender "remote",
+    js: js.renderTags "vendor", "loader"
+    css: css.renderTags "vendor", "pahvi", "remote"
+    layout: false
 
 

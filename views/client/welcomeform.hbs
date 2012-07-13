@@ -2,7 +2,7 @@
 <form action="" method="post" accept-charset="utf-8">
 
 
-<h2>Pahvi name</h2>
+<h2>{{ t "welcome.name" }} <span class="required">({{ t "welcome.required" }})</span></h2>
 
 {{#if error.name}}
 <span class="error"> {{error.name}} </span>
@@ -24,8 +24,7 @@
 
 <p>
 
-Pahvi edit-url will be sent to this email address. We use the email
-address only for that unless you check the box below.
+{{ t "welcome.aboutEmail" }}
 
 </p>
 

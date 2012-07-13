@@ -11,24 +11,14 @@ window.NS = (nsString) ->
     parent = parent[ns] ?= {}
   parent # return the asked namespace
 
-Pahvi = NS "Pahvi"
 helpers = NS "Pahvi.helpers"
 
-$.i18n.init
-  fallbackLng: "en"
-  sendMissing: true
-  debug: true
-  useLocalStorage: false
-  dynamicLoad: true
-  resGetPath: '/locales/resources.json?lng=__lng__&ns=__ns__'
-  resPostPath: '/locales/add/__lng__/__ns__'
+Pahvi.translate = ->
+  throw new Error "Translations are not loaded yet!"
+  "Translations are not loaded yet!"
 
-# Setup translation helpers
-t = Pahvi.translate = $.i18n.t
 Handlebars.registerHelper "t", (translationKey, opts) ->
   Pahvi.translate translationKey, opts
-console.info "Language is #{ Pahvi.translate "lang" }"
-
 
 
 localStorage.debugSharedCollection = true
@@ -74,7 +64,7 @@ helpers.loadImage = (url, cb=->) ->
 
 helpers.showFatalError = (msg) ->
   noty
-    text: msg + "<p><small>#{ t "main.contact" }</small></p>"
+    text: msg + "<p><small>#{ Pahvi.translate "main.contact" }</small></p>"
     layout: "center"
     type: "error"
     textAlign: "center"
