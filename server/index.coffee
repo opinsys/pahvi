@@ -176,7 +176,7 @@ app.configure ->
   js.addFile rootDir + "/client/vendor/jquery.transform.js"
   js.addFile rootDir + "/client/vendor/jquery.transformable-v.3.js"
 
-  js.addFile rootDir + "/client/vendor/zoomooz/jquery.zoomooz.min.js"
+  js.addFile rootDir + "/client/vendor/jquery.zoomooz.js"
 
   js.addFile rootDir + "/client/vendor/noty/js/jquery.noty.js"
   css.addFile rootDir + "/client/vendor/noty/css/jquery.noty.css"
