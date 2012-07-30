@@ -7,15 +7,11 @@ Pahvi.translate = ->
   throw new Error "Translations are not loaded yet!"
   "Translations are not loaded yet!"
 
-routes =
-  "/": PahviSources.welcome
-  "/e": PahviSources.app
-  "/p": PahviSources.app
-  "/r": PahviSources.remote
 
 $.i18n.init
   fallbackLng: "en"
   sendMissing: true
+  sendMissingTo: "all"
   debug: true
   useLocalStorage: false
   dynamicLoad: true
