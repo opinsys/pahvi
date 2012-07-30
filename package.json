@@ -1,6 +1,7 @@
 {
-    "name" : "example-webapp"
+    "name" : "pahvi"
     , "version": "0.1.0"
+    , "private": true
     , "author": "Esa-Matti Suuronen"
     , "homepage": "https://github.com/opinsys/example-webapp"
     , "description": "Example webapp using Coffeescript, Node.js and Backbone.js"
