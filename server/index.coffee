@@ -242,6 +242,8 @@ app.configure ->
 
   i18next.init
     fallbackLng: 'en'
+    sendMissingTo: "all"
+    sendMissing: true
     resGetPath: resPath
     resSetPath: resPath
     debug: DEVELOP
