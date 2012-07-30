@@ -222,6 +222,8 @@ app.configure ->
 
   js.addFile "remote", rootDir + "/client/vendor/handlebars.js"
   js.addFile "remote", rootDir + "/client/remote.coffee"
+
+  css.addFile "remote", rootDir + "/client/styles/remote_generic.styl"
   css.addFile "remote", rootDir + "/client/styles/remote.styl"
 
 
