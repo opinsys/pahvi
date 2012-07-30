@@ -1,4 +1,14 @@
 {
+    "welcome": {
+        "name": "Pahvin nimi",
+        "required": "pakollinen",
+        "aboutEmail": "Pahvin muokkaus-osoite lähetetään tähän osoitteeseen. Osoitetta käytetään vain tähän tarkoitukseen ellet ruksita alla olevaa laatikkoa.",
+        "about": "Yhteisöllinen esitystyökalu luokkaopetukseen",
+        "more": "Lue lisää <a href=\"http://www.opinsys.fi/pahvi-virtuaalinen-kollaasi\">blogistamme</a>",
+        "title": "Virtuaaliset kollaasit",
+        "subscribe": "Haluan päivitystiedotteita Pahvista sähköpostiini",
+        "create": "Luo uusi Pahvi!"
+    },
     "main": {
       "disconnectError": "Yhteys katkaistu. Lataa sivu uusiksi.",
       "authError": "Your todennusavaun on virheellinen. Tarkista, että sivun osoite on oikein.",
@@ -18,7 +28,7 @@
     },
     "model": {
       "text": {
-        "sample": "Double click to edit me.",
+        "sample": "Tuplaklikkaa muokataksesi minua.",
         "name": "Tekstilaatikko"
       },
       "image": {
@@ -35,7 +45,7 @@
       "help": "Vain luku -linkki tähän esitykseen"
     },
     "topmenu": {
-      "remote": "Open Remote Controller",
+      "remote": "Avaa kauko-ohjain",
       "presentation": "Vaihda esitystilaan",
       "edit": "Vaihda muokkaustilaan"
     },
@@ -54,5 +64,10 @@
       "nameEditor": {
         "title": "Nimi"
       }
+    },
+    "startinfo": {
+        "welcome": "Tervetuloa!",
+        "share": "Käytä tätä osoitetta jakaaksesi tätä esitystä vain luku muodossa",
+        "admin": "Käytä tätä osoitetta kutsuaksesi muita muokkaamaan tätä esitystä"
     }
 }

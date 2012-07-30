@@ -5,7 +5,9 @@
         "aboutEmail": "Pahvi edit-url will be sent to this email address. We use the email address only for that unless you check the box below.",
         "about": "Simple collaborative presentation tool for class rooms.",
         "more": "Read more from our blog in <a href=\"http://www.opinsys.fi/en/?p=1650\">English</a> or in <a href=\"http://www.opinsys.fi/?p=1685\">Finnish</a>.",
-        "title": "Virtual collages for class rooms"
+        "title": "Virtual collages for class rooms",
+        "subscribe": "I want to receive updates about Pahvi to my Email.",
+        "create": "Create new Pahvi!"
     },
     "main": {
         "disconnectError": "Disconnected",
@@ -22,8 +24,7 @@
         "desktopHelp": "Drag&amp;Drop images from your computer",
         "textbox": "Text Box",
         "plainbox": "Plain Box",
-        "imagebox": "Image Box",
-        "help_foo": "toolbox.help_foo"
+        "imagebox": "Image Box"
     },
     "model": {
         "text": {
@@ -63,5 +64,10 @@
         "nameEditor": {
             "title": "Name"
         }
+    },
+    "startinfo": {
+        "welcome": "Welcome!",
+        "share": "Use this URL to share this presentation as read only",
+        "admin": "Use this URL to invite other editors"
     }
 }
