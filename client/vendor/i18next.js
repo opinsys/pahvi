@@ -43,6 +43,8 @@
     // global object or to jquery.
     if (typeof module !== 'undefined' && module.exports) {
         module.exports = i18n;
+    } else if (typeof define === 'function' && define.amd) {
+        define(i18n);
     } else {
         if ($) {
             $.i18n = $.i18n || i18n;
@@ -73,6 +75,7 @@
 
         dynamicLoad: false,
         sendMissing: false,
+        sendMissingTo: 'fallback', // current | all
         sendType: 'POST',
 
         interpolationPrefix: '__',
@@ -335,7 +338,7 @@
             delete optionsSansCount.context;
             optionsSansCount.defaultValue = o.contextNotFound;
 
-            var contextKey = key + '_' + options.context;
+            var contextKey = ns + ':' + key + '_' + options.context;
             
             translated = translate(contextKey, optionsSansCount);
             if (translated != o.contextNotFound) {
@@ -348,7 +351,7 @@
             delete optionsSansCount.count;
             optionsSansCount.defaultValue = o.pluralNotFound;
 
-            var pluralKey = key + o.pluralSuffix;
+            var pluralKey = ns + ':' + key + o.pluralSuffix;
             var pluralExtension = pluralExtensions.get(currentLng, options.count);
             if (pluralExtension !== 'other') { pluralKey = pluralKey + '_' + pluralExtension; }
             
@@ -558,21 +561,35 @@
             var payload = {};
             payload[key] = defaultValue;
 
-            var url = applyReplacement(o.resPostPath, { lng: o.fallbackLng, ns: ns });
-            f.ajax({
-                url: url,
-                type: o.sendType,
-                data: payload,
-                success: function(data, status, xhr) {
-                    f.log('posted missing key \'' + key + '\' to: ' + url);
-                    resStore[o.fallbackLng][ns][key] = defaultValue;
-                },
-                error : function(xhr, status, error) {
-                    f.log('failed posting missing key \'' + key + '\' to: ' + url);
-                },
-                dataType: "json",
-                async : o.postAsync
-            });
+            var urls = [];
+
+            if (o.sendMissingTo === 'fallback') {
+                urls.push({lng: o.fallbackLng, url: applyReplacement(o.resPostPath, { lng: o.fallbackLng, ns: ns })});
+            } else if (o.sendMissingTo === 'current') {
+                urls.push({lng: o.lng, url: applyReplacement(o.resPostPath, { lng: o.lng, ns: ns })});
+            } else if (o.sendMissingTo === 'all') {
+                for (var i = 0, l = languages.length; i < l; i++) {
+                    urls.push({lng: languages[i], url: applyReplacement(o.resPostPath, { lng: languages[i], ns: ns })});
+                }
+            }
+
+            for (var y = 0, len = urls.length; y < len; y++) {
+                var item = urls[y];
+                f.ajax({
+                    url: item.url,
+                    type: o.sendType,
+                    data: payload,
+                    success: function(data, status, xhr) {
+                        f.log('posted missing key \'' + key + '\' to: ' + url);
+                        resStore[item.lng][ns][key] = defaultValue;
+                    },
+                    error : function(xhr, status, error) {
+                        f.log('failed posting missing key \'' + key + '\' to: ' + url);
+                    },
+                    dataType: "json",
+                    async : o.postAsync
+                });
+            }
         }
     };
 
