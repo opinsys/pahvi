@@ -67,12 +67,6 @@ class configs.BackgroundColor extends BaseConfig
 
   title: t "boxproperties.backgroundColor.title"
 
-  constructor: ->
-    super
-    # TODO: fix
-    # @model.bind "change:#{ @colorProperty }", =>
-    #   @joe?.set color.hsva @model.get @colorProperty
-
 
   update: (color, localOnly) ->
     ob = {}
@@ -88,7 +82,10 @@ class configs.BackgroundColor extends BaseConfig
 
     @joe?.removeAllListeners()
 
-    joe = @joe = colorjoe.rgb(@$(".colorWidgetContainer").get(0), @model.get(@colorProperty) or "white")
+    joe = @joe = colorjoe.rgb(
+      @$(".colorWidgetContainer").get(0),
+      @model.get(@colorProperty) or "white"
+    )
 
     @joe.on "change", (color) => @update color.css(), true
     @joe.on "done", (color) =>
