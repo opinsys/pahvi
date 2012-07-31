@@ -20,7 +20,7 @@
         "hide": "Hide box temporarily"
     },
     "toolbox": {
-        "help": "Drag items below to edit area to create new elements.",
+        "help": "Drag items below to the edit area on left to create new elements.",
         "desktopHelp": "Drag&amp;Drop images from your computer",
         "textbox": "Text Box",
         "plainbox": "Plain Box",
