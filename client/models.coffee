@@ -144,8 +144,6 @@ class models.TextBoxModel extends BaseBoxModel
     "NameEditor",
     "TextColor",
     "BackgroundColor",
-    "FontSize",
-    "Border"
   ]
 
   defaults:
