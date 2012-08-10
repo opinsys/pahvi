@@ -1,19 +1,16 @@
 <div class="container">
   <header>
-    <hgroup class="pahviLogo">
-    <a title="Pahvi Homepage" href="/">
-      <h1>Pahvi</h1>
-    </a>
-      <h3>Beta</h3>
-      <h4>Email us: <a href="mailto:dev@opinsys.fi">dev@opinsys.fi</a></h4>
-    </hgroup>
-    <figure>
-      <a href="http://opinsys.fi" title="Opinsys Oy" target="_blank">Opinsys</a>
-    </figure>
+    <div class="pahviLogo">
+      <h1>{{data.name}}</h1>
+    </div>
 
-    <h1 class="pahviName" >
-      {{data.name}}
-    </h1>
+    <div class="opinsysLink">
+      <a href="/">Pahvidemo</a>
+      <a class="opinsysLogo" href="http://opinsys.fi" title="Opinsys Oy" target="_blank">
+      <img src="/img/opinsys_logo.png">
+      </a>
+    </div>
+
 
     <div class="readOnlyLink"></div>
     <div class="menu"></div>
@@ -25,3 +22,6 @@
   <div class="pasteboard"> </div>
 
 </div>
+
+
+
