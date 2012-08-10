@@ -120,6 +120,16 @@ hbs.registerHelper "googleAnalytics", ->
 </script>
 """
 
+hbs.registerHelper "appsources", ->
+  data =
+    app: (s[0] for s in js.getSources "pahvi", "pahviui")
+    welcome: (s[0] for s in js.getSources "pahvi", "welcome")
+    remote: (s[0] for s in js.getSources "pahvi", "remote")
+  return """
+  <script type="text/javascript">
+  window.PahviSources = #{ JSON.stringify data };
+  </script>
+  """
 
 
 app.configure ->
@@ -232,11 +242,6 @@ app.configure ->
 
 
   js.addFile "loader", rootDir + "/client/vendor/head.js"
-  js.addOb "loader",
-    PahviSources:
-      app: (s[0] for s in js.getSources "pahvi", "pahviui")
-      welcome: (s[0] for s in js.getSources "pahvi", "welcome")
-      remote: (s[0] for s in js.getSources "pahvi", "remote")
   js.addFile "loader", rootDir + "/client/load.coffee"
 
 
