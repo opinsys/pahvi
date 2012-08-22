@@ -66,7 +66,7 @@ Pahvi.createConnection (err, settings, boxes, boardProperties) -> $ ->
 
 
   boxes.bind "syncerror", (model, method, err) ->
-    if err is "forbidden"
+    if err is "forbidden" and window.AUTH_KEY
       return helpers.showFatalError t "main.authError"
 
     helpers.showFatalError "Data synchronization error: '#{ err }'."
