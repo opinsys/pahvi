@@ -114,25 +114,15 @@ module.exports = (app, js, css, config) ->
 
 
 
-  app.get "/p/:id", (req, res, next) ->
+
+
+
+  appRender = (template, options={}) -> (req, res, next) ->
+    id = req.params.id
 
     # XXX: Legacy auth url
     if req.query?.auth
       return res.redirect "/e/#{ req.params.id }/#{ req.query.auth }"
-
-    req.session.pahviAuth = ""
-
-    res.render "index",
-      authKey: ""
-      config: config
-      data: {}
-      js: js.renderTags "vendor", "loader"
-      css: css.renderTags "vendor", "pahvi", "pahviui"
-
-
-
-  authRender = (template, options={}) -> (req, res, next) ->
-    id = req.params.id
 
     pahvi = new PahviMeta
       client: client
@@ -150,7 +140,12 @@ module.exports = (app, js, css, config) ->
             layout: true
           , options
 
-    console.log "Authkey", req.params.token
+
+    if options.anonymous
+      req.session.pahviAuth = ""
+      return response()
+
+    console.log "Using authkey", req.params.token
     pahvi.authenticate req.params.token, (err, authOk) ->
 
       if authOk
@@ -160,13 +155,16 @@ module.exports = (app, js, css, config) ->
 
       response()
 
-  app.get "/e/:id/:token", authRender "index",
+  app.get "/e/:id/:token", appRender "index",
     js: js.renderTags "vendor", "loader"
     css: css.renderTags "vendor", "pahvi", "pahviui"
 
-  app.get "/r/:id/:token", authRender "remote",
+  app.get "/r/:id/:token", appRender "remote",
     js: js.renderTags "vendor", "loader"
     css: css.renderTags "vendor", "pahvi", "remote"
     layout: false
 
-
+  app.get "/p/:id", appRender "index",
+    js: js.renderTags "vendor", "loader"
+    css: css.renderTags "vendor", "pahvi", "pahviui"
+    anonymous: true
