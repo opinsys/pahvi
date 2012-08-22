@@ -17,7 +17,7 @@
     
 ### Fetch and build Redis
 
-    wget http://redis.googlecode.com/files/redis-2.4.9.tar.gz
+    wget http://redis.googlecode.com/files/redis-2.4.16.tar.gz
     tar xzvf redis-2.4.*.tar.gz
     cd redis-2.4.*
     make
