@@ -1,12 +1,12 @@
 # Hacking pahvi
 
-## Installation
+## Installation in Ubuntu
 
-Dependencies
+### Dependencies
 
     sudo apt-get install build-essential libssl-dev git-core graphicsmagick
 
-Fetch and Build Node.js
+### Fetch and Build Node.js
 
     wget http://nodejs.org/dist/v0.6.21/node-v0.6.21.tar.gz
     tar xzvf node-v0.6.21.tar.gz
@@ -14,8 +14,33 @@ Fetch and Build Node.js
     ./configure
     make
     sudo make install
+    
+### Fetch and build Redis
 
-Fetch and build Pahvi
+    wget http://redis.googlecode.com/files/redis-2.4.9.tar.gz
+    tar xzvf redis-2.4.*.tar.gz
+    cd redis-2.4.*
+    make
+    sudo make install
+    sudo cp redis.conf /etc/redis.conf
+    
+Upstart script `/etc/init/redis-server.conf`
+    
+    description "redis server"
+    
+    start on runlevel [23]
+    stop on shutdown
+    
+    exec sudo -u opinsys redis-server /etc/redis.conf >> /var/log/redis.log
+    
+    respawn
+
+Start it
+
+    sudo start redis-server
+    
+
+### Fetch and build Pahvi
 
     git clone https://github.com/opinsys/pahvi.git
     cd pahvi
