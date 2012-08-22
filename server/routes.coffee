@@ -127,7 +127,7 @@ module.exports = (app, js, css, config) ->
       config: config
       data: {}
       js: js.renderTags "vendor", "loader"
-      css: css.renderTags "vendor", "pahvi"
+      css: css.renderTags "vendor", "pahvi", "pahviui"
 
 
 
