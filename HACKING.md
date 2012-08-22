@@ -1,7 +1,47 @@
 # Hacking pahvi
 
+## Installation
 
-## Directories
+Dependencies
+
+    sudo apt-get install build-essential libssl-dev git-core graphicsmagick
+
+Fetch and Build Node.js
+
+    wget http://nodejs.org/dist/v0.6.21/node-v0.6.21.tar.gz
+    tar xzvf node-v0.6.21.tar.gz
+    cd node-v0.6.21
+    ./configure
+    make
+    sudo make install
+
+Fetch and build Pahvi
+
+    git clone https://github.com/opinsys/pahvi.git
+    cd pahvi
+    npm rebuild
+
+## Configuring
+
+Move config.json-example to config.json and edit if necessary.
+
+## Running the app
+
+In development
+
+    bin/develop
+
+Node.js debugging
+
+    bin/debug
+
+Production
+
+    export NODE_END=production
+    npm start
+
+
+## Directory conventions
 
 Server-side code:
 
@@ -31,63 +71,9 @@ Random helper scripts
 
     bin/
 
-## Conventions (proposal)
-
-  * Use two spaces for indentation everywhere
-  * camelCase for CSS classes and IDs
-  * camelCase for CoffeeScript variables and properties
-  * UpperCamelCase for CoffeeScript classes
-  * Max 79 characters per line. Keeps [pyramid of doom][pyramid] away :)
 
 [pyramid]: https://github.com/christkv/node-mongodb-native/blob/c5963250c2eda97ec958502da51a46e378e17f5b/examples/blog.js "Bad code!"
 
-
-## Installing Node.js
-
-Build dependencies
-
-    sudo apt-get install libssl-dev
-
-Build
-
-    cd /tmp/
-    wget http://nodejs.org/dist/latest/node-v0.6.7.tar.gz
-    tar xzvf node-v0.6.7.tar.gz
-    cd node-v0.6.7
-    ./configure
-    make
-    sudo make install
-
-
-
-## Installing Webapp dependencies
-
-Image operations via gm module requires graphicsmagick
-
-    sudo apt-get install graphicsmagick
-
-All Node.JS modules are vendored in the Git repo. Just run rebuild.
-
-    npm rebuild
-
-## Configuring
-
-Move config.json-example to config.json and edit if necessary.
-
-## Running the app
-
-In development
-
-    bin/develop
-
-Node.js debugging
-
-    bin/debug
-
-Production
-
-    export NODE_END=production
-    npm start
 
 
 ## Resources
