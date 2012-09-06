@@ -6,7 +6,7 @@
 
     sudo apt-get install build-essential libssl-dev git-core graphicsmagick
 
-### Fetch and Build Node.js
+### Fetch and Build Node.js 0.6
 
     wget http://nodejs.org/dist/v0.6.21/node-v0.6.21.tar.gz
     tar xzvf node-v0.6.21.tar.gz
