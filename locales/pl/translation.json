@@ -1,0 +1,73 @@
+{
+    "welcome": {
+        "name": "nazwa Pahvi",
+        "required": "wymagane",
+        "aboutEmail": "Emaila używamy tylko w przypadku, jeśli nie sprawdzisz skrzynki umieszczonej poniżej",
+        "about": "proste, zespołowe narzędzia do tworzenia prezentacj dla klas",
+        "more": "Przeczytaj o nas więcej na naszym blogu <a href=\"http://www.opinsys.fi/en/?p=1650\">wersja angielska</a> or in <a href=\"http://www.opinsys.fi/?p=1685\">Czytaj</a>.",
+        "title": "wirtualne kolaże szkolne",
+        "subscribe": "chcę otrzymywać aktualizacje o Pahvi na Emaila",
+        "create": "utwórz nowe Pahvi"
+    },
+    "main": {
+        "disconnectError": "rozłączony",
+        "authError": "Twój klucz uwierzytelniania jest niepoprawny.Sprawdź link (adres URL) i załaduj ponownie tę stronę",
+        "contact": "skontaktuj się z nami korzystając z tego linku <a href=\"mailto:dev@opinsys.fi\">dev@opinsys.fi</a> jeśli powyższy problem będzie się powtarzał"
+    },
+    "layers": {
+        "help": "Ustaw pola warstwami przeciągając je w żądanej kolejności",
+        "delete": "kasuj pole na stałe",
+        "hide": "ukryj pole tymczasowo"
+    },
+    "toolbox": {
+        "help": "przeciągnij pozycje poniżej do pola edycyjnego, na lewo do tworzenia nowych elementów", 
+        "desktopHelp": "Przeciągnij i puść obrazy ze swojego komputera",
+        "textbox": "Pole Tekstowe",
+        "plainbox": "Puste Pole",
+        "imagebox": "Pole z Obrazem"
+    },
+    "model": {
+        "text": {
+            "sample": "Kliknij dwukrotnie, aby edytować",
+            "name": "pole tekstowe"
+        },
+        "image": {
+            "name": "pole z obrazem"
+        },
+        "plain": {
+            "name": "zwykłe pole"
+        }
+    },
+    "textbox": {
+        "edit": "edytuj"
+    },
+    "readonlylink": {
+        "help": "Link tylko do odczytu na potrzeby prezentacji"
+    },
+    "topmenu": {
+        "remote": "Otwórz okno zdalnego pilota",
+        "presentation": "Przełącz do trybu prezentacji",
+        "edit": "Przełącz do trybu edytowania"
+    },
+    "boxproperties": {
+        "help": "Kliknij na pole, aby je edytować",
+        "title": "Właściwości",
+        "image": {
+            "browse": "Przeglądaj..."
+        },
+        "backgroundColor": {
+            "title": "Kolor tła"
+        },
+        "textColor": {
+            "title": "Kolor tekstu"
+        },
+        "nameEditor": {
+            "title": "Nazwa"
+        }
+    },
+    "startinfo": {
+        "welcome": "Witamy!",
+        "share": "Użyj tego adresu URL do przesłania dalej tej prezentacji, tylko w formie odczytu ",
+        "admin": "Użyj tego adresu URL, aby zaprosić innych edytorów "
+    }
+}
